@@ -219,16 +219,20 @@ function iniciar(){
     segundos--;
 const decorrido=(minutos*60)-segundos;
 
-if(decorrido>0 && decorrido%60===0){
-  const numeroMinuto=decorrido/60;
-  const cantosNesteMinuto=contagem-contagemInicioMinuto;
+if(decorrido >= 60 && decorrido % 60 === 0){
+  const numeroMinuto=Math.floor(decorrido/60);
 
-  cantosPorMinuto[numeroMinuto-1]=cantosNesteMinuto;
-  contagemInicioMinuto=contagem;
-  document.getElementById("listaMinutos").innerHTML=
-  cantosPorMinuto.map((qtd,i)=>
-    `<div>${i+1} min — <b>${qtd} cantos</b></div>`
-  ).join("");
+  if(cantosPorMinuto.length < numeroMinuto){
+    const cantosNesteMinuto=contagem-contagemInicioMinuto;
+
+    cantosPorMinuto.push(cantosNesteMinuto);
+    contagemInicioMinuto=contagem;
+
+    document.getElementById("listaMinutos").innerHTML=
+      cantosPorMinuto.map((qtd,i)=>
+        `<div>${i+1} min — <b>${qtd} cantos</b></div>`
+      ).join("");
+  }
 }
     if(segundos<=0){
       clearInterval(timer);
@@ -238,12 +242,13 @@ if(decorrido>0 && decorrido%60===0){
     }
 
     atualizarTempo();
-    const decorrido=(minutos*60)-segundos;
-if(decorrido>0){
-  const futuro=Math.round((contagem/decorrido)*(minutos*60));
-  document.getElementById("projecao").textContent=futuro;
+const decorrido = (minutos * 60) - segundos;
+
+if (decorrido > 0) {
+  const futuro = Math.round((contagem / decorrido) * (minutos * 60));
+  document.getElementById("projecao").textContent = futuro;
 }
-  },1000);
+},1000);
 }
 
 function atualizarTempo(){
