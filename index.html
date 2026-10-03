@@ -131,6 +131,10 @@ h2{margin-top:28px}
 <div class="status" id="status">Pronto para iniciar</div>
 
 <div id="contador">0</div>
+<div id="futuro">
+  🔮 RESULTADO FUTURO<br>
+  <strong id="projecao">0</strong> cantos
+</div>
 
 <button class="cantar" onclick="canto()">+ CANTO</button>
 
@@ -193,7 +197,11 @@ function selecionarTempo(m){
 function canto(){
   contagem++;
   contador.textContent=contagem;
-
+const decorrido=(minutos*60)-segundos;
+if(decorrido>0){
+  const futuro=Math.round((contagem/decorrido)*(minutos*60));
+  document.getElementById("projecao").textContent=futuro;
+}
   if(navigator.vibrate) navigator.vibrate(25);
 }
 
@@ -214,6 +222,11 @@ function iniciar(){
     }
 
     atualizarTempo();
+    const decorrido=(minutos*60)-segundos;
+if(decorrido>0){
+  const futuro=Math.round((contagem/decorrido)*(minutos*60));
+  document.getElementById("projecao").textContent=futuro;
+}
   },1000);
 }
 
