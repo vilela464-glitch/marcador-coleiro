@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>Marcador de Coleiro</title>
+
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{
+ margin:0;background:#07111f;color:white;
+ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ min-height:100vh;text-align:center;padding:18px
+}
+h1{margin:5px 0;font-size:26px}
+.sub{color:#91a4bb;margin-bottom:15px}
+
+.tempos{display:flex;gap:10px;justify-content:center}
+.tempos button{
+ padding:12px 25px;border:1px solid #33465d;border-radius:12px;
+ background:#132238;color:white;font-size:17px;font-weight:bold
+}
+.tempos .ativo{background:#1677ff}
+
+#tempo{
+ font-size:64px;font-weight:800;letter-spacing:2px;
+ margin:18px 0 8px
+}
+
+.status{color:#8fa4bb;margin-bottom:14px}
+
+.painel{
+ display:grid;grid-template-columns:1fr 1fr;
+ gap:10px;margin-bottom:14px
+}
+.card{
+ background:#101f31;border:1px solid #26394e;
+ border-radius:15px;padding:13px
+}
+.rotulo{font-size:13px;color:#8fa4bb}
+.valor{font-size:30px;font-weight:800;margin-top:4px}
+
+#canto{
+ width:100%;height:210px;border:0;border-radius:25px;
+ background:#19a85b;color:white;font-size:45px;font-weight:900;
+ box-shadow:0 8px 25px #0006;
+ touch-action:manipulation
+}
+#canto:active{transform:scale(.98);background:#13894a}
+
+.controles{
+ display:grid;grid-template-columns:1fr 1fr;
+ gap:10px;margin-top:13px
+}
+.controles button{
+ border:0;border-radius:14px;padding:16px 5px;
+ font-size:17px;font-weight:800;color:white
+}
+#iniciar{background:#1677ff}
+#desfazer{background:#d28a00}
+#zerar{background:#d43d3d}
+#pausar{background:#46576b}
+
+.obs{
+ margin-top:17px;color:#71869e;font-size:13px;line-height:1.4
+}
+</style>
+</head>
+
+<body>
+
+<h1>🐦 MARCADOR DE COLEIRO</h1>
+<div class="sub">Contagem + projeção em tempo real</div>
+
+<div class="tempos">
+<button id="b10" class="ativo" onclick="mudarTempo(10)">10 MIN</button>
+<button id="b15" onclick="mudarTempo(15)">15 MIN</button>
+</div>
+
+<div id="tempo">10:00</div>
+<div class="status" id="status">Pronto para iniciar</div>
+
+<div class="painel">
+ <div class="card">
+  <div class="rotulo">CANTOS</div>
+  <div class="valor" id="total">0</div>
+ </div>
+ <div class="card">
+  <div class="rotulo">CANTOS/MIN</div>
+  <div class="valor" id="media">0.0</div>
+ </div>
+ <div class="card">
+  <div class="rotulo">PROJEÇÃO FINAL</div>
+  <div class="valor" id="projecao">0</div>
+ </div>
+ <div class="card">
+  <div class="rotulo">TEMPO CORRIDO</div>
+  <div class="valor" id="decorrido">0:00</div>
+ </div>
+</div>
+
+<button id="canto" onclick="marcarCanto()">+ CANTO</button>
+
+<div class="controles">
+<button id="iniciar" onclick="iniciar()">▶ INICIAR</button>
+<button id="pausar" onclick="pausar()">⏸ PAUSAR</button>
+<button id="desfazer" onclick="desfazer()">↩ DESFAZER</button>
+<button id="zerar" onclick="zerar()">⟳ ZERAR</button>
+</div>
+
+<div class="obs">
+A projeção é recalculada automaticamente conforme os cantos são marcados.
+</div>
+
+<script>
+let minutos=10;
+let duracao=600;
+let restante=600;
+let inicio=null;
+let acumulado=0;
+let rodando=false;
+let timer=null;
+let cantos=0;
+
+function mudarTempo(m){
+ if(rodando) return;
+ minutos=m;
+ duracao=m*60;
+ restante=duracao;
+ acumulado=0;
+ document.getElementById("b10").classList.toggle("ativo",m===10);
+ document.getElementById("b15").classList.toggle("ativo",m===15);
+ atualizar();
+}
+
+function iniciar(){
+ if(rodando || restante<=0) return;
+ rodando=true;
+ inicio=Date.now();
+ document.getElementById("status").textContent="CONTAGEM EM ANDAMENTO";
+ timer=setInterval(tick,100);
+ tick();
+}
+
+function pausar(){
+ if(!rodando) return;
+ acumulado+=(Date.now()-inicio)/1000;
+ rodando=false;
+ clearInterval(timer);
+ restante=Math.max(0,duracao-acumulado);
+ document.getElementById("status").textContent="PAUSADO";
+ atualizar();
+}
+
+function tick(){
+ let dec=acumulado+(Date.now()-inicio)/1000;
+ restante=Math.max(0,duracao-dec);
+
+ if(restante<=0){
+  acumulado=duracao;
+  rodando=false;
+  clearInterval(timer);
+  document.getElementById("status").textContent="TEMPO ENCERRADO";
+  if(navigator.vibrate) navigator.vibrate([300,150,300]);
+ }
+ atualizar();
+}
+
+function marcarCanto(){
+ if(!rodando){
+  iniciar();
+ }
+ if(restante<=0) return;
+
+ cantos++;
+
+ if(navigator.vibrate) navigator.vibrate(25);
+
+ atualizar();
+}
+
+function desfazer(){
+ if(cantos>0) cantos--;
+ atualizar();
+}
+
+function zerar(){
+ clearInterval(timer);
+ rodando=false;
+ inicio=null;
+ acumulado=0;
+ restante=duracao;
+ cantos=0;
+ document.getElementById("status").textContent="Pronto para iniciar";
+ atualizar();
+}
+
+function segundosDecorridos(){
+ if(rodando){
+  return Math.min(
+   duracao,
+   acumulado+(Date.now()-inicio)/1000
+  );
+ }
+ return acumulado;
+}
+
+function formatar(seg){
+ seg=Math.max(0,Math.ceil(seg));
+ let m=Math.floor(seg/60);
+ let s=seg%60;
+ return m+":"+String(s).padStart(2,"0");
+}
+
+function atualizar(){
+ let dec=segundosDecorridos();
+ let media=dec>0 ? cantos/(dec/60) : 0;
+ let proj=dec>=3 ? Math.round(media*minutos) : 0;
+
+ document.getElementById("tempo").textContent=formatar(restante);
+ document.getElementById("total").textContent=cantos;
+ document.getElementById("media").textContent=media.toFixed(1);
+ document.getElementById("projecao").textContent=proj;
+ document.getElementById("decorrido").textContent=formatar(Math.floor(dec));
+}
+
+atualizar();
+</script>
+
+</body>
+</html>
