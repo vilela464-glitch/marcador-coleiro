@@ -162,7 +162,10 @@ h2{margin-top:28px}
 </button>
 
 </div>
-
+<div id="resumoMinutos" style="margin-top:18px;text-align:left;">
+  <h2>📊 Cantos por Minuto</h2>
+  <div id="listaMinutos">Aguardando marcação...</div>
+</div>
 <h2>📚 Histórico</h2>
 <div id="historico"></div>
 
@@ -174,7 +177,8 @@ let rodando=false;
 let timer=null;
 let nos10=null;
 let nos15=null;
-
+let cantosPorMinuto=[];
+let contagemInicioMinuto=0;
 const contador=document.getElementById("contador");
 const tempo=document.getElementById("tempo");
 const statusTxt=document.getElementById("status");
@@ -213,7 +217,19 @@ function iniciar(){
 
   timer=setInterval(()=>{
     segundos--;
+const decorrido=(minutos*60)-segundos;
 
+if(decorrido>0 && decorrido%60===0){
+  const numeroMinuto=decorrido/60;
+  const cantosNesteMinuto=contagem-contagemInicioMinuto;
+
+  cantosPorMinuto[numeroMinuto-1]=cantosNesteMinuto;
+  contagemInicioMinuto=contagem;
+  document.getElementById("listaMinutos").innerHTML=
+  cantosPorMinuto.map((qtd,i)=>
+    `<div>${i+1} min — <b>${qtd} cantos</b></div>`
+  ).join("");
+}
     if(segundos<=0){
       clearInterval(timer);
       rodando=false;
@@ -243,6 +259,9 @@ function zerar(){
   clearInterval(timer);
   rodando=false;
   contagem=0;
+  cantosPorMinuto=[];
+contagemInicioMinuto=0;
+document.getElementById("listaMinutos").innerHTML="Aguardando marcação...";
   segundos=minutos*60;
 
   contador.textContent="0";
