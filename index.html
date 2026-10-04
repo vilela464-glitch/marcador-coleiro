@@ -2,506 +2,277 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Marcador de Coleiro</title>
 
 <style>
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{
+ margin:0;background:#05090d;color:#fff;
+ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ text-align:center;min-height:100vh;padding:18px 14px 28px;
+}
+h1{margin:8px 0 2px;font-size:27px}
+.dourado{color:#ffc928}
+.sub{color:#8996a6;margin-bottom:15px;font-size:14px}
+
+.minutos-box{
+ background:#09131a;border:1px solid #263846;border-radius:18px;
+ padding:12px;margin-bottom:14px;
+}
+.minutos-box h2{font-size:16px;margin:0 0 10px}
+#porMinuto{
+ display:flex;gap:7px;overflow-x:auto;padding-bottom:3px;
+}
+.minuto{
+ min-width:65px;background:#101d26;border:1px solid #334957;
+ border-radius:10px;padding:8px 5px;
+}
+.minuto span{display:block;font-size:12px;color:#aeb8c1}
+.minuto strong{display:block;font-size:24px;margin-top:3px}
+
+.tempos{display:flex;gap:10px;margin-bottom:12px}
+.tempos button{
+ flex:1;padding:13px;border-radius:12px;border:1px solid #425363;
+ background:#18232d;color:#fff;font-size:18px;font-weight:800;
+}
+.tempos button.ativo{
+ background:#087cff;border-color:#31a0ff;
+ box-shadow:0 0 15px #087cff66;
 }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: #050505;
-  color: white;
-  font-family: Arial, Helvetica, sans-serif;
-  text-align: center;
-  padding: 20px;
+#status{font-size:13px;color:#8393a0;margin:5px 0}
+#tempo{
+ font-size:62px;font-weight:900;letter-spacing:2px;
+ margin:5px 0 12px;
 }
 
-.container {
-  width: 100%;
-  max-width: 520px;
-  margin: auto;
+.painel{
+ display:grid;grid-template-columns:1fr 1fr 1fr;
+ gap:8px;margin-bottom:14px;
 }
+.card{
+ background:#0b151d;border:1px solid #31424e;
+ border-radius:13px;padding:11px 4px;
+}
+.card small{font-size:10px;color:#a8b2ba;font-weight:700}
+.numero{font-size:30px;font-weight:900;margin-top:5px}
+.projecao{color:#20e878}
 
-h1 {
-  margin: 5px 0 20px;
-  font-size: 28px;
+.barra{
+ height:12px;background:#1c2933;border-radius:10px;
+ overflow:hidden;margin:4px 3px 8px;
 }
+#progresso{
+ width:0;height:100%;background:#168cff;
+ transition:width .3s;
+}
+#percentual{font-size:13px;color:#aab5be;margin-bottom:13px}
 
-.tempo-opcoes {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+#canto{
+ width:100%;height:145px;border:none;border-radius:22px;
+ background:#08c94f;color:white;font-size:45px;font-weight:900;
+ box-shadow:0 0 24px #00e45c66;
+ touch-action:manipulation;
 }
+#canto:active{transform:scale(.98);background:#08ae46}
 
-.tempo-btn {
-  flex: 1;
-  padding: 14px;
-  border: 2px solid #444;
-  border-radius: 12px;
-  background: #171717;
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
+.acoes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:13px}
+.acoes button{
+ padding:16px 5px;border:none;border-radius:13px;
+ font-size:17px;font-weight:900;
 }
+#desfazer{background:#ffc928;color:#111}
+#zerar{background:#e73535;color:#fff}
 
-.tempo-btn.ativo {
-  border-color: #ff3030;
-  background: #321010;
-}
-
-#cronometro {
-  font-size: 58px;
-  font-weight: bold;
-  margin: 15px 0;
-  font-variant-numeric: tabular-nums;
-}
-
-#botaoCanto {
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  border: 8px solid #ff5656;
-  background: #d50000;
-  color: white;
-  font-size: 38px;
-  font-weight: bold;
-  margin: 10px auto 20px;
-  display: block;
-  box-shadow: 0 0 25px rgba(255,0,0,.35);
-  touch-action: manipulation;
-}
-
-#botaoCanto:active {
-  transform: scale(.96);
-  background: #ff1b1b;
-}
-
-.painel {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.card {
-  background: #151515;
-  border: 1px solid #333;
-  border-radius: 14px;
-  padding: 14px 8px;
-}
-
-.card-titulo {
-  color: #aaa;
-  font-size: 14px;
-}
-
-.numero {
-  font-size: 36px;
-  font-weight: bold;
-  margin-top: 4px;
-}
-
-#projecao {
-  color: #ffd54a;
-}
-
-.controles {
-  display: flex;
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.controles button {
-  flex: 1;
-  padding: 15px 5px;
-  border: 0;
-  border-radius: 12px;
-  font-size: 17px;
-  font-weight: bold;
-}
-
-#iniciar {
-  background: #19a54a;
-  color: white;
-}
-
-#zerar {
-  background: #333;
-  color: white;
-}
-
-.resumo {
-  margin-top: 22px;
-  background: #111;
-  border: 1px solid #333;
-  border-radius: 14px;
-  padding: 15px;
-  text-align: left;
-}
-
-.resumo h2 {
-  font-size: 19px;
-  text-align: center;
-  margin: 0 0 12px;
-}
-
-.linha-minuto {
-  display: flex;
-  justify-content: space-between;
-  padding: 9px 5px;
-  border-bottom: 1px solid #292929;
-  font-size: 17px;
-}
-
-.sem-dados {
-  text-align: center;
-  color: #777;
-  padding: 10px;
-}
+.rodape{margin-top:15px;color:#566570;font-size:11px}
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<h1>🐦 MARCADOR DE <span class="dourado">COLEIRO</span></h1>
+<div class="sub">V2.0 • Projeção em tempo real</div>
 
-  <h1>🐦 MARCADOR DE COLEIRO</h1>
-
-  <div class="tempo-opcoes">
-    <button id="btn10" class="tempo-btn ativo" onclick="selecionarTempo(10)">
-      10 MIN
-    </button>
-
-    <button id="btn15" class="tempo-btn" onclick="selecionarTempo(15)">
-      15 MIN
-    </button>
-  </div>
-
-  <div id="cronometro">10:00</div>
-
-  <button id="botaoCanto" onclick="registrarCanto()">
-    CANTO
-  </button>
-
-  <div class="painel">
-
-    <div class="card">
-      <div class="card-titulo">TOTAL DE CANTOS</div>
-      <div id="total" class="numero">0</div>
-    </div>
-
-    <div class="card">
-      <div class="card-titulo">RESULTADO FUTURO</div>
-      <div id="projecao" class="numero">0</div>
-    </div>
-
-  </div>
-
-  <div class="controles">
-    <button id="iniciar" onclick="iniciarPausar()">
-      ▶ INICIAR
-    </button>
-
-    <button id="zerar" onclick="zerarTudo()">
-      ↻ ZERAR
-    </button>
-  </div>
-
-  <div class="resumo">
-    <h2>📊 CANTOS POR MINUTO</h2>
-
-    <div id="listaMinutos">
-      <div class="sem-dados">
-        Aguardando início da marcação
-      </div>
-    </div>
-  </div>
-
+<div class="minutos-box">
+ <h2>CANTOS POR MINUTO</h2>
+ <div id="porMinuto"></div>
 </div>
 
+<div class="tempos">
+ <button id="b10" class="ativo" onclick="selecionarTempo(10)">10 MIN</button>
+ <button id="b15" onclick="selecionarTempo(15)">15 MIN</button>
+</div>
+
+<div id="status">PRONTO PARA INICIAR</div>
+<div id="tempo">00:00</div>
+
+<div class="painel">
+ <div class="card">
+  <small>TOTAL DE CANTOS</small>
+  <div class="numero" id="total">0</div>
+ </div>
+ <div class="card">
+  <small>MÉDIA / MIN</small>
+  <div class="numero" id="media">0.0</div>
+ </div>
+ <div class="card">
+  <small>PROJEÇÃO FINAL</small>
+  <div class="numero projecao" id="projecao">0</div>
+ </div>
+</div>
+
+<div class="barra"><div id="progresso"></div></div>
+<div id="percentual">0% • 00:00 / 10:00</div>
+
+<button id="canto">🐦 + CANTO</button>
+
+<div class="acoes">
+ <button id="desfazer">↩ DESFAZER</button>
+ <button id="zerar">↻ ZERAR</button>
+</div>
+
+<div class="rodape">O primeiro canto inicia automaticamente o cronômetro.</div>
+
 <script>
+let duracao=10;
+let cantos=[];
+let inicio=null;
+let intervalo=null;
+let finalizado=false;
 
-let minutosProva = 10;
-let segundosRestantes = 600;
-let totalCantos = 0;
+const el=id=>document.getElementById(id);
 
-let rodando = false;
-let intervalo = null;
-
-let cantosPorMinuto = [];
-let minutoAtual = 0;
-let cantosMinutoAtual = 0;
-
-
-// ESCOLHER 10 OU 15 MINUTOS
-
-function selecionarTempo(minutos) {
-
-  if (rodando) return;
-
-  minutosProva = minutos;
-
-  zerarTudo();
-
-  document.getElementById("btn10")
-    .classList.toggle("ativo", minutos === 10);
-
-  document.getElementById("btn15")
-    .classList.toggle("ativo", minutos === 15);
+function selecionarTempo(min){
+ if(inicio) return;
+ duracao=min;
+ el("b10").classList.toggle("ativo",min===10);
+ el("b15").classList.toggle("ativo",min===15);
+ montarMinutos();
+ atualizar();
 }
 
-
-// INICIAR / PAUSAR
-
-function iniciarPausar() {
-
-  if (segundosRestantes <= 0) return;
-
-  if (!rodando) {
-
-    rodando = true;
-
-    document.getElementById("iniciar").textContent =
-      "⏸ PAUSAR";
-
-    intervalo = setInterval(tick, 1000);
-
-  } else {
-
-    pausar();
-
-  }
+function montarMinutos(){
+ el("porMinuto").innerHTML="";
+ for(let i=1;i<=duracao;i++){
+  const d=document.createElement("div");
+  d.className="minuto";
+  d.innerHTML="<span>"+i+"º min</span><strong id='m"+i+"'>0</strong>";
+  el("porMinuto").appendChild(d);
+ }
 }
 
-
-// PAUSAR
-
-function pausar() {
-
-  rodando = false;
-
-  clearInterval(intervalo);
-
-  intervalo = null;
-
-  document.getElementById("iniciar").textContent =
-    "▶ CONTINUAR";
+function iniciar(){
+ if(inicio) return;
+ inicio=Date.now();
+ finalizado=false;
+ el("status").textContent="● EM ANDAMENTO";
+ el("status").style.color="#20e878";
+ intervalo=setInterval(atualizar,250);
 }
 
+function marcar(){
+ if(finalizado) return;
+ if(!inicio) iniciar();
 
-// CRONÔMETRO
+ const agora=Date.now();
+ const decorrido=(agora-inicio)/1000;
 
-function tick() {
+ if(decorrido>=duracao*60){
+  finalizar();
+  return;
+ }
 
-  if (segundosRestantes <= 0) {
-    finalizar();
-    return;
-  }
-
-  segundosRestantes--;
-
-  atualizarTela();
-
-  verificarMinuto();
-
-  if (segundosRestantes <= 0) {
-    finalizar();
-  }
+ cantos.push(decorrido);
+ if(navigator.vibrate) navigator.vibrate(20);
+ atualizar();
 }
 
+function atualizar(){
+ let segundos=inicio ? (Date.now()-inicio)/1000 : 0;
+ const limite=duracao*60;
 
-// REGISTRAR CANTO
+ if(segundos>=limite && inicio){
+  segundos=limite;
+  finalizar();
+ }
 
-function registrarCanto() {
+ const min=Math.floor(segundos/60);
+ const seg=Math.floor(segundos%60);
 
-  // Só registra depois que a prova começar
-  if (!rodando) return;
+ el("tempo").textContent=
+  String(min).padStart(2,"0")+":"+String(seg).padStart(2,"0");
 
-  totalCantos++;
+ el("total").textContent=cantos.length;
 
-  cantosMinutoAtual++;
+ let media=segundos>0 ? cantos.length/(segundos/60) : 0;
+ el("media").textContent=media.toFixed(1);
 
-  atualizarTela();
+ let proj=segundos>0 ? Math.round(media*duracao) : 0;
+ el("projecao").textContent=proj;
+
+ const pct=Math.min((segundos/limite)*100,100);
+ el("progresso").style.width=pct+"%";
+
+ el("percentual").textContent=
+  Math.floor(pct)+"% • "+
+  String(min).padStart(2,"0")+":"+
+  String(seg).padStart(2,"0")+" / "+
+  duracao+":00";
+
+ for(let i=1;i<=duracao;i++){
+  const ini=(i-1)*60;
+  const fim=i*60;
+  const qtd=cantos.filter(x=>x>=ini && x<fim).length;
+  const campo=el("m"+i);
+  if(campo) campo.textContent=qtd;
+ }
 }
 
-
-// VERIFICA QUANDO COMPLETA CADA MINUTO
-
-function verificarMinuto() {
-
-  const totalSegundos = minutosProva * 60;
-
-  const segundosDecorridos =
-    totalSegundos - segundosRestantes;
-
-  const novoMinuto =
-    Math.floor(segundosDecorridos / 60);
-
-  if (novoMinuto > minutoAtual) {
-
-    cantosPorMinuto.push(cantosMinutoAtual);
-
-    cantosMinutoAtual = 0;
-
-    minutoAtual = novoMinuto;
-
-    atualizarLista();
-  }
+function finalizar(){
+ if(finalizado) return;
+ finalizado=true;
+ clearInterval(intervalo);
+ intervalo=null;
+ el("status").textContent="🏆 MARCAÇÃO FINALIZADA";
+ el("status").style.color="#ffc928";
+ atualizarMinutosFinal();
 }
 
-
-// RESULTADO FUTURO
-
-function calcularProjecao() {
-
-  const totalSegundos = minutosProva * 60;
-
-  const segundosDecorridos =
-    totalSegundos - segundosRestantes;
-
-  if (segundosDecorridos <= 0) {
-    return 0;
-  }
-
-  return Math.round(
-    (totalCantos / segundosDecorridos) *
-    totalSegundos
-  );
+function atualizarMinutosFinal(){
+ for(let i=1;i<=duracao;i++){
+  const qtd=cantos.filter(x=>x>=(i-1)*60 && x<i*60).length;
+  const campo=el("m"+i);
+  if(campo) campo.textContent=qtd;
+ }
 }
 
-
-// ATUALIZAR TELA
-
-function atualizarTela() {
-
-  const min =
-    Math.floor(segundosRestantes / 60);
-
-  const seg =
-    segundosRestantes % 60;
-
-  document.getElementById("cronometro").textContent =
-    String(min).padStart(2, "0") +
-    ":" +
-    String(seg).padStart(2, "0");
-
-  document.getElementById("total").textContent =
-    totalCantos;
-
-  document.getElementById("projecao").textContent =
-    calcularProjecao();
+function desfazer(){
+ if(cantos.length===0) return;
+ cantos.pop();
+ atualizar();
 }
 
-
-// LISTA DE CANTOS POR MINUTO
-
-function atualizarLista() {
-
-  const lista =
-    document.getElementById("listaMinutos");
-
-  if (cantosPorMinuto.length === 0) {
-
-    lista.innerHTML =
-      '<div class="sem-dados">' +
-      'Aguardando o primeiro minuto' +
-      '</div>';
-
-    return;
-  }
-
-  lista.innerHTML = "";
-
-  cantosPorMinuto.forEach(function(cantos, indice) {
-
-    const linha =
-      document.createElement("div");
-
-    linha.className = "linha-minuto";
-
-    linha.innerHTML =
-      "<span>" +
-      (indice + 1) +
-      "º minuto</span>" +
-      "<strong>" +
-      cantos +
-      " cantos</strong>";
-
-    lista.appendChild(linha);
-  });
+function zerar(){
+ if(!confirm("Zerar esta marcação?")) return;
+ clearInterval(intervalo);
+ intervalo=null;
+ cantos=[];
+ inicio=null;
+ finalizado=false;
+ el("status").textContent="PRONTO PARA INICIAR";
+ el("status").style.color="#8393a0";
+ atualizar();
 }
 
+el("canto").addEventListener("click",marcar);
+el("desfazer").addEventListener("click",desfazer);
+el("zerar").addEventListener("click",zerar);
 
-// FINALIZAR
-
-function finalizar() {
-
-  clearInterval(intervalo);
-
-  intervalo = null;
-  rodando = false;
-
-  // Guarda o último minuto caso necessário
-  if (minutoAtual < minutosProva) {
-
-    cantosPorMinuto.push(cantosMinutoAtual);
-
-    minutoAtual++;
-
-    atualizarLista();
-  }
-
-  segundosRestantes = 0;
-
-  atualizarTela();
-
-  document.getElementById("iniciar").textContent =
-    "✓ FINALIZADO";
-}
-
-
-// ZERAR
-
-function zerarTudo() {
-
-  clearInterval(intervalo);
-
-  intervalo = null;
-
-  rodando = false;
-
-  segundosRestantes =
-    minutosProva * 60;
-
-  totalCantos = 0;
-
-  cantosPorMinuto = [];
-
-  minutoAtual = 0;
-
-  cantosMinutoAtual = 0;
-
-  document.getElementById("iniciar").textContent =
-    "▶ INICIAR";
-
-  document.getElementById("listaMinutos").innerHTML =
-    '<div class="sem-dados">' +
-    'Aguardando início da marcação' +
-    '</div>';
-
-  atualizarTela();
-}
-
-
-// PRIMEIRA EXIBIÇÃO
-
-atualizarTela();
-
+montarMinutos();
+atualizar();
 </script>
 
 </body>
