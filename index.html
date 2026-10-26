@@ -5,540 +5,159 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
 <title>Marcador de Coleiro</title>
-
 <style>
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
-
-body{
-  margin:0;
-  min-height:100vh;
-  padding:20px 14px 30px;
-  background:#05090d;
-  color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  text-align:center;
-}
-
-.container{
-  max-width:500px;
-  margin:auto;
-}
-
-h1{
-  margin:5px 0 2px;
-  font-size:27px;
-}
-
-.dourado{
-  color:#ffc928;
-}
-
-.sub{
-  color:#8996a6;
-  font-size:14px;
-  margin-bottom:16px;
-}
-
-/* CANTOS POR MINUTO */
-
-.minutos-box{
-  background:#09131a;
-  border:1px solid #263846;
-  border-radius:15px;
-  padding:12px;
-  margin-bottom:14px;
-}
-
-.minutos-box h2{
-  font-size:15px;
-  margin:0 0 10px;
-  color:#cbd5df;
-}
-
-#porMinuto{
-  display:flex;
-  gap:7px;
-  overflow-x:auto;
-  padding-bottom:3px;
-}
-
-.minuto{
-  min-width:62px;
-  background:#101d26;
-  border:1px solid #263846;
-  border-radius:10px;
-  padding:7px 4px;
-}
-
-.minuto span{
-  display:block;
-  font-size:11px;
-  color:#8996a6;
-}
-
-.minuto strong{
-  display:block;
-  font-size:23px;
-  margin-top:2px;
-  color:#ffc928;
-}
-
-/* TEMPO 10 / 15 */
-
-.tempos{
-  display:flex;
-  gap:10px;
-  margin-bottom:12px;
-}
-
-.tempos button{
-  flex:1;
-  padding:13px;
-  border-radius:12px;
-  border:1px solid #314557;
-  background:#101820;
-  color:#fff;
-  font-size:16px;
-  font-weight:800;
-}
-
-.tempos button.ativo{
-  background:#ffc928;
-  color:#080b0e;
-  border-color:#ffc928;
-}
-
-#status{
-  color:#8d9aa7;
-  font-size:13px;
-  margin-top:5px;
-}
-
-#tempo{
-  font-size:45px;
-  font-weight:900;
-  margin:3px 0 13px;
-  font-variant-numeric:tabular-nums;
-}
-
-/* NOVO PAINEL */
-
-.painel{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  grid-template-areas:
-    "total projecao"
-    "media media";
-  gap:9px;
-  margin-bottom:14px;
-}
-
-.card{
-  background:#0c141b;
-  border:1px solid #2b3e4c;
-  border-radius:17px;
-}
-
-.card small{
-  display:block;
-  color:#9ba7b4;
-  font-weight:900;
-  letter-spacing:.3px;
-}
-
-/* TOTAL */
-
-.card-total{
-  grid-area:total;
-  min-height:135px;
-  padding:15px 5px 10px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-}
-
-.card-total small{
-  font-size:12px;
-}
-
-.card-total .numero{
-  font-size:64px;
-  line-height:1;
-  font-weight:1000;
-  margin-top:10px;
-}
-
-/* PROJEÇÃO */
-
-.card-projecao{
-  grid-area:projecao;
-  min-height:135px;
-  padding:15px 5px 10px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  border-color:#46515a;
-}
-
-.card-projecao small{
-  font-size:12px;
-}
-
-.card-projecao .numero{
-  font-size:64px;
-  line-height:1;
-  font-weight:1000;
-  margin-top:10px;
-  color:#ffc928;
-}
-
-/* MÉDIA */
-
-.card-media{
-  grid-area:media;
-  min-height:67px;
-  padding:9px 14px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:18px;
-}
-
-.card-media small{
-  font-size:11px;
-}
-
-.card-media .numero{
-  font-size:30px;
-  line-height:1;
-  font-weight:900;
-}
-
-/* PROGRESSO */
-
-.barra{
-  height:9px;
-  background:#19232b;
-  border-radius:10px;
-  overflow:hidden;
-}
-
-#progresso{
-  height:100%;
-  width:0%;
-  background:#ffc928;
-  transition:width .3s;
-}
-
-#percentual{
-  color:#8996a6;
-  font-size:12px;
-  margin:7px 0 16px;
-}
-
-/* BOTÃO PRINCIPAL */
-
-#canto{
-  width:100%;
-  height:145px;
-  border:none;
-  border-radius:25px;
-  background:#ffc928;
-  color:#080b0e;
-  font-size:31px;
-  font-weight:1000;
-  box-shadow:0 8px 25px rgba(255,201,40,.22);
-  touch-action:manipulation;
-}
-
-#canto:active{
-  transform:scale(.97);
-}
-
-/* AÇÕES */
-
-.acoes{
-  display:flex;
-  gap:10px;
-  margin-top:14px;
-}
-
-.acoes button{
-  flex:1;
-  padding:13px;
-  border-radius:12px;
-  font-weight:800;
-  font-size:14px;
-}
-
-#desfazer{
-  background:#162028;
-  border:1px solid #31404b;
-  color:#fff;
-}
-
-#zerar{
-  background:#e73535;
-  border:0;
-  color:#fff;
-}
-
-.rodape{
-  margin-top:15px;
-  color:#566570;
-  font-size:11px;
-}
-
-/* TELAS MENORES */
-
-@media(max-width:370px){
-  .card-total .numero,
-  .card-projecao .numero{
-    font-size:55px;
-  }
-
-  h1{
-    font-size:24px;
-  }
-}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100vh;padding:20px 14px 30px;background:#05090d;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-align:center}
+.container{max-width:500px;margin:auto}
+h1{margin:5px 0 2px;font-size:27px}.dourado{color:#ffc928}.sub{color:#8996a6;font-size:14px;margin-bottom:16px}
+.minutos-box{background:#09131a;border:1px solid #263846;border-radius:15px;padding:12px;margin-bottom:14px}
+.minutos-box h2{font-size:15px;margin:0 0 10px;color:#cbd5df}
+#porMinuto{display:flex;gap:7px;overflow-x:auto;padding-bottom:3px}
+.minuto{min-width:62px;background:#101d26;border:1px solid #263846;border-radius:10px;padding:7px 4px}
+.minuto span{display:block;font-size:11px;color:#8996a6}
+.minuto strong{display:block;font-size:23px;margin-top:2px;color:#ffc928}
+.tempos{display:flex;gap:10px;margin-bottom:12px}
+.tempos button{flex:1;padding:13px;border-radius:12px;border:1px solid #314557;background:#101820;color:#fff;font-size:16px;font-weight:800}
+.tempos button.ativo{background:#ffc928;color:#080b0e;border-color:#ffc928}
+#status{color:#8d9aa7;font-size:13px;margin-top:5px}
+#tempo{font-size:45px;font-weight:900;margin:3px 0 13px;font-variant-numeric:tabular-nums}
+.painel{display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"total projecao" "media media";gap:9px;margin-bottom:14px}
+.card{background:#0c141b;border:1px solid #2b3e4c;border-radius:17px}
+.card small{display:block;color:#9ba7b4;font-weight:900;letter-spacing:.3px}
+.card-total{grid-area:total;min-height:135px;padding:15px 5px 10px;display:flex;flex-direction:column;justify-content:center}
+.card-total small{font-size:12px}.card-total .numero{font-size:64px;line-height:1;font-weight:1000;margin-top:10px}
+.card-projecao{grid-area:projecao;min-height:135px;padding:15px 5px 10px;display:flex;flex-direction:column;justify-content:center;border-color:#46515a}
+.card-projecao small{font-size:12px}.card-projecao .numero{font-size:64px;line-height:1;font-weight:1000;margin-top:10px;color:#ffc928}
+.card-media{grid-area:media;min-height:67px;padding:9px 14px;display:flex;align-items:center;justify-content:center;gap:18px}
+.card-media small{font-size:11px}.card-media .numero{font-size:30px;line-height:1;font-weight:900}
+.barra{height:9px;background:#19232b;border-radius:10px;overflow:hidden}
+#progresso{height:100%;width:0%;background:#ffc928;transition:width .3s}
+#percentual{color:#8996a6;font-size:12px;margin:7px 0 16px}
+#canto{width:100%;height:145px;border:none;border-radius:25px;background:#ffc928;color:#080b0e;font-size:31px;font-weight:1000;box-shadow:0 8px 25px rgba(255,201,40,.22);touch-action:manipulation}
+#canto:active{transform:scale(.97)}
+.acoes{display:flex;gap:10px;margin-top:14px}
+.acoes button{flex:1;padding:13px;border-radius:12px;font-weight:800;font-size:14px}
+#iniciarPausar{background:#178a57;border:1px solid #178a57;color:#fff}
+#iniciarPausar.pausar{background:#b87517;border-color:#b87517}
+#iniciarPausar:disabled{opacity:.5}
+#zerar{background:#e73535;border:0;color:#fff}
+.rodape{margin-top:15px;color:#566570;font-size:11px}
+@media(max-width:370px){.card-total .numero,.card-projecao .numero{font-size:55px}h1{font-size:24px}}
 </style>
 </head>
-
 <body>
-
 <div class="container">
-
-<h1>🦜 MARCADOR DE <span class="dourado">COLEIRO</span></h1>
-<div class="sub">V2.1 • Projeção em tempo real</div>
-
-<div class="minutos-box">
-  <h2>CANTOS POR MINUTO</h2>
-  <div id="porMinuto"></div>
-</div>
-
-<div class="tempos">
-  <button id="b10" class="ativo" onclick="selecionarTempo(10)">10 MIN</button>
-  <button id="b15" onclick="selecionarTempo(15)">15 MIN</button>
-</div>
-
+<h1>ð¦ MARCADOR DE <span class="dourado">COLEIRO</span></h1>
+<div class="sub">V2.1 â¢ ProjeÃ§Ã£o em tempo real</div>
+<div class="minutos-box"><h2>CANTOS POR MINUTO</h2><div id="porMinuto"></div></div>
+<div class="tempos"><button id="b10" class="ativo" onclick="selecionarTempo(10)">10 MIN</button><button id="b15" onclick="selecionarTempo(15)">15 MIN</button></div>
 <div id="status">PRONTO PARA INICIAR</div>
 <div id="tempo">00:00</div>
-
 <div class="painel">
-
-  <div class="card card-total">
-    <small>TOTAL DE CANTOS</small>
-    <div class="numero" id="total">0</div>
-  </div>
-
-  <div class="card card-projecao">
-    <small>PROJEÇÃO FINAL</small>
-    <div class="numero" id="projecao">0</div>
-  </div>
-
-  <div class="card card-media">
-    <small>MÉDIA / MIN</small>
-    <div class="numero" id="media">0.0</div>
-  </div>
-
+<div class="card card-total"><small>TOTAL DE CANTOS</small><div class="numero" id="total">0</div></div>
+<div class="card card-projecao"><small>PROJEÃÃO FINAL</small><div class="numero" id="projecao">0</div></div>
+<div class="card card-media"><small>MÃDIA / MIN</small><div class="numero" id="media">0.0</div></div>
 </div>
-
-<div class="barra">
-  <div id="progresso"></div>
+<div class="barra"><div id="progresso"></div></div>
+<div id="percentual">0% â¢ 00:00 / 10:00</div>
+<button id="canto">ð¦ + CANTO</button>
+<div class="acoes"><button id="iniciarPausar">â¶ INICIAR</button><button id="zerar">â» ZERAR</button></div>
+<div class="rodape">Toque em INICIAR para comeÃ§ar o cronÃ´metro. PAUSAR congela o tempo. INICIAR continua de onde parou.</div>
 </div>
-
-<div id="percentual">0% • 00:00 / 10:00</div>
-
-<button id="canto">🦜 + CANTO</button>
-
-<div class="acoes">
-  <button id="desfazer">↩️ DESFAZER</button>
-  <button id="zerar">↻ ZERAR</button>
-</div>
-
-<div class="rodape">
-O primeiro canto inicia automaticamente o cronômetro.
-</div>
-
-</div>
-
 <script>
-
-let duracao = 10;
-let cantos = [];
-let inicio = null;
-let intervalo = null;
-let finalizado = false;
-
-const totalEl = document.getElementById("total");
-const mediaEl = document.getElementById("media");
-const projecaoEl = document.getElementById("projecao");
-const tempoEl = document.getElementById("tempo");
-const statusEl = document.getElementById("status");
-const progressoEl = document.getElementById("progresso");
-const percentualEl = document.getElementById("percentual");
-const porMinutoEl = document.getElementById("porMinuto");
-
+let duracao=10;
+let cantos=[];
+let inicio=null;
+let intervalo=null;
+let finalizado=false;
+let pausado=false;
+let tempoAcumulado=0;
+const totalEl=document.getElementById('total');
+const mediaEl=document.getElementById('media');
+const projecaoEl=document.getElementById('projecao');
+const tempoEl=document.getElementById('tempo');
+const statusEl=document.getElementById('status');
+const progressoEl=document.getElementById('progresso');
+const percentualEl=document.getElementById('percentual');
+const porMinutoEl=document.getElementById('porMinuto');
+const controleEl=document.getElementById('iniciarPausar');
 function selecionarTempo(min){
-  if(inicio) return;
-
-  duracao = min;
-
-  document.getElementById("b10").classList.toggle("ativo",min===10);
-  document.getElementById("b15").classList.toggle("ativo",min===15);
-
-  atualizarMinutos();
-  atualizar();
+ if(inicio!==null||pausado||finalizado)return;
+ duracao=min;
+ document.getElementById('b10').classList.toggle('ativo',min===10);
+ document.getElementById('b15').classList.toggle('ativo',min===15);
+ atualizar();
 }
-
 function formatarTempo(seg){
-
-  seg = Math.max(0,Math.floor(seg));
-
-  const m = Math.floor(seg/60);
-  const s = seg%60;
-
-  return String(m).padStart(2,"0")+":"+
-         String(s).padStart(2,"0");
+ seg=Math.max(0,Math.floor(seg));
+ const m=Math.floor(seg/60),s=seg%60;
+ return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
 }
-
 function tempoDecorrido(){
-
-  if(!inicio) return 0;
-
-  return Math.min(
-    (Date.now()-inicio)/1000,
-    duracao*60
-  );
+ const atual=tempoAcumulado+(inicio!==null?(Date.now()-inicio)/1000:0);
+ return Math.min(atual,duracao*60);
 }
-
-function registrarCanto(){
-
-  if(finalizado) return;
-
-  if(!inicio){
-
-    inicio = Date.now();
-    statusEl.textContent = "MARCAÇÃO EM ANDAMENTO";
-
-    intervalo = setInterval(atualizar,250);
-  }
-
-  const segundos = tempoDecorrido();
-
-  cantos.push(segundos);
-
-  atualizar();
-}
-
-function desfazer(){
-
-  if(cantos.length===0) return;
-
-  cantos.pop();
-
-  atualizar();
-}
-
-function zerar(){
-
+function controlarTempo(){
+ if(finalizado)return;
+ if(inicio!==null){
+  tempoAcumulado=tempoDecorrido();
+  inicio=null;
+  pausado=true;
+  clearInterval(intervalo);intervalo=null;
+  statusEl.textContent='MARCAÃÃO PAUSADA';
+ }else{
+  inicio=Date.now();pausado=false;
+  statusEl.textContent='MARCAÃÃO EM ANDAMENTO';
   clearInterval(intervalo);
-
-  cantos = [];
-  inicio = null;
-  intervalo = null;
-  finalizado = false;
-
-  statusEl.textContent = "PRONTO PARA INICIAR";
-
-  atualizar();
+  intervalo=setInterval(atualizar,250);
+ }
+ atualizar();
 }
-
+function registrarCanto(){
+ if(finalizado||inicio===null)return;
+ cantos.push(tempoDecorrido());
+ atualizar();
+}
+function zerar(){
+ clearInterval(intervalo);intervalo=null;
+ cantos=[];inicio=null;pausado=false;tempoAcumulado=0;finalizado=false;
+ statusEl.textContent='PRONTO PARA INICIAR';
+ atualizar();
+}
 function atualizarMinutos(){
-
-  porMinutoEl.innerHTML="";
-
-  for(let i=0;i<duracao;i++){
-
-    const quantidade =
-      cantos.filter(t => t>=i*60 && t<(i+1)*60).length;
-
-    const div = document.createElement("div");
-
-    div.className="minuto";
-
-    div.innerHTML=
-      "<span>"+(i+1)+" MIN</span>"+
-      "<strong>"+quantidade+"</strong>";
-
-    porMinutoEl.appendChild(div);
-  }
+ porMinutoEl.innerHTML='';
+ for(let i=0;i<duracao;i++){
+  const quantidade=cantos.filter(t=>t>=i*60&&t<(i+1)*60).length;
+  const div=document.createElement('div');div.className='minuto';
+  div.innerHTML='<span>'+(i+1)+' MIN</span><strong>'+quantidade+'</strong>';
+  porMinutoEl.appendChild(div);
+ }
 }
-
 function atualizar(){
-
-  const decorrido = tempoDecorrido();
-  const totalSegundos = duracao*60;
-
-  if(inicio && decorrido>=totalSegundos){
-
-    finalizado = true;
-
-    clearInterval(intervalo);
-
-    statusEl.textContent = "TEMPO FINALIZADO";
-  }
-
-  totalEl.textContent = cantos.length;
-
-  tempoEl.textContent = formatarTempo(decorrido);
-
-  let media = 0;
-  let projecao = 0;
-
-  if(decorrido>0){
-
-    media = cantos.length/(decorrido/60);
-
-    projecao = Math.round(
-      (cantos.length/decorrido)*totalSegundos
-    );
-  }
-
-  mediaEl.textContent = media.toFixed(1);
-  projecaoEl.textContent = projecao;
-
-  const pct =
-    Math.min(100,(decorrido/totalSegundos)*100);
-
-  progressoEl.style.width = pct+"%";
-
-  percentualEl.textContent =
-    Math.floor(pct)+"% • "+
-    formatarTempo(decorrido)+
-    " / "+
-    formatarTempo(totalSegundos);
-
-  atualizarMinutos();
+ const decorrido=tempoDecorrido(),totalSegundos=duracao*60;
+ if(!finalizado&&inicio!==null&&decorrido>=totalSegundos){
+  finalizado=true;tempoAcumulado=totalSegundos;inicio=null;pausado=false;
+  clearInterval(intervalo);intervalo=null;
+  statusEl.textContent='TEMPO FINALIZADO';
+ }
+ totalEl.textContent=cantos.length;
+ tempoEl.textContent=formatarTempo(decorrido);
+ let media=0,projecao=0;
+ if(decorrido>0){media=cantos.length/(decorrido/60);projecao=Math.round(cantos.length/decorrido*totalSegundos)}
+ mediaEl.textContent=media.toFixed(1);projecaoEl.textContent=projecao;
+ const pct=Math.min(100,decorrido/totalSegundos*100);
+ progressoEl.style.width=pct+'%';
+ percentualEl.textContent=Math.floor(pct)+'% â¢ '+formatarTempo(decorrido)+' / '+formatarTempo(totalSegundos);
+ atualizarMinutos();
+ controleEl.disabled=finalizado;
+ controleEl.classList.toggle('pausar',inicio!==null);
+ controleEl.textContent=finalizado?'â FINALIZADO':inicio!==null?'â¸ PAUSAR':'â¶ INICIAR';
 }
-
-document.getElementById("canto")
-  .addEventListener("click",registrarCanto);
-
-document.getElementById("desfazer")
-  .addEventListener("click",desfazer);
-
-document.getElementById("zerar")
-  .addEventListener("click",zerar);
-
+document.getElementById('canto').addEventListener('click',registrarCanto);
+controleEl.addEventListener('click',controlarTempo);
+document.getElementById('zerar').addEventListener('click',zerar);
 atualizar();
-
 </script>
-
 </body>
 </html>
