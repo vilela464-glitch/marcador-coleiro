@@ -1,0 +1,314 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Marcador de Coleiro V3</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100vh;padding:20px 14px 30px;background:#05090d;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-align:center}
+.container{max-width:500px;margin:auto}
+h1{margin:5px 0 2px;font-size:27px}
+.dourado{color:#ffc928}
+.sub{color:#8996a6;font-size:14px;margin-bottom:16px}
+.oculto{display:none!important}
+.login{margin-top:45px;background:#0c141b;border:1px solid #2b3e4c;border-radius:18px;padding:22px 16px}
+.login input{display:block;width:100%;padding:15px;margin:12px 0;border:1px solid #344657;border-radius:10px;background:#101820;color:#fff;font-size:16px}
+.login button{width:100%;padding:16px;border:0;border-radius:12px;background:#ffc928;color:#080b0e;font-size:18px;font-weight:900}
+#erro{color:#ff9999;font-size:13px}
+.topo{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;color:#8996a6;font-size:12px}
+#sair{background:#17232c;color:white;border:1px solid #344657;border-radius:9px;padding:9px;font-weight:800}
+.minutos-box{background:#09131a;border:1px solid #263846;border-radius:15px;padding:12px;margin-bottom:14px}
+.minutos-box h2{font-size:15px;margin:0 0 10px;color:#cbd5df}
+#porMinuto{display:flex;gap:7px;overflow-x:auto;padding-bottom:3px}
+.minuto{min-width:62px;background:#101d26;border:1px solid #263846;border-radius:10px;padding:7px 4px}
+.minuto span{display:block;font-size:11px;color:#8996a6}
+.minuto strong{display:block;font-size:23px;margin-top:2px;color:#ffc928}
+.tempos{display:flex;gap:10px;margin-bottom:12px}
+.tempos button{flex:1;padding:13px;border-radius:12px;border:1px solid #314557;background:#101820;color:#fff;font-size:16px;font-weight:800}
+.tempos button.ativo{background:#ffc928;color:#080b0e;border-color:#ffc928}
+#status{color:#8d9aa7;font-size:13px;margin-top:5px}
+#tempo{font-size:45px;font-weight:900;margin:3px 0 13px;font-variant-numeric:tabular-nums}
+.painel{display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"total projecao" "media media";gap:9px;margin-bottom:14px}
+.card{background:#0c141b;border:1px solid #2b3e4c;border-radius:17px}
+.card small{display:block;color:#9ba7b4;font-weight:900}
+.card-total{grid-area:total;min-height:135px;padding:15px 5px;display:flex;flex-direction:column;justify-content:center}
+.card-projecao{grid-area:projecao;min-height:135px;padding:15px 5px;display:flex;flex-direction:column;justify-content:center}
+.card small{font-size:12px}
+.numero{font-size:64px;line-height:1;font-weight:900;margin-top:10px}
+.card-projecao .numero{color:#ffc928}
+.card-media{grid-area:media;min-height:67px;padding:9px 14px;display:flex;align-items:center;justify-content:center;gap:18px}
+.card-media small{font-size:11px}
+.card-media .numero{font-size:30px;margin:0}
+.barra{height:9px;background:#19232b;border-radius:10px;overflow:hidden}
+#progresso{height:100%;width:0;background:#ffc928}
+#percentual{color:#8996a6;font-size:12px;margin:7px 0 16px}
+#canto{width:100%;height:145px;border:none;border-radius:25px;background:#ffc928;color:#080b0e;font-size:31px;font-weight:900;touch-action:manipulation}
+#canto:active{transform:scale(.97)}
+.acoes{display:flex;gap:10px;margin-top:14px}
+.acoes button{flex:1;padding:13px;border-radius:12px;font-weight:800;font-size:14px}
+#iniciarPausar{background:#178a57;border:1px solid #178a57;color:white}
+#iniciarPausar.pausar{background:#b87517;border-color:#b87517}
+#zerar{background:#e73535;border:0;color:white}
+.rodape{margin-top:15px;color:#566570;font-size:11px}
+</style>
+</head>
+<body>
+<div class="container">
+
+<section id="login" class="login">
+<h1>🐦 MARCADOR DE <span class="dourado">COLEIRO</span></h1>
+<div class="sub">ACESSO INDIVIDUAL</div>
+<form id="formLogin">
+<input id="email" type="email" placeholder="Seu e-mail" autocomplete="username" required>
+<input id="senha" type="password" placeholder="Sua senha" autocomplete="current-password" required>
+<button type="submit">ENTRAR</button>
+</form>
+<p id="erro" role="alert"></p>
+</section>
+
+<section id="aplicativo" class="oculto">
+<div class="topo">
+<span id="usuario"></span>
+<button id="sair">SAIR</button>
+</div>
+
+<h1>🐦 MARCADOR DE <span class="dourado">COLEIRO</span></h1>
+<div class="sub">V3.0 • Projeção em tempo real</div>
+
+<div class="minutos-box">
+<h2>CANTOS POR MINUTO</h2>
+<div id="porMinuto"></div>
+</div>
+
+<div class="tempos">
+<button id="b10" class="ativo">10 MIN</button>
+<button id="b15">15 MIN</button>
+</div>
+
+<div id="status">PRONTO PARA INICIAR</div>
+<div id="tempo">00:00</div>
+
+<div class="painel">
+<div class="card card-total">
+<small>TOTAL DE CANTOS</small>
+<div class="numero" id="total">0</div>
+</div>
+<div class="card card-projecao">
+<small>PROJEÇÃO FINAL</small>
+<div class="numero" id="projecao">0</div>
+</div>
+<div class="card card-media">
+<small>MÉDIA / MIN</small>
+<div class="numero" id="media">0.0</div>
+</div>
+</div>
+
+<div class="barra"><div id="progresso"></div></div>
+<div id="percentual">0% • 00:00 / 10:00</div>
+
+<button id="canto">🐦 + CANTO</button>
+<div class="acoes">
+<button id="iniciarPausar">▶ INICIAR</button>
+<button id="zerar">↻ ZERAR</button>
+</div>
+<div class="rodape">
+Toque em INICIAR para começar.
+PAUSAR congela o tempo.
+INICIAR continua de onde parou.
+</div>
+</section>
+</div>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+import {getDatabase,ref,get} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
+
+const firebaseConfig={
+apiKey:"AIzaSyDovY5VLOO3-OnQ1xjiQqNwlgrv_lMMCNY",
+authDomain:"marcador-de-coleiro.firebaseapp.com",
+databaseURL:"https://marcador-de-coleiro-default-rtdb.firebaseio.com",
+projectId:"marcador-de-coleiro",
+storageBucket:"marcador-de-coleiro.firebasestorage.app",
+messagingSenderId:"455735913686",
+appId:"1:455735913686:web:dfde603142e471b9adad77"
+};
+
+const ADMIN_UID="P2xlWCfM8ESIkoyTfkVjprhjiLz1";
+const firebase=initializeApp(firebaseConfig);
+const auth=getAuth(firebase);
+const db=getDatabase(firebase);
+const $=id=>document.getElementById(id);
+
+let autorizado=false;
+let duracao=10;
+let cantos=[];
+let inicio=null;
+let intervalo=null;
+let finalizado=false;
+let tempoAcumulado=0;
+
+function mostrarLogin(mensagem=""){
+ autorizado=false;
+ zerar();
+ $("aplicativo").classList.add("oculto");
+ $("login").classList.remove("oculto");
+ $("erro").textContent=mensagem;
+}
+
+function mostrarAplicativo(user){
+ autorizado=true;
+ $("usuario").textContent=user.email||"Administrador";
+ $("login").classList.add("oculto");
+ $("aplicativo").classList.remove("oculto");
+ atualizar();
+}
+
+onAuthStateChanged(auth,async user=>{
+ if(!user){
+  mostrarLogin();
+  return;
+ }
+ if(user.uid!==ADMIN_UID){
+  mostrarLogin("Conta ainda não autorizada.");
+  return;
+ }
+ try{
+  await get(ref(db,"access"));
+  if(auth.currentUser?.uid===user.uid){
+   mostrarAplicativo(user);
+  }
+ }catch(e){
+  mostrarLogin("Erro ao verificar acesso ao Firebase.");
+ }
+});
+
+$("formLogin").addEventListener("submit",async e=>{
+ e.preventDefault();
+ $("erro").textContent="Verificando acesso...";
+ try{
+  await signInWithEmailAndPassword(
+   auth,$("email").value.trim(),$("senha").value
+  );
+ }catch(e){
+  $("erro").textContent="Confira seu e-mail e senha.";
+ }
+});
+
+$("sair").addEventListener("click",()=>signOut(auth));
+
+function formatarTempo(seg){
+ seg=Math.max(0,Math.floor(seg));
+ return String(Math.floor(seg/60)).padStart(2,"0")+":"+
+ String(seg%60).padStart(2,"0");
+}
+
+function tempoDecorrido(){
+ return Math.min(
+  duracao*60,
+  tempoAcumulado+(inicio===null?0:(Date.now()-inicio)/1000)
+ );
+}
+
+function selecionarTempo(min){
+ if(!autorizado||inicio!==null||tempoAcumulado>0||finalizado)return;
+ duracao=min;
+ $("b10").classList.toggle("ativo",min===10);
+ $("b15").classList.toggle("ativo",min===15);
+ atualizar();
+}
+
+function controlarTempo(){
+ if(!autorizado||finalizado)return;
+ if(inicio!==null){
+  tempoAcumulado=tempoDecorrido();
+  inicio=null;
+  clearInterval(intervalo);
+  intervalo=null;
+  $("status").textContent="MARCAÇÃO PAUSADA";
+ }else{
+  inicio=Date.now();
+  $("status").textContent="MARCAÇÃO EM ANDAMENTO";
+  intervalo=setInterval(atualizar,250);
+ }
+ atualizar();
+}
+
+function registrarCanto(){
+ if(!autorizado||inicio===null||finalizado)return;
+ cantos.push(tempoDecorrido());
+ atualizar();
+}
+
+function zerar(){
+ clearInterval(intervalo);
+ intervalo=null;
+ cantos=[];
+ inicio=null;
+ tempoAcumulado=0;
+ finalizado=false;
+ $("status").textContent="PRONTO PARA INICIAR";
+ atualizar();
+}
+
+function atualizar(){
+ const decorrido=tempoDecorrido();
+ const totalSegundos=duracao*60;
+
+ if(!finalizado&&inicio!==null&&decorrido>=totalSegundos){
+  finalizado=true;
+  tempoAcumulado=totalSegundos;
+  inicio=null;
+  clearInterval(intervalo);
+  intervalo=null;
+  $("status").textContent="TEMPO FINALIZADO";
+ }
+
+ $("total").textContent=cantos.length;
+ $("tempo").textContent=formatarTempo(decorrido);
+
+ let media=0,projecao=0;
+ if(decorrido>0){
+  media=cantos.length/(decorrido/60);
+  projecao=Math.round(cantos.length/decorrido*totalSegundos);
+ }
+
+ $("media").textContent=media.toFixed(1);
+ $("projecao").textContent=projecao;
+
+ const pct=Math.min(100,decorrido/totalSegundos*100);
+ $("progresso").style.width=pct+"%";
+ $("percentual").textContent=Math.floor(pct)+"% • "+
+ formatarTempo(decorrido)+" / "+formatarTempo(totalSegundos);
+
+ $("porMinuto").innerHTML="";
+ for(let i=0;i<duracao;i++){
+  const quantidade=cantos.filter(
+   t=>t>=i*60&&t<(i+1)*60
+  ).length;
+  const div=document.createElement("div");
+  div.className="minuto";
+  div.innerHTML="<span>"+(i+1)+" MIN</span><strong>"+
+   quantidade+"</strong>";
+  $("porMinuto").appendChild(div);
+ }
+
+ $("iniciarPausar").disabled=finalizado;
+ $("iniciarPausar").classList.toggle("pausar",inicio!==null);
+ $("iniciarPausar").textContent=finalizado?
+  "✓ FINALIZADO":inicio!==null?"⏸ PAUSAR":"▶ INICIAR";
+}
+
+$("b10").onclick=()=>selecionarTempo(10);
+$("b15").onclick=()=>selecionarTempo(15);
+$("iniciarPausar").onclick=controlarTempo;
+$("canto").onclick=registrarCanto;
+$("zerar").onclick=zerar;
+
+atualizar();
+</script>
+</body>
+</html>
