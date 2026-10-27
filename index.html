@@ -1,341 +1,20 @@
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Marcador de Coleiro V3.0</title>
-<style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;min-height:100vh;padding:20px 14px 30px;background:#05090d;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-align:center}
-.container{max-width:500px;margin:auto}
-h1{margin:5px 0 2px;font-size:27px}
-.dourado{color:#ffc928}
-.sub{color:#8996a6;font-size:14px;margin-bottom:16px}
-.minutos-box{background:#09131a;border:1px solid #263846;border-radius:15px;padding:12px;margin-bottom:14px}
-.minutos-box h2{font-size:15px;margin:0 0 10px;color:#cbd5df}
-#porMinuto{display:flex;gap:7px;overflow-x:auto;padding-bottom:3px}
-.minuto{min-width:62px;background:#101d26;border:1px solid #263846;border-radius:10px;padding:7px 4px}
-.minuto span{display:block;font-size:11px;color:#8996a6}
-.minuto strong{display:block;font-size:23px;margin-top:2px;color:#ffc928}
-.tempos{display:flex;gap:10px;margin-bottom:12px}
-.tempos button{flex:1;padding:13px;border-radius:12px;border:1px solid #314557;background:#101820;color:#fff;font-size:16px;font-weight:800}
-.tempos button.ativo{background:#ffc928;color:#080b0e;border-color:#ffc928}
-#status{color:#8d9aa7;font-size:13px;margin-top:5px}
-#tempo{font-size:45px;font-weight:900;margin:3px 0 13px;font-variant-numeric:tabular-nums}
-.painel{display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"total projecao" "media media";gap:9px;margin-bottom:14px}
-.card{background:#0c141b;border:1px solid #2b3e4c;border-radius:17px}
-.card small{display:block;color:#9ba7b4;font-weight:900;letter-spacing:.3px}
-.card-total{grid-area:total;min-height:135px;padding:15px 5px 10px;display:flex;flex-direction:column;justify-content:center}
-.card-total small{font-size:12px}
-.card-total .numero{font-size:64px;line-height:1;font-weight:1000;margin-top:10px}
-.card-projecao{grid-area:projecao;min-height:135px;padding:15px 5px 10px;display:flex;flex-direction:column;justify-content:center;border-color:#46515a}
-.card-projecao small{font-size:12px}
-.card-projecao .numero{font-size:64px;line-height:1;font-weight:1000;margin-top:10px;color:#ffc928}
-.card-media{grid-area:media;min-height:67px;padding:9px 14px;display:flex;align-items:center;justify-content:center;gap:18px}
-.card-media small{font-size:11px}
-.card-media .numero{font-size:30px;line-height:1;font-weight:900}
-.barra{height:9px;background:#19232b;border-radius:10px;overflow:hidden}
-#progresso{height:100%;width:0%;background:#ffc928;transition:width .3s}
-#percentual{color:#8996a6;font-size:12px;margin:7px 0 16px}
-#canto{width:100%;height:145px;border:none;border-radius:25px;background:#ffc928;color:#080b0e;font-size:31px;font-weight:1000;box-shadow:0 8px 25px rgba(255,201,40,.22);touch-action:manipulation}
-#canto:active{transform:scale(.97)}
-.acoes{display:flex;gap:10px;margin-top:14px}
-.acoes button{flex:1;padding:13px;border-radius:12px;font-weight:800;font-size:14px}
-#iniciarPausar{background:#178a57;border:1px solid #178a57;color:#fff}
-#iniciarPausar.pausar{background:#b87517;border-color:#b87517}
-#iniciarPausar:disabled{opacity:.5}
-#zerar{background:#e73535;border:0;color:#fff}
-.rodape{margin-top:15px;color:#566570;font-size:11px}
-.auth-box{max-width:420px;margin:60px auto 0;background:#0c141b;border:1px solid #263846;border-radius:20px;padding:24px 18px}
-.auth-box input,.admin-box input{width:100%;padding:14px;margin:8px 0;border:1px solid #314557;border-radius:10px;background:#101d26;color:#fff;font-size:16px}
-.btn{padding:13px;border:0;border-radius:11px;background:#ffc928;color:#080b0e;font-weight:900;font-size:15px;cursor:pointer}
-.btn:disabled{opacity:.5}
-#loginBtn{width:100%;margin-top:12px}
-.erro{color:#ff8585;font-size:13px;margin-top:12px;overflow-wrap:anywhere}
-.topo-acesso{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:12px}
-.topo-acesso button{background:#182733;color:#fff;border:1px solid #314557;border-radius:9px;padding:9px;font-size:12px;font-weight:700}
-.admin-box{background:#0c141b;border:1px solid #ffc928;border-radius:15px;padding:15px;margin-bottom:16px;text-align:left}
-.admin-box h2{font-size:17px;color:#ffc928;margin:0 0 10px}
-.usuario-item{border-top:1px solid #263846;padding:12px 0;font-size:13px;overflow-wrap:anywhere}
-.usuario-item button{padding:9px 12px;border:0;border-radius:8px;color:#fff;background:#b87517;font-weight:700;margin-top:8px}
-.usuario-item button:disabled{opacity:.5}
-.info{font-size:12px;color:#aeb9c5;overflow-wrap:anywhere}
-@media(max-width:370px){
-.card-total .numero,.card-projecao .numero{font-size:55px}
-h1{font-size:24px}
-}
-</style>
-</head>
-<body>
-
-<div id="carregando" class="auth-box">
-<h2>Verificando acesso...</h2>
-<p class="info">Aguarde a conexão com o Firebase.</p>
-</div>
-
-<div id="loginTela" class="auth-box" hidden>
-<h1>🐦 MARCADOR DE <span class="dourado">COLEIRO</span></h1>
-<p class="sub">ACESSO AUTORIZADO • V3.0</p>
-<form id="loginForm">
-<input id="email" type="email" placeholder="Seu e-mail" autocomplete="username" required>
-<input id="senha" type="password" placeholder="Sua senha" autocomplete="current-password" required>
-<button id="loginBtn" class="btn" type="submit">ENTRAR</button>
-</form>
-<p id="loginErro" class="erro" role="alert"></p>
-</div>
-
-<div id="app" class="container" hidden>
-<div class="topo-acesso">
-<button id="adminBtn" hidden>⚙ ADMINISTRAR</button>
-<button id="sairBtn">SAIR DA CONTA</button>
-</div>
-
-<div id="adminPainel" class="admin-box" hidden>
-<h2>Controle de usuários</h2>
-<p class="info">Crie primeiro a conta no Firebase Authentication. Depois informe o UID aqui para autorizar ou bloquear o acesso.</p>
-<input id="novoUid" placeholder="UID do usuário">
-<input id="novoNome" placeholder="Nome do usuário (opcional)">
-<button id="adicionarUsuario" class="btn">CADASTRAR / ATUALIZAR</button>
-<p id="adminMensagem" class="info" role="status"></p>
-<div id="listaUsuarios"></div>
-</div>
-
-<h1>🐦 MARCADOR DE <span class="dourado">COLEIRO</span></h1>
-<div class="sub">V3.0 • Projeção em tempo real</div>
-
-<div class="minutos-box">
-<h2>CANTOS POR MINUTO</h2>
-<div id="porMinuto"></div>
-</div>
-
-<div class="tempos">
-<button id="b10" class="ativo">10 MIN</button>
-<button id="b15">15 MIN</button>
-</div>
-
-<div id="status">PRONTO PARA INICIAR</div>
-<div id="tempo">00:00</div>
-
-<div class="painel">
-<div class="card card-total">
-<small>TOTAL DE CANTOS</small>
-<div class="numero" id="total">0</div>
-</div>
-<div class="card card-projecao">
-<small>PROJEÇÃO FINAL</small>
-<div class="numero" id="projecao">0</div>
-</div>
-<div class="card card-media">
-<small>MÉDIA / MIN</small>
-<div class="numero" id="media">0.0</div>
-</div>
-</div>
-
-<div class="barra"><div id="progresso"></div></div>
-<div id="percentual">0% • 00:00 / 10:00</div>
-
-<button id="canto">🐦 + CANTO</button>
-
-<div class="acoes">
-<button id="iniciarPausar">▶ INICIAR</button>
-<button id="zerar">↻ ZERAR</button>
-</div>
-
-<div class="rodape">
-Toque em INICIAR para começar o cronômetro.
-PAUSAR congela o tempo. INICIAR continua de onde parou.
-</div>
-</div>
-
-<script type="module">
-import {initializeApp} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
-import {
- getAuth,
- signInWithEmailAndPassword,
- signOut,
- onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
-import {
- getFirestore,
- doc,
- getDoc,
- getDocs,
- collection,
- setDoc,
- updateDoc,
- onSnapshot
-} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
-
-const firebaseConfig={
- apiKey:"AIzaSyDovY5VLOO3-OnQ1xjiQqNwlgrv_lMMCNY",
- authDomain:"marcador-de-coleiro.firebaseapp.com",
- projectId:"marcador-de-coleiro",
- storageBucket:"marcador-de-coleiro.firebasestorage.app",
- messagingSenderId:"455735913686",
- appId:"1:455735913686:web:dfde603142e471b9adad77"
-};
-
-const ADMIN_UID="P2xlWCfM8ESIkoyTfkVjprhjiLz1";
-
-const firebaseApp=initializeApp(firebaseConfig);
-const auth=getAuth(firebaseApp);
-const db=getFirestore(firebaseApp);
-
-const el=id=>document.getElementById(id);
-const carregando=el("carregando");
-const loginTela=el("loginTela");
-const appTela=el("app");
-let usuarioAtual=null;
-let observador=null;
-let observadorSessao=0;
-let adminAberto=false;
-
-function mostrar(tela){
- carregando.hidden=tela!=="carregando";
- loginTela.hidden=tela!=="login";
- appTela.hidden=tela!=="app";
-}
-
-function mensagemLogin(msg){
- el("loginErro").textContent=msg;
-}
-
-function mensagemAdmin(msg){
- el("adminMensagem").textContent=msg;
-}
-
-function limparObservador(){
- observadorSessao++;
- if(observador){
-  observador();
-  observador=null;
- }
-}
-
-function erroFirebase(error){
- const codigo=error?.code||"";
- if(codigo==="auth/invalid-credential"||
-    codigo==="auth/wrong-password"||
-    codigo==="auth/user-not-found"){
-  return "E-mail ou senha incorretos.";
- }
- if(codigo==="auth/too-many-requests"){
-  return "Muitas tentativas. Aguarde e tente novamente.";
- }
- if(codigo==="auth/unauthorized-domain"){
-  return "Domínio não autorizado no Firebase Authentication.";
- }
- if(codigo==="permission-denied"){
-  return "Acesso negado pelas regras do Firestore.";
- }
- return "Erro de conexão ou configuração: "+(error?.message||"desconhecido");
-}
-
-function bloquearAcesso(msg){
- usuarioAtual=null;
- zerar();
- mostrar("login");
- mensagemLogin(msg);
-}
-
-onAuthStateChanged(auth,user=>{
- limparObservador();
- usuarioAtual=null;
- zerar();
-
- if(!user){
-  mostrar("login");
-  return;
- }
-
- mostrar("carregando");
- const sessao=observadorSessao;
-
- observador=onSnapshot(
-  doc(db,"usuarios",user.uid),
-  snapshot=>{
-   if(sessao!==observadorSessao)return;
-   if(!snapshot.exists()||snapshot.data().ativo!==true){
-    bloquearAcesso("Seu acesso não está autorizado ou foi bloqueado.");
-    return;
-   }
-
-   usuarioAtual=user;
-   const administrador=user.uid===ADMIN_UID &&
-     snapshot.data().admin===true;
-
-   el("adminBtn").hidden=!administrador;
-   el("adminPainel").hidden=true;
-   adminAberto=false;
-   mostrar("app");
-  },
-  error=>{
-   if(sessao!==observadorSessao)return;
-   bloquearAcesso(erroFirebase(error));
-  }
- );
-},error=>{
- mostrar("login");
- mensagemLogin(erroFirebase(error));
-});
-
-el("loginForm").addEventListener("submit",async event=>{
- event.preventDefault();
- mensagemLogin("");
- const botao=el("loginBtn");
- botao.disabled=true;
- botao.textContent="ENTRANDO...";
- try{
-  await signInWithEmailAndPassword(
-   auth,
-   el("email").value.trim(),
-   el("senha").value
-  );
- }catch(error){
-  mensagemLogin(erroFirebase(error));
- }finally{
-  botao.disabled=false;
-  botao.textContent="ENTRAR";
- }
-});
-
-el("sairBtn").addEventListener("click",async()=>{
- limparObservador();
- usuarioAtual=null;
- zerar();
- mostrar("carregando");
- try{
-  await signOut(auth);
- }catch(error){
-  mostrar("login");
-  mensagemLogin(erroFirebase(error));
- }
-});
-
-function exigirAdmin(){
- return usuarioAtual &&
-  usuarioAtual.uid===ADMIN_UID &&
-  !el("adminBtn").hidden;
-}
-
-el("adminBtn").addEventListener("click",async()=>{
- if(!exigirAdmin())return;
- adminAberto=!adminAberto;
- el("adminPainel").hidden=!adminAberto;
- if(adminAberto)await carregarUsuarios();
-});
-
 async function carregarUsuarios(){
  if(!exigirAdmin())return;
+
  const lista=el("listaUsuarios");
  lista.textContent="Carregando usuários...";
+
  try{
   const resultado=await getDocs(collection(db,"usuarios"));
   if(!exigirAdmin())return;
+
   lista.textContent="";
+
+  if(resultado.empty){
+   lista.textContent="Nenhum usuário cadastrado.";
+   return;
+  }
 
   resultado.forEach(item=>{
    const dados=item.data();
@@ -352,230 +31,68 @@ async function carregarUsuarios(){
    div.appendChild(uid);
 
    const situacao=document.createElement("div");
-   situacao.textContent="Situação: "+(dados.ativo===true?"ATIVO":"BLOQUEADO");
+   situacao.textContent="Situação: "+
+    (dados.ativo===true?"ATIVO":"BLOQUEADO");
    div.appendChild(situacao);
 
    if(item.id!==ADMIN_UID){
-    const botao=document.createElement("button");
-    botao.textContent=dados.ativo===true?"BLOQUEAR":"ATIVAR";
-    botao.addEventListener("click",async()=>{
+    const ativar=document.createElement("button");
+    ativar.textContent=dados.ativo===true?
+      "BLOQUEAR":"ATIVAR";
+
+    ativar.addEventListener("click",async()=>{
      if(!exigirAdmin())return;
-     botao.disabled=true;
+     ativar.disabled=true;
+
      try{
       await updateDoc(doc(db,"usuarios",item.id),{
        ativo:dados.ativo!==true
       });
+      mensagemAdmin("Acesso atualizado.");
       await carregarUsuarios();
      }catch(error){
       mensagemAdmin(erroFirebase(error));
-      botao.disabled=false;
+      ativar.disabled=false;
      }
     });
-    div.appendChild(botao);
+
+    div.appendChild(ativar);
+
+    const excluir=document.createElement("button");
+    excluir.textContent="🗑 EXCLUIR";
+    excluir.style.background="#e73535";
+    excluir.style.marginLeft="8px";
+
+    excluir.addEventListener("click",async()=>{
+     if(!exigirAdmin())return;
+
+     const confirmar=confirm(
+      "Deseja remover o acesso de "+
+      (dados.nome||item.id)+"?"
+     );
+
+     if(!confirmar)return;
+
+     excluir.disabled=true;
+
+     try{
+      await deleteDoc(doc(db,"usuarios",item.id));
+      mensagemAdmin("Acesso removido com sucesso.");
+      await carregarUsuarios();
+     }catch(error){
+      mensagemAdmin(erroFirebase(error));
+      excluir.disabled=false;
+     }
+    });
+
+    div.appendChild(excluir);
    }
 
    lista.appendChild(div);
   });
+
  }catch(error){
   lista.textContent="";
   mensagemAdmin(erroFirebase(error));
  }
 }
-
-el("adicionarUsuario").addEventListener("click",async()=>{
- if(!exigirAdmin())return;
-
- const uid=el("novoUid").value.trim();
- const nome=el("novoNome").value.trim();
-
- if(!uid||uid.includes("/")){
-  mensagemAdmin("Informe um UID válido do Firebase Authentication.");
-  return;
- }
-
- if(uid===ADMIN_UID){
-  mensagemAdmin("O administrador principal não pode ser alterado aqui.");
-  return;
- }
-
- const botao=el("adicionarUsuario");
- botao.disabled=true;
- mensagemAdmin("Salvando usuário...");
-
- try{
-  const referencia=doc(db,"usuarios",uid);
-  const existente=await getDoc(referencia);
-  const dados={
-   ativo:true,
-   admin:false
-  };
-  if(nome)dados.nome=nome;
-  if(existente.exists()){
-   await setDoc(referencia,dados,{merge:true});
-  }else{
-   await setDoc(referencia,dados);
-  }
-  mensagemAdmin("Usuário autorizado com sucesso.");
-  el("novoUid").value="";
-  el("novoNome").value="";
-  await carregarUsuarios();
- }catch(error){
-  mensagemAdmin(erroFirebase(error));
- }finally{
-  botao.disabled=false;
- }
-});
-
-// MARCADOR ORIGINAL
-let duracao=10;
-let cantos=[];
-let inicio=null;
-let intervalo=null;
-let finalizado=false;
-let pausado=false;
-let tempoAcumulado=0;
-
-const totalEl=el("total");
-const mediaEl=el("media");
-const projecaoEl=el("projecao");
-const tempoEl=el("tempo");
-const statusEl=el("status");
-const progressoEl=el("progresso");
-const percentualEl=el("percentual");
-const porMinutoEl=el("porMinuto");
-const controleEl=el("iniciarPausar");
-
-function selecionarTempo(min){
- if(!usuarioAtual)return;
- if(inicio!==null||pausado||finalizado)return;
- duracao=min;
- el("b10").classList.toggle("ativo",min===10);
- el("b15").classList.toggle("ativo",min===15);
- atualizar();
-}
-
-function formatarTempo(seg){
- seg=Math.max(0,Math.floor(seg));
- const m=Math.floor(seg/60);
- const s=seg%60;
- return String(m).padStart(2,"0")+":"+
-        String(s).padStart(2,"0");
-}
-
-function tempoDecorrido(){
- const atual=tempoAcumulado+
-  (inicio!==null?(Date.now()-inicio)/1000:0);
- return Math.min(atual,duracao*60);
-}
-
-function controlarTempo(){
- if(!usuarioAtual||finalizado)return;
-
- if(inicio!==null){
-  tempoAcumulado=tempoDecorrido();
-  inicio=null;
-  pausado=true;
-  clearInterval(intervalo);
-  intervalo=null;
-  statusEl.textContent="MARCAÇÃO PAUSADA";
- }else{
-  inicio=Date.now();
-  pausado=false;
-  statusEl.textContent="MARCAÇÃO EM ANDAMENTO";
-  clearInterval(intervalo);
-  intervalo=setInterval(atualizar,250);
- }
- atualizar();
-}
-
-function registrarCanto(){
- if(!usuarioAtual||finalizado||inicio===null)return;
- cantos.push(tempoDecorrido());
- atualizar();
-}
-
-function zerar(){
- clearInterval(intervalo);
- intervalo=null;
- cantos=[];
- inicio=null;
- pausado=false;
- tempoAcumulado=0;
- finalizado=false;
- statusEl.textContent="PRONTO PARA INICIAR";
- atualizar();
-}
-
-function atualizarMinutos(){
- porMinutoEl.innerHTML="";
- for(let i=0;i<duracao;i++){
-  const quantidade=cantos.filter(
-   t=>t>=i*60&&t<(i+1)*60
-  ).length;
-  const div=document.createElement("div");
-  div.className="minuto";
-  div.innerHTML="<span>"+(i+1)+
-   " MIN</span><strong>"+quantidade+"</strong>";
-  porMinutoEl.appendChild(div);
- }
-}
-
-function atualizar(){
- const decorrido=tempoDecorrido();
- const totalSegundos=duracao*60;
-
- if(!finalizado&&inicio!==null&&decorrido>=totalSegundos){
-  finalizado=true;
-  tempoAcumulado=totalSegundos;
-  inicio=null;
-  pausado=false;
-  clearInterval(intervalo);
-  intervalo=null;
-  statusEl.textContent="TEMPO FINALIZADO";
- }
-
- totalEl.textContent=cantos.length;
- tempoEl.textContent=formatarTempo(decorrido);
-
- let media=0;
- let projecao=0;
-
- if(decorrido>0){
-  media=cantos.length/(decorrido/60);
-  projecao=Math.round(
-   cantos.length/decorrido*totalSegundos
-  );
- }
-
- mediaEl.textContent=media.toFixed(1);
- projecaoEl.textContent=projecao;
-
- const pct=Math.min(
-  100,decorrido/totalSegundos*100
- );
- progressoEl.style.width=pct+"%";
-
- percentualEl.textContent=
-  Math.floor(pct)+"% • "+
-  formatarTempo(decorrido)+" / "+
-  formatarTempo(totalSegundos);
-
- atualizarMinutos();
-
- controleEl.disabled=finalizado;
- controleEl.classList.toggle("pausar",inicio!==null);
- controleEl.textContent=finalizado?
-  "✓ FINALIZADO":
-  inicio!==null?"⏸ PAUSAR":"▶ INICIAR";
-}
-
-el("b10").addEventListener("click",()=>selecionarTempo(10));
-el("b15").addEventListener("click",()=>selecionarTempo(15));
-el("canto").addEventListener("click",registrarCanto);
-controleEl.addEventListener("click",controlarTempo);
-el("zerar").addEventListener("click",zerar);
-
-atualizar();
-</script>
-</body>
-</html>
