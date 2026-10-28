@@ -473,14 +473,14 @@ el("adicionarUsuario").addEventListener("click",async()=>{
 const dias=Number(el("novoPlano").value);
 const hoje=new Date();
 const data=new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate());
-
-const ref=doc(db,"usuarios",uid);
-const anterior=await getDoc(ref);
-
 if(![30,180,365].includes(dias)){
  el("adminMensagem").textContent="Selecione um plano válido.";
  return;
 }
+const ref=doc(db,"usuarios",uid);
+const anterior=await getDoc(ref);
+if(anterior.exists()){
+ const antigo=anterior.data().vencimento;
  if(typeof antigo==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(antigo)){
   const [ano,mes,dia]=antigo.split("-").map(Number);
   const fim=new Date(ano,mes-1,dia);
