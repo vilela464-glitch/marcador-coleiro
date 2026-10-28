@@ -5,62 +5,57 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#05090d">
-<title>Marcador de Coleiro V4.0</title>
+<title>Marcador de Coleiro V4.1</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:#05090d;color:white;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:20px 14px 40px;text-align:center}
+body{margin:0;background:#05090d;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-align:center;padding:18px 12px 35px}
 .container{max-width:500px;margin:auto}
-h1{font-size:27px;margin:8px 0 3px}
-h2{font-size:20px;color:#ffc928}
+h1{font-size:26px;margin:8px 0 3px}
+h2{font-size:19px;color:#ffc928}
 .gold{color:#ffc928}
-.sub{color:#9aa6b3;font-size:13px;margin-bottom:20px}
-.panel{background:#0d1821;border:1px solid #263541;border-radius:16px;padding:16px;margin:13px 0}
+.sub{font-size:13px;color:#9baab6;margin-bottom:18px}
+.panel{background:#0d1821;border:1px solid #293b48;border-radius:17px;padding:15px;margin:12px 0}
 .hidden{display:none!important}
-button{font-family:inherit;font-weight:800;cursor:pointer;border:0;border-radius:11px;padding:13px;color:white;background:#273643}
+button{font-family:inherit;font-weight:800;cursor:pointer;border:0;border-radius:12px;padding:13px;background:#293a48;color:white}
 button:disabled{opacity:.45}
-button.goldbtn{background:#ffc928;color:#101010}
-button.green{background:#15834a}
-button.red{background:#a52b36}
-button.outline{background:#111e29;border:1px solid #ffc928;color:#ffc928}
-input,select{width:100%;background:#071017;border:1px solid #394b58;border-radius:10px;color:white;padding:13px;font-size:16px;margin:6px 0}
-label{display:block;text-align:left;font-size:13px;color:#bac4ce;margin-top:9px}
-.row{display:flex;gap:8px;align-items:stretch}
+.goldbtn{background:#ffc928;color:#101010}
+.green{background:#15834a}
+.red{background:#a52b36}
+.outline{background:#111e29;border:1px solid #ffc928;color:#ffc928}
+input,select{width:100%;background:#071017;border:1px solid #40515e;border-radius:10px;color:#fff;padding:13px;font-size:16px;margin:6px 0}
+label{display:block;text-align:left;font-size:13px;color:#b7c4ce;margin-top:8px}
+.row{display:flex;gap:8px}
 .row>*{flex:1;min-width:0}
-.small{font-size:12px;color:#9eacb8}
-.big{font-size:37px;font-weight:900;color:#ffc928}
-.stat{flex:1;background:#08121a;border:1px solid #263845;border-radius:12px;padding:12px 5px}
-.stat strong{display:block;font-size:23px;color:#ffc928;margin-top:5px}
-.stat span{font-size:11px;color:#aeb9c5}
-#clock{font-size:42px;font-weight:900;letter-spacing:2px;margin:12px 0}
-#canto{width:100%;font-size:27px;padding:27px 10px;margin:12px 0}
-#start,#reset{width:100%}
-#status{font-weight:700;color:#ffc928}
-.progress{height:13px;background:#25313a;border-radius:20px;overflow:hidden;margin:15px 0 5px}
-#bar{height:100%;width:0;background:#ffc928;transition:width .2s}
-#percentage{font-size:12px;color:#b6c1ca}
+.stat{flex:1;background:#08121a;border:1px solid #2a4050;border-radius:13px;padding:12px 4px}
+.stat span{display:block;font-size:11px;color:#b0bfca}
+.stat strong{display:block;font-size:25px;color:#ffc928;margin-top:5px}
+.small{font-size:12px;color:#a5b5c2}
+.notice{font-size:12px;color:#a5b5c2;line-height:1.6}
 #subscription{font-size:13px;line-height:1.7}
+#status{color:#ffc928;font-weight:900;margin:17px 0 12px}
+.minute-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.minute-box{background:#071017;border:1px solid #304553;border-radius:10px;padding:8px 2px;min-width:0}
+.minute-label{font-size:10px;color:#a9b8c4;display:block}
+.minute-count{font-size:23px;font-weight:900;color:#ffc928;display:block;margin-top:3px}
+.minute-box.current-minute{border:2px solid #ffc928;background:#192019}
+.minute-box.done-minute{border-color:#647984}
+#clock{font-size:17px;color:#b9c6d0;font-weight:700;margin:13px 0 8px}
+.progress{height:11px;background:#293741;border-radius:20px;overflow:hidden;margin-top:10px}
+#bar{height:100%;width:0;background:#ffc928;transition:width .2s}
+#percentage{font-size:12px;color:#b1c0cb;margin:7px 0 15px}
+#canto{display:block;width:100%;height:150px;font-size:39px;font-weight:900;border-radius:18px;margin:14px 0;touch-action:manipulation}
+#start,#reset{width:100%;min-height:62px}
+#save{width:100%;margin-top:10px}
 #saveMsg,#adminMsg,#loginMsg{font-size:13px;margin-top:9px;line-height:1.5}
-.user{padding:13px 0;text-align:left;border-bottom:1px solid #34414c}
+.user{text-align:left;border-bottom:1px solid #30404c;padding:12px 0}
 .user:last-child{border:0}
 .user strong{color:#ffc928}
-.user .actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.user .actions button{font-size:12px;padding:10px}
-.calendar-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.calendar-head button{padding:9px 15px}
-.calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin-top:13px}
-.weekday{font-size:11px;color:#91a2af;padding:7px 0}
-.day{aspect-ratio:1;min-width:0;padding:0;border-radius:9px;background:#17232e;font-size:14px;position:relative}
-.day.has{border:1px solid #ffc928}
-.day.active{background:#ffc928;color:#111}
-.day.today:not(.active){color:#ffc928}
-.day.has:after{content:"";position:absolute;bottom:4px;left:calc(50% - 2px);width:4px;height:4px;background:#ffc928;border-radius:50%}
-.day.active:after{background:#111}
-.day:disabled{visibility:hidden}
-.history-item{text-align:left;border-bottom:1px solid #2c3943;padding:11px 0;font-size:13px}
+.actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.actions button{font-size:12px;padding:10px}
+.history-item{text-align:left;border-bottom:1px solid #30404c;padding:11px 0;font-size:13px}
 .history-item:last-child{border:0}
 .history-item strong{color:#ffc928}
 .history-item button{float:right;padding:6px 9px;font-size:11px}
-.notice{font-size:12px;color:#a9b8c4;line-height:1.6}
 #loading{padding:60px 0}
 </style>
 </head>
@@ -68,11 +63,9 @@ label{display:block;text-align:left;font-size:13px;color:#bac4ce;margin-top:9px}
 <div class="container">
 
 <h1>🐦 MARCADOR DE <span class="gold">COLEIRO</span></h1>
-<div class="sub">VERSÃO 4.0 • CONTROLE DE CANTOS</div>
+<div class="sub">VERSÃO 4.1 • CONTROLE DE CANTOS</div>
 
-<section id="loading" class="panel">
-Verificando acesso ao Firebase...
-</section>
+<section id="loading" class="panel">Verificando acesso ao Firebase...</section>
 
 <section id="login" class="panel hidden">
 <h2>ACESSO AO MARCADOR</h2>
@@ -99,10 +92,9 @@ Verificando acesso ao Firebase...
 
 <section id="admin" class="panel hidden">
 <h2>ADMINISTRAÇÃO</h2>
-<p class="notice">Cadastre primeiro o e-mail e a senha do cliente no Firebase Authentication. Depois coloque o UID aqui para liberar o acesso.</p>
-
-<label>UID do usuário no Firebase</label>
-<input id="newUid" placeholder="Cole o UID do usuário">
+<p class="notice">Cadastre o cliente no Firebase Authentication e depois libere o UID aqui.</p>
+<label>UID do usuário</label>
+<input id="newUid" placeholder="Cole o UID">
 <label>Nome do usuário</label>
 <input id="newName" placeholder="Nome ou apelido">
 <label>Plano de acesso</label>
@@ -117,7 +109,7 @@ Verificando acesso ao Firebase...
 <div id="users">Carregando...</div>
 </section>
 
-<div class="panel">
+<section class="panel">
 <div class="row">
 <div class="stat"><span>MINUTOS</span><strong id="minutes">10</strong></div>
 <div class="stat"><span>CANTOS</span><strong id="total">0</strong></div>
@@ -130,11 +122,14 @@ Verificando acesso ao Firebase...
 </div>
 
 <p id="status">PRONTO PARA INICIAR</p>
-<div id="clock">10:00</div>
+<h2 style="margin:7px 0 12px">CANTOS POR MINUTO</h2>
+<div id="minuteGrid" class="minute-grid"></div>
+
+<div id="clock">TEMPO RESTANTE: 10:00</div>
 <div class="progress"><div id="bar"></div></div>
 <div id="percentage">0% concluído</div>
 
-<div class="row" style="margin-top:16px">
+<div class="row">
 <div class="stat"><span>PROJEÇÃO FINAL</span><strong id="projection">0</strong></div>
 <div class="stat"><span>TEMPO DECORRIDO</span><strong id="elapsed">00:00</strong></div>
 </div>
@@ -144,21 +139,15 @@ Verificando acesso ao Firebase...
 <button id="start" class="green">▶ INICIAR</button>
 <button id="reset" class="red">ZERAR</button>
 </div>
-<button id="save" class="outline" style="width:100%;margin-top:10px">SALVAR RESULTADO NO HISTÓRICO</button>
+
+<button id="save" class="outline">SALVAR RESULTADO NO HISTÓRICO</button>
 <div id="saveMsg"></div>
-</div>
+</section>
 
 <section class="panel">
-<h2>📅 CALENDÁRIO DE CANTOS</h2>
-<div class="calendar-head">
-<button id="prevMonth">‹</button>
-<strong id="monthLabel"></strong>
-<button id="nextMonth">›</button>
-</div>
-<div id="calendar" class="calendar"></div>
-<h2 id="selectedLabel"></h2>
+<h2>HISTÓRICO DE RESULTADOS</h2>
 <div id="history"></div>
-<p class="notice">O histórico é salvo neste navegador e neste aparelho. Limpar os dados do navegador pode apagar os registros.</p>
+<p class="notice">Os resultados ficam salvos neste navegador e neste aparelho.</p>
 </section>
 
 <div class="panel">
@@ -174,12 +163,8 @@ Verificando acesso ao Firebase...
 
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
-import {
-getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
-import {
-getFirestore,doc,getDoc,getDocs,collection,setDoc,updateDoc,deleteDoc
-} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+import {getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+import {getFirestore,doc,getDoc,getDocs,collection,setDoc,updateDoc,deleteDoc} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 
 const firebaseConfig={
 apiKey:"AIzaSyDovY5VLOO3-OnQ1xjiQqNwlgrv_lMMCNY",
@@ -192,66 +177,44 @@ appId:"1:455735913686:web:dfde603142e471b9adad77"
 
 const ADMIN_UID="P2xlWCfM8ESIkoyTfkVjprhjiLz1";
 const CONTACT="5581988698384";
-
 const firebaseApp=initializeApp(firebaseConfig);
 const auth=getAuth(firebaseApp);
 const db=getFirestore(firebaseApp);
 const el=id=>document.getElementById(id);
 
-let current=null;
-let currentData=null;
-let isAdmin=false;
-let duration=10;
-let cantos=[];
-let startedAt=null;
-let accumulated=0;
-let finished=false;
-let paused=false;
-let timer=null;
-let monthView=new Date();
-let selectedDate=dateKey(new Date());
-let accessCheck=null;
+let current=null,currentData=null,isAdmin=false;
+let duration=10,cantos=[],startedAt=null,accumulated=0;
+let finished=false,paused=false,timer=null;
 
-function show(id,visible){
-el(id).classList.toggle("hidden",!visible);
-}
+function show(id,visible){el(id).classList.toggle("hidden",!visible)}
 
 function dateKey(d){
-const y=d.getFullYear();
-const m=String(d.getMonth()+1).padStart(2,"0");
-const day=String(d.getDate()).padStart(2,"0");
-return `${y}-${m}-${day}`;
-}
-
-function readableDate(s){
-if(!s)return "Sem data";
-const parts=s.split("-");
-return `${parts[2]}/${parts[1]}/${parts[0]}`;
+return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
 }
 
 function validExpiry(data){
 if(!data||data.ativo!==true)return false;
 if(!data.vencimento)return true;
-const ms=new Date(data.vencimento).getTime();
-return Number.isFinite(ms)&&ms>Date.now();
+const time=new Date(data.vencimento).getTime();
+return Number.isFinite(time)&&time>Date.now();
 }
 
 function expiryText(data){
 if(!data?.vencimento)return "Sem vencimento cadastrado";
 const d=new Date(data.vencimento);
-return Number.isNaN(d.getTime())
-?"Vencimento inválido"
-:d.toLocaleDateString("pt-BR");
+return Number.isNaN(d.getTime())?"Data inválida":d.toLocaleDateString("pt-BR");
+}
+
+function stopTimer(){
+if(timer!==null)clearInterval(timer);
+timer=null;
+startedAt=null;
 }
 
 function accessLost(){
 stopTimer();
-current=null;
-currentData=null;
-isAdmin=false;
-show("app",false);
-show("login",true);
-show("loading",false);
+current=null;currentData=null;isAdmin=false;
+show("app",false);show("login",true);show("loading",false);
 el("loginMsg").textContent="Acesso bloqueado ou plano vencido. Fale com o administrador.";
 }
 
@@ -259,22 +222,15 @@ async function refreshAccess(){
 if(!auth.currentUser)return;
 try{
 const snap=await getDoc(doc(db,"usuarios",auth.currentUser.uid));
-if(!snap.exists()||!validExpiry(snap.data())){
-accessLost();
-return;
-}
+if(!snap.exists()||!validExpiry(snap.data())){accessLost();return}
 current=auth.currentUser;
 currentData=snap.data();
 isAdmin=current.uid===ADMIN_UID&&currentData.admin===true;
 el("welcome").textContent="OLÁ, "+(currentData.nome||"USUÁRIO").toUpperCase();
-el("subscription").textContent=isAdmin
-?"ADMINISTRADOR • ACESSO LIBERADO"
-:"PLANO: "+(currentData.planoDias||"Não definido")+" dias • VENCIMENTO: "+expiryText(currentData);
+el("subscription").textContent=isAdmin?"ADMINISTRADOR • ACESSO LIBERADO":"PLANO: "+(currentData.planoDias||"Não definido")+" dias • VENCIMENTO: "+expiryText(currentData);
 show("adminToggle",isAdmin);
-show("login",false);
-show("loading",false);
-show("app",true);
-drawCalendar();
+show("login",false);show("loading",false);show("app",true);
+drawHistory();
 }catch(err){
 show("loading",false);
 el("loginMsg").textContent="Erro ao consultar acesso: "+err.message;
@@ -283,33 +239,21 @@ show("login",true);
 }
 
 onAuthStateChanged(auth,async user=>{
-stopTimer();
-current=null;
-show("app",false);
-if(!user){
-show("loading",false);
-show("login",true);
-return;
-}
+stopTimer();current=null;show("app",false);
+if(!user){show("loading",false);show("login",true);return}
 await refreshAccess();
 });
 
 el("loginBtn").onclick=async()=>{
-const email=el("email").value.trim();
-const password=el("password").value;
 el("loginMsg").textContent="Entrando...";
 try{
-await signInWithEmailAndPassword(auth,email,password);
+await signInWithEmailAndPassword(auth,el("email").value.trim(),el("password").value);
 el("loginMsg").textContent="";
-}catch(err){
-el("loginMsg").textContent="Não foi possível entrar. Confira e-mail, senha e autorização.";
-}
+}catch(err){el("loginMsg").textContent="Não foi possível entrar. Confira e-mail e senha."}
 };
 
+el("password").addEventListener("keydown",e=>{if(e.key==="Enter")el("loginBtn").click()});
 el("logout").onclick=()=>signOut(auth);
-el("password").addEventListener("keydown",e=>{
-if(e.key==="Enter")el("loginBtn").click();
-});
 
 el("adminToggle").onclick=async()=>{
 if(!isAdmin)return;
@@ -318,14 +262,11 @@ show("admin",opening);
 if(opening)await loadUsers();
 };
 
-function requireAdmin(){
-return current&&isAdmin&&auth.currentUser?.uid===ADMIN_UID;
-}
+function requireAdmin(){return current&&isAdmin&&auth.currentUser?.uid===ADMIN_UID}
 
 function makeExpiry(days){
 const now=new Date();
-const end=new Date(now.getTime()+days*86400000);
-return {now:now.toISOString(),end:end.toISOString()};
+return {now:now.toISOString(),end:new Date(now.getTime()+days*86400000).toISOString()};
 }
 
 el("addUser").onclick=async()=>{
@@ -334,26 +275,17 @@ const uid=el("newUid").value.trim();
 const nome=el("newName").value.trim();
 const days=Number(el("newPlan").value);
 if(!uid||!nome||![30,180,365].includes(days)){
-el("adminMsg").textContent="Informe UID, nome e plano.";
-return;
+el("adminMsg").textContent="Informe UID, nome e plano.";return;
 }
 const dates=makeExpiry(days);
 try{
 await setDoc(doc(db,"usuarios",uid),{
-nome,
-ativo:true,
-admin:false,
-planoDias:days,
-ativadoEm:dates.now,
-vencimento:dates.end
+nome,ativo:true,admin:false,planoDias:days,ativadoEm:dates.now,vencimento:dates.end
 },{merge:true});
 el("adminMsg").textContent="Usuário liberado com sucesso.";
-el("newUid").value="";
-el("newName").value="";
+el("newUid").value="";el("newName").value="";
 await loadUsers();
-}catch(err){
-el("adminMsg").textContent="Erro: "+err.message;
-}
+}catch(err){el("adminMsg").textContent="Erro: "+err.message}
 };
 
 async function loadUsers(){
@@ -363,163 +295,135 @@ area.textContent="Carregando usuários...";
 try{
 const result=await getDocs(collection(db,"usuarios"));
 area.replaceChildren();
-if(result.empty){
-area.textContent="Nenhum usuário cadastrado.";
-return;
-}
+if(result.empty){area.textContent="Nenhum usuário cadastrado.";return}
 result.forEach(snap=>{
-const data=snap.data();
-const uid=snap.id;
+const data=snap.data(),uid=snap.id;
 const div=document.createElement("div");
 div.className="user";
-
 const name=document.createElement("strong");
 name.textContent=data.nome||"Usuário";
 div.appendChild(name);
-
 const info=document.createElement("div");
 info.className="small";
-info.textContent=
-"UID: "+uid+
-"\nSituação: "+(validExpiry(data)?"ATIVO":"BLOQUEADO / VENCIDO")+
-"\nPlano: "+(data.planoDias||"Não definido")+" dias"+
-"\nVencimento: "+expiryText(data);
 info.style.whiteSpace="pre-line";
+info.textContent="UID: "+uid+"\nSituação: "+(validExpiry(data)?"ATIVO":"BLOQUEADO / VENCIDO")+"\nPlano: "+(data.planoDias||"Não definido")+" dias\nVencimento: "+expiryText(data);
 div.appendChild(info);
 
 if(uid!==ADMIN_UID){
 const actions=document.createElement("div");
 actions.className="actions";
-
 const toggle=document.createElement("button");
 toggle.textContent=data.ativo===true?"BLOQUEAR":"ATIVAR";
 toggle.className=data.ativo===true?"red":"green";
 toggle.onclick=async()=>{
 if(!requireAdmin())return;
-try{
-await updateDoc(doc(db,"usuarios",uid),{ativo:data.ativo!==true});
-await loadUsers();
-}catch(e){alert("Erro: "+e.message);}
+try{await updateDoc(doc(db,"usuarios",uid),{ativo:data.ativo!==true});await loadUsers()}
+catch(e){alert("Erro: "+e.message)}
 };
 actions.appendChild(toggle);
 
 const renew=document.createElement("button");
-renew.textContent="RENOVAR";
-renew.className="goldbtn";
+renew.textContent="RENOVAR";renew.className="goldbtn";
 renew.onclick=async()=>{
 if(!requireAdmin())return;
-const answer=prompt("Renovar por quantos dias? Digite 30, 180 ou 365.",String(data.planoDias||30));
+const answer=prompt("Renovar por quantos dias? 30, 180 ou 365.",String(data.planoDias||30));
 if(answer===null)return;
 const days=Number(answer);
-if(![30,180,365].includes(days)){
-alert("Escolha 30, 180 ou 365 dias.");
-return;
-}
+if(![30,180,365].includes(days)){alert("Escolha 30, 180 ou 365 dias.");return}
 const dates=makeExpiry(days);
 try{
-await updateDoc(doc(db,"usuarios",uid),{
-ativo:true,
-planoDias:days,
-ativadoEm:dates.now,
-vencimento:dates.end
-});
+await updateDoc(doc(db,"usuarios",uid),{ativo:true,planoDias:days,ativadoEm:dates.now,vencimento:dates.end});
 await loadUsers();
-}catch(e){alert("Erro: "+e.message);}
+}catch(e){alert("Erro: "+e.message)}
 };
 actions.appendChild(renew);
 
 const remove=document.createElement("button");
-remove.textContent="EXCLUIR";
-remove.className="red";
+remove.textContent="EXCLUIR";remove.className="red";
 remove.onclick=async()=>{
 if(!requireAdmin())return;
 if(!confirm("Excluir o acesso de "+(data.nome||uid)+"?"))return;
-try{
-await deleteDoc(doc(db,"usuarios",uid));
-await loadUsers();
-}catch(e){alert("Erro: "+e.message);}
+try{await deleteDoc(doc(db,"usuarios",uid));await loadUsers()}
+catch(e){alert("Erro: "+e.message)}
 };
 actions.appendChild(remove);
 div.appendChild(actions);
 }
 area.appendChild(div);
 });
-}catch(err){
-area.textContent="Erro ao listar: "+err.message;
-}
-}
-
-function stopTimer(){
-if(timer!==null)clearInterval(timer);
-timer=null;
-startedAt=null;
+}catch(err){area.textContent="Erro ao listar: "+err.message}
 }
 
 function secondsElapsed(){
-const running=startedAt===null?0:(Date.now()-startedAt)/1000;
-return Math.min(duration*60,accumulated+running);
+return Math.min(duration*60,accumulated+(startedAt===null?0:(Date.now()-startedAt)/1000));
 }
 
 function formatTime(seconds){
 const s=Math.max(0,Math.floor(seconds));
-return String(Math.floor(s/60)).padStart(2,"0")+":"+
-String(s%60).padStart(2,"0");
+return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+}
+
+function drawMinuteGrid(){
+const grid=el("minuteGrid");
+grid.replaceChildren();
+const elapsed=secondsElapsed();
+const activeMinute=finished?duration:(startedAt!==null||paused?Math.min(duration,Math.floor(elapsed/60)+1):0);
+const counts=Array(duration).fill(0);
+cantos.forEach(second=>{
+const index=Math.min(duration-1,Math.floor(second/60));
+if(index>=0)counts[index]++;
+});
+for(let i=0;i<duration;i++){
+const box=document.createElement("div");
+box.className="minute-box";
+if(activeMinute===i+1)box.classList.add("current-minute");
+if(elapsed>=(i+1)*60)box.classList.add("done-minute");
+const label=document.createElement("span");
+label.className="minute-label";
+label.textContent=(i+1)+" MIN";
+const count=document.createElement("span");
+count.className="minute-count";
+count.textContent=counts[i];
+box.appendChild(label);box.appendChild(count);grid.appendChild(box);
+}
 }
 
 function update(){
 const elapsed=secondsElapsed();
 if(elapsed>=duration*60&&startedAt!==null){
-accumulated=duration*60;
-stopTimer();
-finished=true;
-paused=false;
+accumulated=duration*60;stopTimer();finished=true;paused=false;
 }
-const remaining=duration*60-secondsElapsed();
-const used=secondsElapsed();
-const total=cantos.length;
+const used=secondsElapsed(),remaining=duration*60-used,total=cantos.length;
 const average=used>0?total/(used/60):0;
 const projected=used>0?Math.round(average*duration):0;
 const percent=Math.min(100,used/(duration*60)*100);
-
 el("minutes").textContent=duration;
-el("clock").textContent=formatTime(remaining);
+el("clock").textContent="TEMPO RESTANTE: "+formatTime(remaining);
 el("elapsed").textContent=formatTime(used);
 el("total").textContent=total;
 el("average").textContent=average.toFixed(1).replace(".",",");
 el("projection").textContent=projected;
 el("bar").style.width=percent+"%";
 el("percentage").textContent=Math.round(percent)+"% concluído";
-
-el("status").textContent=finished?"TEMPO FINALIZADO":
-startedAt!==null?"CONTAGEM EM ANDAMENTO":
-paused?"CONTAGEM PAUSADA":"PRONTO PARA INICIAR";
-
-el("start").textContent=finished?"✓ FINALIZADO":
-startedAt!==null?"Ⅱ PAUSAR":
-paused?"▶ CONTINUAR":"▶ INICIAR";
+el("status").textContent=finished?"TEMPO FINALIZADO":startedAt!==null?"CONTAGEM EM ANDAMENTO":paused?"CONTAGEM PAUSADA":"PRONTO PARA INICIAR";
+el("start").textContent=finished?"✓ FINALIZADO":startedAt!==null?"Ⅱ PAUSAR":paused?"▶ CONTINUAR":"▶ INICIAR";
 el("start").disabled=finished;
 el("canto").disabled=finished||startedAt===null||!current;
 el("ten").className=duration===10?"goldbtn":"";
 el("fifteen").className=duration===15?"goldbtn":"";
+drawMinuteGrid();
 }
 
 function resetCounter(){
-stopTimer();
-accumulated=0;
-cantos=[];
-finished=false;
-paused=false;
-el("saveMsg").textContent="";
-update();
+stopTimer();accumulated=0;cantos=[];finished=false;paused=false;
+el("saveMsg").textContent="";update();
 }
 
 function setDuration(minutes){
 if(startedAt!==null||accumulated>0){
 if(!confirm("Alterar o tempo e zerar a contagem atual?"))return;
 }
-resetCounter();
-duration=minutes;
-update();
+resetCounter();duration=minutes;update();
 }
 
 el("ten").onclick=()=>setDuration(10);
@@ -528,13 +432,9 @@ el("fifteen").onclick=()=>setDuration(15);
 el("start").onclick=()=>{
 if(!current||finished)return;
 if(startedAt!==null){
-accumulated=secondsElapsed();
-stopTimer();
-paused=true;
+accumulated=secondsElapsed();stopTimer();paused=true;
 }else{
-startedAt=Date.now();
-paused=false;
-timer=setInterval(update,250);
+startedAt=Date.now();paused=false;timer=setInterval(update,250);
 }
 update();
 };
@@ -543,8 +443,7 @@ el("canto").onclick=()=>{
 if(!current||startedAt===null||finished)return;
 update();
 if(finished)return;
-cantos.push(secondsElapsed());
-update();
+cantos.push(secondsElapsed());update();
 };
 
 el("reset").onclick=()=>{
@@ -554,170 +453,67 @@ if(!confirm("Zerar a contagem atual?"))return;
 resetCounter();
 };
 
-function historyKey(){
-return "marcador-coleiro-v4-historico-"+current.uid;
-}
+function historyKey(){return "marcador-coleiro-v4-historico-"+current.uid}
 
 function readHistory(){
 if(!current)return [];
 try{
 const parsed=JSON.parse(localStorage.getItem(historyKey())||"[]");
 return Array.isArray(parsed)?parsed:[];
-}catch(e){return [];}
+}catch(e){return []}
 }
 
-function writeHistory(items){
-localStorage.setItem(historyKey(),JSON.stringify(items));
-}
+function writeHistory(items){localStorage.setItem(historyKey(),JSON.stringify(items))}
 
 el("save").onclick=()=>{
 if(!current)return;
-if(cantos.length===0){
-el("saveMsg").textContent="Registre pelo menos um canto antes de salvar.";
-return;
-}
-const now=new Date();
-const history=readHistory();
+if(cantos.length===0){el("saveMsg").textContent="Registre pelo menos um canto.";return}
+const now=new Date(),history=readHistory();
 history.push({
 id:String(Date.now())+"-"+Math.random().toString(36).slice(2,8),
 date:dateKey(now),
 time:now.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}),
-duration,
-seconds:Math.round(secondsElapsed()),
-total:cantos.length
+duration,seconds:Math.round(secondsElapsed()),total:cantos.length
 });
 try{
 writeHistory(history);
-selectedDate=dateKey(now);
-monthView=new Date(now.getFullYear(),now.getMonth(),1);
 el("saveMsg").textContent="Resultado salvo com sucesso!";
-drawCalendar();
-}catch(err){
-el("saveMsg").textContent="Não foi possível salvar: "+err.message;
-}
-};
-
-const monthNames=[
-"Janeiro","Fevereiro","Março","Abril","Maio","Junho",
-"Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"
-];
-
-function drawCalendar(){
-if(!current)return;
-const year=monthView.getFullYear();
-const month=monthView.getMonth();
-el("monthLabel").textContent=monthNames[month]+" "+year;
-
-const grid=el("calendar");
-grid.replaceChildren();
-
-["D","S","T","Q","Q","S","S"].forEach(w=>{
-const cell=document.createElement("div");
-cell.className="weekday";
-cell.textContent=w;
-grid.appendChild(cell);
-});
-
-const first=new Date(year,month,1).getDay();
-const days=new Date(year,month+1,0).getDate();
-const datesWithRecords=new Set(readHistory().map(x=>x.date));
-const today=dateKey(new Date());
-
-for(let i=0;i<first;i++){
-const blank=document.createElement("button");
-blank.className="day";
-blank.disabled=true;
-grid.appendChild(blank);
-}
-
-for(let day=1;day<=days;day++){
-const date=dateKey(new Date(year,month,day));
-const button=document.createElement("button");
-button.className="day";
-if(datesWithRecords.has(date))button.classList.add("has");
-if(date===selectedDate)button.classList.add("active");
-if(date===today)button.classList.add("today");
-button.textContent=day;
-button.onclick=()=>{
-selectedDate=date;
-drawCalendar();
-};
-grid.appendChild(button);
-}
 drawHistory();
-}
+}catch(err){el("saveMsg").textContent="Erro ao salvar: "+err.message}
+};
 
 function drawHistory(){
-const area=el("history");
-area.replaceChildren();
-el("selectedLabel").textContent="HISTÓRICO — "+readableDate(selectedDate);
-
-const items=readHistory()
-.filter(x=>x.date===selectedDate)
-.sort((a,b)=>b.time.localeCompare(a.time));
-
+const area=el("history");area.replaceChildren();
+const items=readHistory().sort((a,b)=>(b.date+" "+b.time).localeCompare(a.date+" "+a.time));
 if(items.length===0){
-const empty=document.createElement("p");
-empty.className="small";
-empty.textContent="Nenhuma marcação salva nesta data.";
-area.appendChild(empty);
-return;
+const empty=document.createElement("p");empty.className="small";
+empty.textContent="Nenhum resultado salvo.";area.appendChild(empty);return;
 }
-
 items.forEach(item=>{
-const div=document.createElement("div");
-div.className="history-item";
-const title=document.createElement("strong");
-title.textContent=item.total+" CANTOS";
+const div=document.createElement("div");div.className="history-item";
+const title=document.createElement("strong");title.textContent=item.total+" CANTOS";
 div.appendChild(title);
-
 const detail=document.createElement("div");
-detail.textContent=
-"Horário: "+item.time+
-" • Prova: "+item.duration+" min"+
-" • Tempo marcado: "+formatTime(item.seconds);
+const parts=item.date.split("-");
+detail.textContent=parts[2]+"/"+parts[1]+"/"+parts[0]+" às "+item.time+" • "+item.duration+" min • Tempo: "+formatTime(item.seconds);
 div.appendChild(detail);
-
 const remove=document.createElement("button");
-remove.className="red";
-remove.textContent="EXCLUIR";
+remove.className="red";remove.textContent="EXCLUIR";
 remove.onclick=()=>{
-if(!confirm("Excluir este registro?"))return;
-writeHistory(readHistory().filter(x=>x.id!==item.id));
-drawCalendar();
+if(!confirm("Excluir este resultado?"))return;
+writeHistory(readHistory().filter(x=>x.id!==item.id));drawHistory();
 };
-div.appendChild(remove);
-area.appendChild(div);
+div.appendChild(remove);area.appendChild(div);
 });
 }
 
-el("prevMonth").onclick=()=>{
-monthView=new Date(monthView.getFullYear(),monthView.getMonth()-1,1);
-drawCalendar();
-};
-
-el("nextMonth").onclick=()=>{
-monthView=new Date(monthView.getFullYear(),monthView.getMonth()+1,1);
-drawCalendar();
-};
-
 el("share").onclick=()=>{
-const message=
-"🐦 MARCADOR DE COLEIRO V4.0\n\n"+
-"Controle de cantos, cronômetro, calendário e histórico.\n\n"+
-"PLANOS:\n"+
-"30 dias: R$ 10,00\n"+
-"180 dias: R$ 30,00\n"+
-"365 dias: R$ 50,00\n\n"+
-"Solicite seu acesso ao administrador.\n\n"+
-"https://vilela464-glitch.github.io/marcador-coleiro/";
+const message="🐦 MARCADOR DE COLEIRO\n\nControle de cantos, cronômetro e histórico.\n\nPLANOS:\n30 dias: R$ 10,00\n180 dias: R$ 30,00\n365 dias: R$ 50,00\n\nSolicite seu acesso.\n\nhttps://vilela464-glitch.github.io/marcador-coleiro/";
 window.open("https://wa.me/"+CONTACT+"?text="+encodeURIComponent(message),"_blank");
 };
 
-accessCheck=setInterval(()=>{
-if(current&&(!validExpiry(currentData)||!auth.currentUser)){
-accessLost();
-}
+setInterval(()=>{
+if(current&&!validExpiry(currentData))accessLost();
 },30000);
 
 update();
