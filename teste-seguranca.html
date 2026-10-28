@@ -4,11 +4,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#05090d">
 <title>Marcador de Coleiro V3.2 — Teste</title>
 <link rel="manifest" href="./manifest.webmanifest">
-<meta name="theme-color" content="#05090d">
 <link rel="apple-touch-icon" href="./icon-192.png">
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -70,10 +68,12 @@ h1{font-size:24px}
 </style>
 </head>
 <body>
+
 <div id="carregando" class="auth-box">
 <h2>Verificando acesso...</h2>
 <p class="info">Conectando ao Firebase.</p>
 </div>
+
 <div id="loginTela" class="auth-box" hidden>
 <h1>🐦 MARCADOR DE <span class="dourado">COLEIRO</span></h1>
 <p class="sub">ACESSO AUTORIZADO • TESTE V3.2</p>
@@ -84,6 +84,7 @@ h1{font-size:24px}
 </form>
 <p id="loginErro" class="erro" role="alert"></p>
 </div>
+
 <div id="app" class="container" hidden>
 <div class="topo-acesso">
 <button id="adminBtn" hidden>⚙ ADMINISTRAR</button>
@@ -91,7 +92,7 @@ h1{font-size:24px}
 </div>
 <div id="adminPainel" class="admin-box" hidden>
 <h2>⚙ CONTROLE DE USUÁRIOS</h2>
-<p class="info">Crie a conta primeiro no Firebase Authentication. Depois informe o UID para autorizar.</p>
+<p class="info">Crie a conta no Firebase Authentication. Depois informe o UID para autorizar.</p>
 <input id="novoUid" placeholder="UID do usuário">
 <input id="novoNome" placeholder="Nome do usuário">
 <input id="novoVencimento" type="date" aria-label="Vencimento do plano">
@@ -99,6 +100,7 @@ h1{font-size:24px}
 <p id="adminMensagem" class="info" role="status"></p>
 <div id="listaUsuarios"></div>
 </div>
+
 <h1>🐦 MARCADOR DE <span class="dourado">COLEIRO</span></h1>
 <div class="sub">V3.2 • Teste de segurança</div>
 <p id="avisoPlano" class="aviso"></p>
@@ -139,13 +141,8 @@ h1{font-size:24px}
 
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
-import {
- getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
-import {
- getFirestore,doc,getDoc,getDocs,collection,setDoc,updateDoc,
- deleteDoc,onSnapshot,runTransaction,serverTimestamp,Timestamp
-} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+import {getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+import {getFirestore,doc,getDocs,collection,setDoc,updateDoc,deleteDoc,onSnapshot,runTransaction,serverTimestamp,Timestamp} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 
 const firebaseConfig={
  apiKey:"AIzaSyDovY5VLOO3-OnQ1xjiQqNwlgrv_lMMCNY",
@@ -160,20 +157,16 @@ const firebaseApp=initializeApp(firebaseConfig);
 const auth=getAuth(firebaseApp);
 const db=getFirestore(firebaseApp);
 const el=id=>document.getElementById(id);
-
 const LIMITE_MS=30*60*1000;
 const HEARTBEAT_MS=60*1000;
 
-let usuarioAtual=null;
-let adminAtual=false;
-let observadorUsuario=null;
-let observadorSessao=null;
-let batimento=null;
-let controle=0;
-let tokenSessao=null;
-let uidSessao=null;
-let adminAberto=false;
-let processando=false;
+let usuarioAtual=null,adminAtual=false;
+let observadorUsuario=null,observadorSessao=null;
+let batimento=null,controle=0;
+let tokenSessao=null,uidSessao=null;
+let adminAberto=false,processando=false,saindo=false;
+
+const chaveToken=uid=>"marcador-v32-sessao-"+uid;
 
 function mostrar(t){
  el("carregando").hidden=t!=="carregando";
@@ -185,7 +178,7 @@ function erroFirebase(e){
  if(["auth/invalid-credential","auth/wrong-password","auth/user-not-found"].includes(c))
   return "E-mail ou senha incorretos.";
  if(c==="permission-denied")
-  return "Permissão negada. As novas regras do Firestore ainda precisam ser configuradas.";
+  return "Permissão negada. Configure as regras da coleção sessoes no Firestore.";
  return e?.message||"Erro desconhecido.";
 }
 function limpar(){
@@ -196,25 +189,21 @@ function limpar(){
  batimento=null;
  usuarioAtual=null;
  adminAtual=false;
+ adminAberto=false;
+ processando=false;
  el("adminBtn").hidden=true;
  el("adminPainel").hidden=true;
  zerar();
 }
-async function negar(msg){
- limpar();
- mostrar("login");
- el("loginErro").textContent=msg;
- try{await signOut(auth)}catch(e){}
-}
 function vencido(v){
- if(typeof v!=="string"||!/^\d{4}-\d{2}-\d{2}$/.test(v))return true;
+ if(typeof v!=="string"||!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(v))return true;
  const hoje=new Date();
- const dataLocal=[
+ const local=[
   hoje.getFullYear(),
   String(hoje.getMonth()+1).padStart(2,"0"),
   String(hoje.getDate()).padStart(2,"0")
  ].join("-");
- return v<dataLocal;
+ return v<local;
 }
 function tokenAleatorio(){
  return Array.from(
@@ -226,16 +215,17 @@ function sessaoRef(uid){
  return doc(db,"sessoes",uid);
 }
 function prazoValido(d){
- return d?.ultimoBatimento?.toMillis &&
-  Date.now()-d.ultimoBatimento.toMillis()<LIMITE_MS;
+ return d?.expiraEm?.toMillis &&
+  d.expiraEm.toMillis()>Date.now();
 }
 async function adquirirSessao(uid){
- const token=tokenAleatorio();
+ const salvo=sessionStorage.getItem(chaveToken(uid));
+ const token=salvo||tokenAleatorio();
  const ref=sessaoRef(uid);
  await runTransaction(db,async tx=>{
   const snap=await tx.get(ref);
-  const dados=snap.exists()?snap.data():null;
-  if(dados&&prazoValido(dados))
+  const d=snap.exists()?snap.data():null;
+  if(d&&prazoValido(d)&&d.token!==token)
    throw new Error("Esta conta já está sendo usada em outro aparelho. Saia da conta no primeiro aparelho.");
   const novo={
    token,
@@ -247,24 +237,45 @@ async function adquirirSessao(uid){
  });
  tokenSessao=token;
  uidSessao=uid;
+ sessionStorage.setItem(chaveToken(uid),token);
 }
 async function liberarSessao(){
  const uid=uidSessao,token=tokenSessao;
- uidSessao=null;
- tokenSessao=null;
- if(!uid||!token)return;
+ if(!uid||!token)return true;
  try{
   await runTransaction(db,async tx=>{
    const ref=sessaoRef(uid);
    const s=await tx.get(ref);
-   if(s.exists()&&s.data().token===token)tx.delete(ref);
+   if(s.exists()&&s.data().token===token)
+    tx.delete(ref);
   });
+  sessionStorage.removeItem(chaveToken(uid));
+  uidSessao=null;
+  tokenSessao=null;
+  return true;
  }catch(e){
   console.warn("Não foi possível liberar a sessão:",e);
+  return false;
+ }
+}
+async function negar(msg){
+ if(saindo)return;
+ saindo=true;
+ const liberou=await liberarSessao();
+ limpar();
+ mostrar("login");
+ el("loginErro").textContent=liberou?
+  msg:msg+" A liberação da sessão poderá levar até 30 minutos.";
+ try{
+  await signOut(auth);
+ }catch(e){
+  console.error(e);
+ }finally{
+  saindo=false;
  }
 }
 async function atualizarBatimento(){
- if(!uidSessao||!tokenSessao)return;
+ if(!uidSessao||!tokenSessao||saindo)return;
  const uid=uidSessao,token=tokenSessao;
  try{
   await runTransaction(db,async tx=>{
@@ -302,7 +313,7 @@ async function iniciarSessao(user,dados,etapa){
    "ADMINISTRADOR":`Plano válido até ${dados.vencimento}`;
   if(!ehAdmin){
    observadorSessao=onSnapshot(sessaoRef(user.uid),s=>{
-    if(etapa!==controle)return;
+    if(etapa!==controle||saindo)return;
     if(!s.exists()||s.data().token!==tokenSessao)
      negar("Sessão encerrada. Faça login novamente.");
    },e=>negar(erroFirebase(e)));
@@ -316,6 +327,7 @@ async function iniciarSessao(user,dados,etapa){
  }
 }
 onAuthStateChanged(auth,user=>{
+ if(saindo)return;
  limpar();
  tokenSessao=null;
  uidSessao=null;
@@ -341,6 +353,7 @@ onAuthStateChanged(auth,user=>{
  mostrar("login");
  el("loginErro").textContent=erroFirebase(e);
 });
+
 el("loginForm").addEventListener("submit",async ev=>{
  ev.preventDefault();
  el("loginErro").textContent="";
@@ -356,13 +369,21 @@ el("loginForm").addEventListener("submit",async ev=>{
  }
 });
 el("sairBtn").addEventListener("click",async()=>{
+ if(saindo)return;
+ saindo=true;
  mostrar("carregando");
+ const liberou=await liberarSessao();
  limpar();
- await liberarSessao();
- try{await signOut(auth)}
- catch(e){
+ try{
+  await signOut(auth);
+  mostrar("login");
+  if(!liberou)
+   el("loginErro").textContent="Não foi possível liberar o aparelho agora. Peça ao administrador para liberar.";
+ }catch(e){
   mostrar("login");
   el("loginErro").textContent=erroFirebase(e);
+ }finally{
+  saindo=false;
  }
 });
 function exigirAdmin(){
@@ -380,6 +401,7 @@ async function carregarUsuarios(){
  lista.textContent="Carregando...";
  try{
   const r=await getDocs(collection(db,"usuarios"));
+  if(!exigirAdmin())return;
   lista.textContent="";
   r.forEach(item=>{
    const d=item.data();
@@ -449,9 +471,12 @@ el("adicionarUsuario").addEventListener("click",async()=>{
   el("adminMensagem").textContent="UID inválido.";
   return;
  }
- const dados={ativo:true,admin:false};
+ if(!v){
+  el("adminMensagem").textContent="Informe o vencimento do plano.";
+  return;
+ }
+ const dados={ativo:true,admin:false,vencimento:v};
  if(nome)dados.nome=nome;
- if(v)dados.vencimento=v;
  try{
   await setDoc(doc(db,"usuarios",uid),dados,{merge:true});
   el("adminMensagem").textContent="Usuário autorizado.";
@@ -474,16 +499,13 @@ el("indicarAmigo").addEventListener("click",()=>{
  "https://vilela464-glitch.github.io/marcador-coleiro/\n\n"+
  "Para contratar, fale com o administrador:\n"+
  "https://wa.me/5581988698384";
- window.open(
-  "https://wa.me/?text="+encodeURIComponent(m),
-  "_blank","noopener,noreferrer"
- );
+ window.open("https://wa.me/?text"+ "="+encodeURIComponent(m),
+  "_blank","noopener,noreferrer");
 });
 
 // CRONÔMETRO E CONTADOR
 let duracao=10,cantos=[],inicio=null,intervalo=null;
 let finalizado=false,pausado=false,tempoAcumulado=0;
-
 function formatarTempo(seg){
  seg=Math.max(0,Math.floor(seg));
  return String(Math.floor(seg/60)).padStart(2,"0")+":"+
