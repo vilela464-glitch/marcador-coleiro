@@ -95,7 +95,11 @@ h1{font-size:24px}
 <p class="info">Crie a conta no Firebase Authentication. Depois informe o UID para autorizar.</p>
 <input id="novoUid" placeholder="UID do usuário">
 <input id="novoNome" placeholder="Nome do usuário">
-<input id="novoVencimento" type="date" aria-label="Vencimento do plano">
+<select id="novoPlano">
+  <option value="30">30 dias — R$ 10,00</option>
+  <option value="180">180 dias — R$ 30,00</option>
+  <option value="365">365 dias — R$ 50,00</option>
+</select>
 <button id="adicionarUsuario" class="btn">CADASTRAR / ATUALIZAR</button>
 <p id="adminMensagem" class="info" role="status"></p>
 <div id="listaUsuarios"></div>
@@ -466,13 +470,30 @@ el("adicionarUsuario").addEventListener("click",async()=>{
  if(!exigirAdmin())return;
  const uid=el("novoUid").value.trim();
  const nome=el("novoNome").value.trim();
- const v=el("novoVencimento").value;
+const dias=Number(el("novoPlano").value);
+const hoje=new Date();
+const data=new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate());
+
+const ref=doc(db,"usuarios",uid);
+const anterior=await getDoc(ref);
+
+if(![30,180,365].includes(dias)){
+ el("adminMensagem").textContent="Selecione um plano válido.";
+ return;
+}
+ if(typeof antigo==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(antigo)){
+  const [ano,mes,dia]=antigo.split("-").map(Number);
+  const fim=new Date(ano,mes-1,dia);
+  if(fim>data)data.setTime(fim.getTime());
+ }
+}
+
+data.setDate(data.getDate()+dias);
+const v=data.getFullYear()+"-"+
+ String(data.getMonth()+1).padStart(2,"0")+"-"+
+ String(data.getDate()).padStart(2,"0");
  if(!uid||uid.includes("/")||uid===ADMIN_UID){
   el("adminMensagem").textContent="UID inválido.";
-  return;
- }
- if(!v){
-  el("adminMensagem").textContent="Informe o vencimento do plano.";
   return;
  }
  const dados={ativo:true,admin:false,vencimento:v};
@@ -482,7 +503,7 @@ el("adicionarUsuario").addEventListener("click",async()=>{
   el("adminMensagem").textContent="Usuário autorizado.";
   el("novoUid").value="";
   el("novoNome").value="";
-  el("novoVencimento").value="";
+  el("novoPlano").value="30";
   await carregarUsuarios();
  }catch(e){
   el("adminMensagem").textContent=erroFirebase(e);
