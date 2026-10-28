@@ -169,6 +169,39 @@ e entre com o e-mail e a senha do usuário.
 <button id="zerar">↻ ZERAR</button>
 </div>
 
+<div style="margin-top:18px;text-align:center">
+  <button
+    id="indicarAmigo"
+    type="button"
+    style="width:100%;background:#178a57;color:white;border:0;border-radius:12px;padding:15px;font-size:15px;font-weight:900">
+    💬 INDICAR MARCADOR PARA UM AMIGO
+  </button>
+</div>
+
+<script>
+document.getElementById("indicarAmigo")
+.addEventListener("click", function () {
+  const mensagem =
+    "🐦 MARCADOR DE COLEIRO\n\n" +
+    "Conheça o aplicativo para marcar os cantos do seu coleiro!\n\n" +
+    "PLANOS DE ACESSO:\n" +
+    "30 dias - R$ 10,00\n" +
+    "180 dias - R$ 30,00\n" +
+    "365 dias - R$ 50,00\n\n" +
+    "Acesse:\n" +
+    "https://vilela464-glitch.github.io/marcador-coleiro/\n\n" +
+    "Para contratar, fale com o administrador:\n" +
+    "https://wa.me/5581988698384";
+
+  window.open(
+    "https://wa.me/?text=" +
+    encodeURIComponent(mensagem),
+    "_blank",
+    "noopener,noreferrer"
+  );
+});
+</script>
+
 <div class="rodape">
 Toque em INICIAR para começar o cronômetro.
 PAUSAR congela o tempo.
