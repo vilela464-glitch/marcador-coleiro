@@ -800,7 +800,6 @@ let pausado=false;
 let tempoAcumulado=0;
 
 const totalEl=el("total");
-const mediaEl=el("media");
 const projecaoEl=el("projecao");
 const tempoEl=el("tempo");
 const statusEl=el("status");
@@ -912,9 +911,7 @@ function atualizar(){
 
  const media=decorrido>0?cantos.length/(decorrido/60):0;
  const projecao=decorrido>0?
- Math.round(cantos.length/decorrido*limite):0;
-
- mediaEl.textContent=media.toFixed(1);
+ Math.round(cantos.length/decorrido*
  projecaoEl.textContent=projecao;
 
  const pct=Math.min(100,decorrido/limite*100);
