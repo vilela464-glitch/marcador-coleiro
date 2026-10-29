@@ -460,7 +460,8 @@ function erroFirebase(error){
 }
 function acessoValido(dados){
  if(!dados||dados.ativo!==true)return false;
- if(!dados.vencimento)return true;
+if(!dados.vencimento)
+ return auth.currentUser?.uid===ADMIN_UID && dados.admin===true;
  const fim=new Date(dados.vencimento).getTime();
  return Number.isFinite(fim)&&fim>Date.now();
 }
