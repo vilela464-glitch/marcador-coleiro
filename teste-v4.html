@@ -4,519 +4,1115 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#05090d">
-<title>Marcador de Coleiro V4.1</title>
+<meta name="apple-mobile-web-app-title" content="Marcador de Coleiro">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<title>Marcador de Coleiro V4.2</title>
+
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:#05090d;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-align:center;padding:18px 12px 35px}
+:root{
+ --fundo:#05090d;
+ --painel:#0b151d;
+ --painel2:#101e28;
+ --borda:#304553;
+ --ouro:#ffc928;
+ --ouroclaro:#ffe18a;
+ --texto:#ffffff;
+ --cinza:#9eafbc;
+ --verde:#168757;
+ --vermelho:#cf353a;
+}
+*{
+ box-sizing:border-box;
+ -webkit-tap-highlight-color:transparent;
+}
+[hidden]{display:none!important}
+body{
+ margin:0;
+ min-height:100vh;
+ padding:20px 14px 35px;
+ background:radial-gradient(ellipse at top,#101b23 0%,#05090d 42%);
+ color:var(--texto);
+ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ text-align:center;
+}
+button,input,select{font-family:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.48;cursor:default}
 .container{max-width:500px;margin:auto}
-h1{font-size:26px;margin:8px 0 3px}
-h2{font-size:19px;color:#ffc928}
-.gold{color:#ffc928}
-.sub{font-size:13px;color:#9baab6;margin-bottom:18px}
-.panel{background:#0d1821;border:1px solid #293b48;border-radius:17px;padding:15px;margin:12px 0}
-.hidden{display:none!important}
-button{font-family:inherit;font-weight:800;cursor:pointer;border:0;border-radius:12px;padding:13px;background:#293a48;color:white}
-button:disabled{opacity:.45}
-.goldbtn{background:#ffc928;color:#101010}
-.green{background:#15834a}
-.red{background:#a52b36}
-.outline{background:#111e29;border:1px solid #ffc928;color:#ffc928}
-input,select{width:100%;background:#071017;border:1px solid #40515e;border-radius:10px;color:#fff;padding:13px;font-size:16px;margin:6px 0}
-label{display:block;text-align:left;font-size:13px;color:#b7c4ce;margin-top:8px}
-.row{display:flex;gap:8px}
-.row>*{flex:1;min-width:0}
-.stat{flex:1;background:#08121a;border:1px solid #2a4050;border-radius:13px;padding:12px 4px}
-.stat span{display:block;font-size:11px;color:#b0bfca}
-.stat strong{display:block;font-size:25px;color:#ffc928;margin-top:5px}
-.small{font-size:12px;color:#a5b5c2}
-.notice{font-size:12px;color:#a5b5c2;line-height:1.6}
-#subscription{font-size:13px;line-height:1.7}
-#status{color:#ffc928;font-weight:900;margin:17px 0 12px}
-.minute-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
-.minute-box{background:#071017;border:1px solid #304553;border-radius:10px;padding:8px 2px;min-width:0}
-.minute-label{font-size:10px;color:#a9b8c4;display:block}
-.minute-count{font-size:23px;font-weight:900;color:#ffc928;display:block;margin-top:3px}
-.minute-box.current-minute{border:2px solid #ffc928;background:#192019}
-.minute-box.done-minute{border-color:#647984}
-#clock{font-size:17px;color:#b9c6d0;font-weight:700;margin:13px 0 8px}
-.progress{height:11px;background:#293741;border-radius:20px;overflow:hidden;margin-top:10px}
-#bar{height:100%;width:0;background:#ffc928;transition:width .2s}
-#percentage{font-size:12px;color:#b1c0cb;margin:7px 0 15px}
-#canto{display:block;width:100%;height:150px;font-size:39px;font-weight:900;border-radius:18px;margin:14px 0;touch-action:manipulation}
-#start,#reset{width:100%;min-height:62px}
-#save{width:100%;margin-top:10px}
-#saveMsg,#adminMsg,#loginMsg{font-size:13px;margin-top:9px;line-height:1.5}
-.user{text-align:left;border-bottom:1px solid #30404c;padding:12px 0}
-.user:last-child{border:0}
-.user strong{color:#ffc928}
-.actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.actions button{font-size:12px;padding:10px}
-.history-item{text-align:left;border-bottom:1px solid #30404c;padding:11px 0;font-size:13px}
-.history-item:last-child{border:0}
-.history-item strong{color:#ffc928}
-.history-item button{float:right;padding:6px 9px;font-size:11px}
-#loading{padding:60px 0}
+h1{
+ margin:7px 0 3px;
+ font-size:27px;
+ font-weight:900;
+ letter-spacing:-.5px;
+}
+.dourado{color:var(--ouro)}
+.sub{
+ color:var(--cinza);
+ font-size:13px;
+ margin-bottom:18px;
+ letter-spacing:.5px;
+}
+.minutos-box{
+ background:linear-gradient(145deg,#101e28,#09131a);
+ border:1px solid #3b505d;
+ border-radius:18px;
+ padding:14px 12px;
+ margin-bottom:14px;
+ box-shadow:0 5px 20px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.04);
+}
+.minutos-box h2{
+ font-size:14px;
+ letter-spacing:1.1px;
+ margin:0 0 12px;
+ color:var(--ouro);
+}
+#porMinuto{
+ display:flex;
+ gap:7px;
+ overflow-x:auto;
+ padding:2px 1px 7px;
+ scrollbar-width:thin;
+ scrollbar-color:#5a6570 transparent;
+}
+.minuto{
+ min-width:62px;
+ background:#0a141c;
+ border:1px solid #344957;
+ border-radius:12px;
+ padding:9px 4px;
+ box-shadow:inset 0 1px rgba(255,255,255,.04);
+}
+.minuto span{
+ display:block;
+ font-size:10px;
+ font-weight:700;
+ color:#a0b0bc;
+}
+.minuto strong{
+ display:block;
+ font-size:24px;
+ margin-top:4px;
+ color:var(--ouro);
+ font-variant-numeric:tabular-nums;
+}
+.minuto.atual{
+ border-color:var(--ouro);
+ background:#202015;
+ box-shadow:0 0 0 1px rgba(255,201,40,.18);
+}
+.tempos{
+ display:flex;
+ gap:10px;
+ margin-bottom:13px;
+}
+.tempos button{
+ flex:1;
+ padding:14px;
+ border-radius:13px;
+ border:1px solid #3a5261;
+ background:linear-gradient(180deg,#15242f,#0e1922);
+ color:#fff;
+ font-size:16px;
+ font-weight:900;
+}
+.tempos button.ativo{
+ background:linear-gradient(180deg,#ffe17b,#ffc928);
+ color:#080b0e;
+ border-color:#ffe17b;
+ box-shadow:0 4px 14px rgba(255,201,40,.16);
+}
+#status{
+ color:#aebcc8;
+ font-size:12px;
+ font-weight:800;
+ letter-spacing:1px;
+ margin-top:7px;
+}
+#tempo{
+ font-size:46px;
+ font-weight:900;
+ margin:5px 0 15px;
+ letter-spacing:1px;
+ font-variant-numeric:tabular-nums;
+ text-shadow:0 2px 14px rgba(255,255,255,.08);
+}
+.painel{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ grid-template-areas:"total projecao" "media media";
+ gap:10px;
+ margin-bottom:15px;
+}
+.card{
+ background:linear-gradient(150deg,#111f29,#09121a);
+ border:1px solid #344957;
+ border-radius:19px;
+ box-shadow:0 6px 18px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.04);
+}
+.card small{
+ display:block;
+ color:#aab9c5;
+ font-weight:900;
+ font-size:11px;
+ letter-spacing:.5px;
+}
+.card-total{
+ grid-area:total;
+ min-height:138px;
+ padding:16px 5px 12px;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+}
+.card-total .numero{
+ font-size:64px;
+ line-height:1;
+ font-weight:900;
+ margin-top:11px;
+ font-variant-numeric:tabular-nums;
+}
+.card-projecao{
+ grid-area:projecao;
+ min-height:138px;
+ padding:16px 5px 12px;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ border-color:#78632c;
+}
+.card-projecao .numero{
+ font-size:64px;
+ line-height:1;
+ font-weight:900;
+ margin-top:11px;
+ color:var(--ouro);
+ font-variant-numeric:tabular-nums;
+}
+.card-media{
+ grid-area:media;
+ min-height:69px;
+ padding:10px 14px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:18px;
+}
+.card-media .numero{
+ font-size:31px;
+ line-height:1;
+ font-weight:900;
+}
+.barra{
+ height:10px;
+ background:#192731;
+ border-radius:12px;
+ overflow:hidden;
+ border:1px solid #2a3d49;
+}
+#progresso{
+ height:100%;
+ width:0%;
+ background:linear-gradient(90deg,#c78d13,#ffc928,#ffe28b);
+ transition:width .25s;
+}
+#percentual{
+ color:#a2b1be;
+ font-size:12px;
+ margin:9px 0 17px;
+}
+#canto{
+ width:100%;
+ height:150px;
+ border:1px solid #ffe58c;
+ border-radius:25px;
+ background:linear-gradient(165deg,#ffe68b 0%,#ffc928 50%,#e7a918 100%);
+ color:#090b0e;
+ font-size:36px;
+ font-weight:900;
+ letter-spacing:.5px;
+ box-shadow:0 9px 25px rgba(255,201,40,.22),inset 0 2px rgba(255,255,255,.55);
+ touch-action:manipulation;
+ user-select:none;
+ -webkit-user-select:none;
+}
+#canto:active{
+ transform:scale(.985);
+ filter:brightness(.94);
+}
+.acoes{
+ display:flex;
+ gap:10px;
+ margin-top:15px;
+}
+.acoes button{
+ flex:1;
+ padding:15px 10px;
+ min-height:58px;
+ border-radius:14px;
+ font-weight:900;
+ font-size:15px;
+ box-shadow:0 4px 13px rgba(0,0,0,.2);
+}
+#iniciarPausar{
+ background:linear-gradient(180deg,#20a66d,#14774d);
+ border:1px solid #37b27e;
+ color:#fff;
+}
+#iniciarPausar.pausar{
+ background:linear-gradient(180deg,#d69b35,#a76c16);
+ border-color:#dba54b;
+}
+#zerar{
+ background:linear-gradient(180deg,#e84a4a,#b82732);
+ border:1px solid #ed6767;
+ color:#fff;
+}
+.indicar{
+ width:100%;
+ background:linear-gradient(180deg,#1a9b62,#126c45);
+ color:white;
+ border:1px solid #34ac78;
+ border-radius:14px;
+ padding:16px;
+ font-size:14px;
+ font-weight:900;
+ margin-top:18px;
+}
+.rodape{
+ margin-top:17px;
+ color:#8c9dab;
+ font-size:11px;
+ line-height:1.7;
+}
+.auth-box{
+ max-width:420px;
+ margin:60px auto 0;
+ background:linear-gradient(145deg,#111e28,#09131a);
+ border:1px solid #344957;
+ border-radius:22px;
+ padding:25px 18px;
+ box-shadow:0 10px 35px rgba(0,0,0,.3);
+}
+.auth-box input,
+.admin-box input,
+.admin-box select{
+ width:100%;
+ padding:14px;
+ margin:7px 0;
+ border:1px solid #3b5261;
+ border-radius:12px;
+ background:#0a151e;
+ color:#fff;
+ font-size:16px;
+}
+.btn{
+ padding:13px;
+ border:1px solid #ffe08a;
+ border-radius:12px;
+ background:linear-gradient(180deg,#ffe17b,#ffc928);
+ color:#080b0e;
+ font-weight:900;
+ font-size:15px;
+}
+#loginBtn{width:100%;margin-top:12px}
+.erro{
+ color:#ff8c8c;
+ font-size:13px;
+ margin-top:12px;
+ overflow-wrap:anywhere;
+}
+.topo-acesso{
+ display:flex;
+ justify-content:space-between;
+ gap:8px;
+ align-items:center;
+ margin-bottom:15px;
+}
+.topo-acesso button{
+ background:#152530;
+ color:#dbe4eb;
+ border:1px solid #3b5261;
+ border-radius:11px;
+ padding:10px;
+ font-size:12px;
+ font-weight:800;
+}
+.admin-box{
+ background:linear-gradient(145deg,#111f29,#09131a);
+ border:1px solid #ac8b36;
+ border-radius:19px;
+ padding:16px;
+ margin-bottom:18px;
+ text-align:left;
+ box-shadow:0 5px 20px rgba(0,0,0,.2);
+}
+.admin-box h2{
+ font-size:17px;
+ color:var(--ouro);
+ margin:0 0 10px;
+}
+.usuario-item{
+ border-top:1px solid #304553;
+ padding:13px 0;
+ font-size:13px;
+ overflow-wrap:anywhere;
+}
+.usuario-item strong{color:var(--ouro)}
+.usuario-item button{
+ padding:10px 12px;
+ border:0;
+ border-radius:10px;
+ color:#fff;
+ font-weight:800;
+ margin:8px 5px 0 0;
+}
+.info{
+ font-size:12px;
+ color:#aebbc7;
+ overflow-wrap:anywhere;
+ line-height:1.6;
+}
+.btn-bloquear{background:#a66a17}
+.btn-ativar{background:#178a57}
+.btn-excluir{background:#d5353b}
+.btn-renovar{background:#b38b17}
+#testarLogin{
+ width:100%;
+ margin:12px 0;
+ background:#2464bd;
+ color:#fff;
+ border-color:#3b7bd6;
+}
+@media(max-width:370px){
+ .card-total .numero,
+ .card-projecao .numero{font-size:55px}
+ h1{font-size:24px}
+ #canto{font-size:32px}
+}
 </style>
 </head>
+
 <body>
-<div class="container">
 
-<h1>🐦 MARCADOR DE <span class="gold">COLEIRO</span></h1>
-<div class="sub">VERSÃO 4.1 • CONTROLE DE CANTOS</div>
-
-<section id="loading" class="panel">Verificando acesso ao Firebase...</section>
-
-<section id="login" class="panel hidden">
-<h2>ACESSO AO MARCADOR</h2>
-<label>E-mail</label>
-<input id="email" type="email" autocomplete="username" placeholder="Seu e-mail">
-<label>Senha</label>
-<input id="password" type="password" autocomplete="current-password" placeholder="Sua senha">
-<button id="loginBtn" class="goldbtn" style="width:100%;margin-top:12px">ENTRAR</button>
-<div id="loginMsg"></div>
-<p class="notice">O acesso é liberado individualmente pelo administrador.</p>
-<a href="https://wa.me/5581988698384" style="color:#ffc928">SOLICITAR ACESSO PELO WHATSAPP</a>
-</section>
-
-<section id="app" class="hidden">
-
-<div class="panel">
-<div id="welcome" class="gold" style="font-weight:800"></div>
-<div id="subscription"></div>
-<div class="row" style="margin-top:12px">
-<button id="adminToggle" class="outline hidden">ADMINISTRAR</button>
-<button id="logout">SAIR</button>
-</div>
+<div id="carregando" class="auth-box">
+<h2>Verificando acesso...</h2>
+<p class="info">Conectando ao Firebase.</p>
 </div>
 
-<section id="admin" class="panel hidden">
-<h2>ADMINISTRAÇÃO</h2>
-<p class="notice">Cadastre o cliente no Firebase Authentication e depois libere o UID aqui.</p>
-<label>UID do usuário</label>
-<input id="newUid" placeholder="Cole o UID">
-<label>Nome do usuário</label>
-<input id="newName" placeholder="Nome ou apelido">
-<label>Plano de acesso</label>
-<select id="newPlan">
-<option value="30">30 dias — R$ 10,00</option>
-<option value="180">180 dias — R$ 30,00</option>
-<option value="365">365 dias — R$ 50,00</option>
+<div id="loginTela" class="auth-box" hidden>
+<h1>🐦 MARCADOR DE <span class="dourado">COLEIRO</span></h1>
+<p class="sub">ACESSO AUTORIZADO • V4.2</p>
+<form id="loginForm">
+<input id="email" type="email" placeholder="Seu e-mail" autocomplete="username" required>
+<input id="senha" type="password" placeholder="Sua senha" autocomplete="current-password" required>
+<button id="loginBtn" class="btn" type="submit">ENTRAR</button>
+</form>
+<p id="loginErro" class="erro" role="alert"></p>
+<p class="info">
+Para solicitar acesso:
+<a href="https://wa.me/5581988698384" style="color:#ffc928">WhatsApp do administrador</a>
+</p>
+</div>
+
+<div id="app" class="container" hidden>
+
+<div class="topo-acesso">
+<button id="adminBtn" hidden>⚙ ADMINISTRAR</button>
+<button id="sairBtn">SAIR DA CONTA</button>
+</div>
+
+<div id="adminPainel" class="admin-box" hidden>
+<h2>⚙ CONTROLE DE USUÁRIOS</h2>
+<p class="info">
+Cadastre primeiro o usuário no Firebase Authentication.
+Depois informe o UID para autorizar o acesso.
+</p>
+
+<input id="novoUid" placeholder="UID do usuário">
+<input id="novoNome" placeholder="Nome do usuário">
+
+<select id="novoPlano">
+<option value="30">30 DIAS — R$ 10,00</option>
+<option value="180">180 DIAS — R$ 30,00</option>
+<option value="365">365 DIAS — R$ 50,00</option>
 </select>
-<button id="addUser" class="goldbtn" style="width:100%;margin-top:10px">CADASTRAR / RENOVAR</button>
-<div id="adminMsg"></div>
-<h2>USUÁRIOS CADASTRADOS</h2>
-<div id="users">Carregando...</div>
-</section>
 
-<section class="panel">
-<div class="row">
-<div class="stat"><span>MINUTOS</span><strong id="minutes">10</strong></div>
-<div class="stat"><span>CANTOS</span><strong id="total">0</strong></div>
-<div class="stat"><span>CANTOS/MIN</span><strong id="average">0,0</strong></div>
+<button id="adicionarUsuario" class="btn">
+CADASTRAR / RENOVAR
+</button>
+
+<button id="testarLogin" class="btn">
+🧪 TESTAR LOGIN DE USUÁRIO
+</button>
+
+<p class="info">
+Para testar um usuário, abra o marcador em uma aba privada do Safari.
+</p>
+
+<p id="adminMensagem" class="info" role="status"></p>
+<div id="listaUsuarios"></div>
 </div>
 
-<div class="row" style="margin-top:12px">
-<button id="ten" class="goldbtn">10 MINUTOS</button>
-<button id="fifteen">15 MINUTOS</button>
+<h1>🐦 MARCADOR DE <span class="dourado">COLEIRO</span></h1>
+<div class="sub">V4.2 • PROJEÇÃO EM TEMPO REAL</div>
+
+<div class="minutos-box">
+<h2>CANTOS POR MINUTO</h2>
+<div id="porMinuto"></div>
 </div>
 
-<p id="status">PRONTO PARA INICIAR</p>
-<h2 style="margin:7px 0 12px">CANTOS POR MINUTO</h2>
-<div id="minuteGrid" class="minute-grid"></div>
-
-<div id="clock">TEMPO RESTANTE: 10:00</div>
-<div class="progress"><div id="bar"></div></div>
-<div id="percentage">0% concluído</div>
-
-<div class="row">
-<div class="stat"><span>PROJEÇÃO FINAL</span><strong id="projection">0</strong></div>
-<div class="stat"><span>TEMPO DECORRIDO</span><strong id="elapsed">00:00</strong></div>
+<div class="tempos">
+<button id="b10" class="ativo">10 MIN</button>
+<button id="b15">15 MIN</button>
 </div>
 
-<button id="canto" class="goldbtn">+ CANTO</button>
-<div class="row">
-<button id="start" class="green">▶ INICIAR</button>
-<button id="reset" class="red">ZERAR</button>
+<div id="status">PRONTO PARA INICIAR</div>
+<div id="tempo">00:00</div>
+
+<div class="painel">
+<div class="card card-total">
+<small>TOTAL DE CANTOS</small>
+<div class="numero" id="total">0</div>
 </div>
 
-<button id="save" class="outline">SALVAR RESULTADO NO HISTÓRICO</button>
-<div id="saveMsg"></div>
-</section>
-
-<section class="panel">
-<h2>HISTÓRICO DE RESULTADOS</h2>
-<div id="history"></div>
-<p class="notice">Os resultados ficam salvos neste navegador e neste aparelho.</p>
-</section>
-
-<div class="panel">
-<h2>PLANOS DE ACESSO</h2>
-<p>30 dias — <strong class="gold">R$ 10,00</strong></p>
-<p>180 dias — <strong class="gold">R$ 30,00</strong></p>
-<p>365 dias — <strong class="gold">R$ 50,00</strong></p>
-<button id="share" class="green" style="width:100%">COMPARTILHAR / SOLICITAR ACESSO</button>
+<div class="card card-projecao">
+<small>PROJEÇÃO FINAL</small>
+<div class="numero" id="projecao">0</div>
 </div>
 
-</section>
+<div class="card card-media">
+<small>MÉDIA / MIN</small>
+<div class="numero" id="media">0.0</div>
+</div>
+</div>
+
+<div class="barra"><div id="progresso"></div></div>
+<div id="percentual">0% • 00:00 / 10:00</div>
+
+<button id="canto">🐦 + CANTO</button>
+
+<div class="acoes">
+<button id="iniciarPausar">▶ INICIAR</button>
+<button id="zerar">↻ ZERAR</button>
+</div>
+
+<button id="indicarAmigo" class="indicar">
+💬 INDICAR MARCADOR PARA UM AMIGO
+</button>
+
+<div class="rodape">
+Toque em INICIAR para começar.<br>
+PAUSAR congela o tempo.<br>
+INICIAR continua de onde parou.
+</div>
+
 </div>
 
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
-import {getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
-import {getFirestore,doc,getDoc,getDocs,collection,setDoc,updateDoc,deleteDoc} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+
+import {
+ getAuth,
+ signInWithEmailAndPassword,
+ signOut,
+ onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+
+import {
+ getFirestore,
+ doc,
+ getDoc,
+ getDocs,
+ collection,
+ setDoc,
+ updateDoc,
+ deleteDoc,
+ onSnapshot
+} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 
 const firebaseConfig={
-apiKey:"AIzaSyDovY5VLOO3-OnQ1xjiQqNwlgrv_lMMCNY",
-authDomain:"marcador-de-coleiro.firebaseapp.com",
-projectId:"marcador-de-coleiro",
-storageBucket:"marcador-de-coleiro.firebasestorage.app",
-messagingSenderId:"455735913686",
-appId:"1:455735913686:web:dfde603142e471b9adad77"
+ apiKey:"AIzaSyDovY5VLOO3-OnQ1xjiQqNwlgrv_lMMCNY",
+ authDomain:"marcador-de-coleiro.firebaseapp.com",
+ projectId:"marcador-de-coleiro",
+ storageBucket:"marcador-de-coleiro.firebasestorage.app",
+ messagingSenderId:"455735913686",
+ appId:"1:455735913686:web:dfde603142e471b9adad77"
 };
 
 const ADMIN_UID="P2xlWCfM8ESIkoyTfkVjprhjiLz1";
-const CONTACT="5581988698384";
+
 const firebaseApp=initializeApp(firebaseConfig);
 const auth=getAuth(firebaseApp);
 const db=getFirestore(firebaseApp);
 const el=id=>document.getElementById(id);
 
-let current=null,currentData=null,isAdmin=false;
-let duration=10,cantos=[],startedAt=null,accumulated=0;
-let finished=false,paused=false,timer=null;
+let usuarioAtual=null;
+let observador=null;
+let observadorSessao=0;
+let adminAberto=false;
+let administradorAtual=false;
+let dadosAtuais=null;
 
-function show(id,visible){el(id).classList.toggle("hidden",!visible)}
-
-function dateKey(d){
-return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+function mostrar(tela){
+ el("carregando").hidden=tela!=="carregando";
+ el("loginTela").hidden=tela!=="login";
+ el("app").hidden=tela!=="app";
 }
 
-function validExpiry(data){
-if(!data||data.ativo!==true)return false;
-if(!data.vencimento)return true;
-const time=new Date(data.vencimento).getTime();
-return Number.isFinite(time)&&time>Date.now();
+function mensagemLogin(msg){
+ el("loginErro").textContent=msg;
 }
 
-function expiryText(data){
-if(!data?.vencimento)return "Sem vencimento cadastrado";
-const d=new Date(data.vencimento);
-return Number.isNaN(d.getTime())?"Data inválida":d.toLocaleDateString("pt-BR");
+function mensagemAdmin(msg){
+ el("adminMensagem").textContent=msg;
 }
 
-function stopTimer(){
-if(timer!==null)clearInterval(timer);
-timer=null;
-startedAt=null;
+function erroFirebase(error){
+ const codigo=error?.code||"";
+ if(["auth/invalid-credential","auth/wrong-password","auth/user-not-found"].includes(codigo)){
+  return "E-mail ou senha incorretos.";
+ }
+ if(codigo==="auth/too-many-requests"){
+  return "Muitas tentativas. Aguarde.";
+ }
+ if(codigo==="auth/unauthorized-domain"){
+  return "Domínio não autorizado no Firebase.";
+ }
+ if(codigo==="permission-denied"){
+  return "Acesso negado pelas regras do Firestore.";
+ }
+ return "Erro: "+(error?.message||"desconhecido");
 }
 
-function accessLost(){
-stopTimer();
-current=null;currentData=null;isAdmin=false;
-show("app",false);show("login",true);show("loading",false);
-el("loginMsg").textContent="Acesso bloqueado ou plano vencido. Fale com o administrador.";
+function acessoValido(dados){
+ if(!dados||dados.ativo!==true)return false;
+ if(!dados.vencimento)return true;
+ const data=new Date(dados.vencimento).getTime();
+ return Number.isFinite(data)&&data>Date.now();
 }
 
-async function refreshAccess(){
-if(!auth.currentUser)return;
-try{
-const snap=await getDoc(doc(db,"usuarios",auth.currentUser.uid));
-if(!snap.exists()||!validExpiry(snap.data())){accessLost();return}
-current=auth.currentUser;
-currentData=snap.data();
-isAdmin=current.uid===ADMIN_UID&&currentData.admin===true;
-el("welcome").textContent="OLÁ, "+(currentData.nome||"USUÁRIO").toUpperCase();
-el("subscription").textContent=isAdmin?"ADMINISTRADOR • ACESSO LIBERADO":"PLANO: "+(currentData.planoDias||"Não definido")+" dias • VENCIMENTO: "+expiryText(currentData);
-show("adminToggle",isAdmin);
-show("login",false);show("loading",false);show("app",true);
-drawHistory();
-}catch(err){
-show("loading",false);
-el("loginMsg").textContent="Erro ao consultar acesso: "+err.message;
-show("login",true);
-}
+function vencimentoTexto(dados){
+ if(!dados.vencimento)return "Sem vencimento cadastrado";
+ const data=new Date(dados.vencimento);
+ return Number.isNaN(data.getTime())?
+  "Data inválida":data.toLocaleDateString("pt-BR");
 }
 
-onAuthStateChanged(auth,async user=>{
-stopTimer();current=null;show("app",false);
-if(!user){show("loading",false);show("login",true);return}
-await refreshAccess();
+function criarPlano(dias){
+ const agora=new Date();
+ const fim=new Date(agora.getTime()+dias*86400000);
+ return {
+  planoDias:dias,
+  ativadoEm:agora.toISOString(),
+  vencimento:fim.toISOString()
+ };
+}
+
+function limparObservador(){
+ observadorSessao++;
+ if(observador){
+  observador();
+  observador=null;
+ }
+}
+
+function bloquearAcesso(msg){
+ limparObservador();
+ usuarioAtual=null;
+ dadosAtuais=null;
+ administradorAtual=false;
+ el("adminBtn").hidden=true;
+ el("adminPainel").hidden=true;
+ zerar();
+ mostrar("login");
+ mensagemLogin(msg);
+}
+
+onAuthStateChanged(auth,user=>{
+ limparObservador();
+ usuarioAtual=null;
+ dadosAtuais=null;
+ administradorAtual=false;
+ zerar();
+
+ if(!user){
+  el("adminBtn").hidden=true;
+  el("adminPainel").hidden=true;
+  mostrar("login");
+  return;
+ }
+
+ mostrar("carregando");
+ const sessao=observadorSessao;
+
+ observador=onSnapshot(
+  doc(db,"usuarios",user.uid),
+  snapshot=>{
+   if(sessao!==observadorSessao)return;
+
+   if(!snapshot.exists()||!acessoValido(snapshot.data())){
+    bloquearAcesso("Seu acesso não está autorizado, foi bloqueado ou venceu.");
+    return;
+   }
+
+   usuarioAtual=user;
+   dadosAtuais=snapshot.data();
+
+   administradorAtual=
+    user.uid===ADMIN_UID &&
+    dadosAtuais.admin===true;
+
+   el("adminBtn").hidden=!administradorAtual;
+   el("adminPainel").hidden=true;
+   adminAberto=false;
+   mostrar("app");
+  },
+  error=>{
+   if(sessao!==observadorSessao)return;
+   bloquearAcesso(erroFirebase(error));
+  }
+ );
+},error=>{
+ mostrar("login");
+ mensagemLogin(erroFirebase(error));
 });
 
-el("loginBtn").onclick=async()=>{
-el("loginMsg").textContent="Entrando...";
-try{
-await signInWithEmailAndPassword(auth,el("email").value.trim(),el("password").value);
-el("loginMsg").textContent="";
-}catch(err){el("loginMsg").textContent="Não foi possível entrar. Confira e-mail e senha."}
-};
+el("loginForm").addEventListener("submit",async event=>{
+ event.preventDefault();
+ mensagemLogin("");
+ const botao=el("loginBtn");
+ botao.disabled=true;
+ botao.textContent="ENTRANDO...";
 
-el("password").addEventListener("keydown",e=>{if(e.key==="Enter")el("loginBtn").click()});
-el("logout").onclick=()=>signOut(auth);
-
-el("adminToggle").onclick=async()=>{
-if(!isAdmin)return;
-const opening=el("admin").classList.contains("hidden");
-show("admin",opening);
-if(opening)await loadUsers();
-};
-
-function requireAdmin(){return current&&isAdmin&&auth.currentUser?.uid===ADMIN_UID}
-
-function makeExpiry(days){
-const now=new Date();
-return {now:now.toISOString(),end:new Date(now.getTime()+days*86400000).toISOString()};
-}
-
-el("addUser").onclick=async()=>{
-if(!requireAdmin())return;
-const uid=el("newUid").value.trim();
-const nome=el("newName").value.trim();
-const days=Number(el("newPlan").value);
-if(!uid||!nome||![30,180,365].includes(days)){
-el("adminMsg").textContent="Informe UID, nome e plano.";return;
-}
-const dates=makeExpiry(days);
-try{
-await setDoc(doc(db,"usuarios",uid),{
-nome,ativo:true,admin:false,planoDias:days,ativadoEm:dates.now,vencimento:dates.end
-},{merge:true});
-el("adminMsg").textContent="Usuário liberado com sucesso.";
-el("newUid").value="";el("newName").value="";
-await loadUsers();
-}catch(err){el("adminMsg").textContent="Erro: "+err.message}
-};
-
-async function loadUsers(){
-if(!requireAdmin())return;
-const area=el("users");
-area.textContent="Carregando usuários...";
-try{
-const result=await getDocs(collection(db,"usuarios"));
-area.replaceChildren();
-if(result.empty){area.textContent="Nenhum usuário cadastrado.";return}
-result.forEach(snap=>{
-const data=snap.data(),uid=snap.id;
-const div=document.createElement("div");
-div.className="user";
-const name=document.createElement("strong");
-name.textContent=data.nome||"Usuário";
-div.appendChild(name);
-const info=document.createElement("div");
-info.className="small";
-info.style.whiteSpace="pre-line";
-info.textContent="UID: "+uid+"\nSituação: "+(validExpiry(data)?"ATIVO":"BLOQUEADO / VENCIDO")+"\nPlano: "+(data.planoDias||"Não definido")+" dias\nVencimento: "+expiryText(data);
-div.appendChild(info);
-
-if(uid!==ADMIN_UID){
-const actions=document.createElement("div");
-actions.className="actions";
-const toggle=document.createElement("button");
-toggle.textContent=data.ativo===true?"BLOQUEAR":"ATIVAR";
-toggle.className=data.ativo===true?"red":"green";
-toggle.onclick=async()=>{
-if(!requireAdmin())return;
-try{await updateDoc(doc(db,"usuarios",uid),{ativo:data.ativo!==true});await loadUsers()}
-catch(e){alert("Erro: "+e.message)}
-};
-actions.appendChild(toggle);
-
-const renew=document.createElement("button");
-renew.textContent="RENOVAR";renew.className="goldbtn";
-renew.onclick=async()=>{
-if(!requireAdmin())return;
-const answer=prompt("Renovar por quantos dias? 30, 180 ou 365.",String(data.planoDias||30));
-if(answer===null)return;
-const days=Number(answer);
-if(![30,180,365].includes(days)){alert("Escolha 30, 180 ou 365 dias.");return}
-const dates=makeExpiry(days);
-try{
-await updateDoc(doc(db,"usuarios",uid),{ativo:true,planoDias:days,ativadoEm:dates.now,vencimento:dates.end});
-await loadUsers();
-}catch(e){alert("Erro: "+e.message)}
-};
-actions.appendChild(renew);
-
-const remove=document.createElement("button");
-remove.textContent="EXCLUIR";remove.className="red";
-remove.onclick=async()=>{
-if(!requireAdmin())return;
-if(!confirm("Excluir o acesso de "+(data.nome||uid)+"?"))return;
-try{await deleteDoc(doc(db,"usuarios",uid));await loadUsers()}
-catch(e){alert("Erro: "+e.message)}
-};
-actions.appendChild(remove);
-div.appendChild(actions);
-}
-area.appendChild(div);
+ try{
+  await signInWithEmailAndPassword(
+   auth,
+   el("email").value.trim(),
+   el("senha").value
+  );
+ }catch(error){
+  mensagemLogin(erroFirebase(error));
+ }finally{
+  botao.disabled=false;
+  botao.textContent="ENTRAR";
+ }
 });
-}catch(err){area.textContent="Erro ao listar: "+err.message}
-}
 
-function secondsElapsed(){
-return Math.min(duration*60,accumulated+(startedAt===null?0:(Date.now()-startedAt)/1000));
-}
-
-function formatTime(seconds){
-const s=Math.max(0,Math.floor(seconds));
-return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
-}
-
-function drawMinuteGrid(){
-const grid=el("minuteGrid");
-grid.replaceChildren();
-const elapsed=secondsElapsed();
-const activeMinute=finished?duration:(startedAt!==null||paused?Math.min(duration,Math.floor(elapsed/60)+1):0);
-const counts=Array(duration).fill(0);
-cantos.forEach(second=>{
-const index=Math.min(duration-1,Math.floor(second/60));
-if(index>=0)counts[index]++;
+el("sairBtn").addEventListener("click",async()=>{
+ limparObservador();
+ usuarioAtual=null;
+ dadosAtuais=null;
+ administradorAtual=false;
+ zerar();
+ mostrar("carregando");
+ try{
+  await signOut(auth);
+ }catch(error){
+  mostrar("login");
+  mensagemLogin(erroFirebase(error));
+ }
 });
-for(let i=0;i<duration;i++){
-const box=document.createElement("div");
-box.className="minute-box";
-if(activeMinute===i+1)box.classList.add("current-minute");
-if(elapsed>=(i+1)*60)box.classList.add("done-minute");
-const label=document.createElement("span");
-label.className="minute-label";
-label.textContent=(i+1)+" MIN";
-const count=document.createElement("span");
-count.className="minute-count";
-count.textContent=counts[i];
-box.appendChild(label);box.appendChild(count);grid.appendChild(box);
-}
+
+function exigirAdmin(){
+ return usuarioAtual &&
+  usuarioAtual.uid===ADMIN_UID &&
+  administradorAtual===true;
 }
 
-function update(){
-const elapsed=secondsElapsed();
-if(elapsed>=duration*60&&startedAt!==null){
-accumulated=duration*60;stopTimer();finished=true;paused=false;
-}
-const used=secondsElapsed(),remaining=duration*60-used,total=cantos.length;
-const average=used>0?total/(used/60):0;
-const projected=used>0?Math.round(average*duration):0;
-const percent=Math.min(100,used/(duration*60)*100);
-el("minutes").textContent=duration;
-el("clock").textContent="TEMPO RESTANTE: "+formatTime(remaining);
-el("elapsed").textContent=formatTime(used);
-el("total").textContent=total;
-el("average").textContent=average.toFixed(1).replace(".",",");
-el("projection").textContent=projected;
-el("bar").style.width=percent+"%";
-el("percentage").textContent=Math.round(percent)+"% concluído";
-el("status").textContent=finished?"TEMPO FINALIZADO":startedAt!==null?"CONTAGEM EM ANDAMENTO":paused?"CONTAGEM PAUSADA":"PRONTO PARA INICIAR";
-el("start").textContent=finished?"✓ FINALIZADO":startedAt!==null?"Ⅱ PAUSAR":paused?"▶ CONTINUAR":"▶ INICIAR";
-el("start").disabled=finished;
-el("canto").disabled=finished||startedAt===null||!current;
-el("ten").className=duration===10?"goldbtn":"";
-el("fifteen").className=duration===15?"goldbtn":"";
-drawMinuteGrid();
-}
-
-function resetCounter(){
-stopTimer();accumulated=0;cantos=[];finished=false;paused=false;
-el("saveMsg").textContent="";update();
-}
-
-function setDuration(minutes){
-if(startedAt!==null||accumulated>0){
-if(!confirm("Alterar o tempo e zerar a contagem atual?"))return;
-}
-resetCounter();duration=minutes;update();
-}
-
-el("ten").onclick=()=>setDuration(10);
-el("fifteen").onclick=()=>setDuration(15);
-
-el("start").onclick=()=>{
-if(!current||finished)return;
-if(startedAt!==null){
-accumulated=secondsElapsed();stopTimer();paused=true;
-}else{
-startedAt=Date.now();paused=false;timer=setInterval(update,250);
-}
-update();
-};
-
-el("canto").onclick=()=>{
-if(!current||startedAt===null||finished)return;
-update();
-if(finished)return;
-cantos.push(secondsElapsed());update();
-};
-
-el("reset").onclick=()=>{
-if(cantos.length||secondsElapsed()>0){
-if(!confirm("Zerar a contagem atual?"))return;
-}
-resetCounter();
-};
-
-function historyKey(){return "marcador-coleiro-v4-historico-"+current.uid}
-
-function readHistory(){
-if(!current)return [];
-try{
-const parsed=JSON.parse(localStorage.getItem(historyKey())||"[]");
-return Array.isArray(parsed)?parsed:[];
-}catch(e){return []}
-}
-
-function writeHistory(items){localStorage.setItem(historyKey(),JSON.stringify(items))}
-
-el("save").onclick=()=>{
-if(!current)return;
-if(cantos.length===0){el("saveMsg").textContent="Registre pelo menos um canto.";return}
-const now=new Date(),history=readHistory();
-history.push({
-id:String(Date.now())+"-"+Math.random().toString(36).slice(2,8),
-date:dateKey(now),
-time:now.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}),
-duration,seconds:Math.round(secondsElapsed()),total:cantos.length
+el("adminBtn").addEventListener("click",async()=>{
+ if(!exigirAdmin())return;
+ adminAberto=!adminAberto;
+ el("adminPainel").hidden=!adminAberto;
+ if(adminAberto)await carregarUsuarios();
 });
-try{
-writeHistory(history);
-el("saveMsg").textContent="Resultado salvo com sucesso!";
-drawHistory();
-}catch(err){el("saveMsg").textContent="Erro ao salvar: "+err.message}
-};
 
-function drawHistory(){
-const area=el("history");area.replaceChildren();
-const items=readHistory().sort((a,b)=>(b.date+" "+b.time).localeCompare(a.date+" "+a.time));
-if(items.length===0){
-const empty=document.createElement("p");empty.className="small";
-empty.textContent="Nenhum resultado salvo.";area.appendChild(empty);return;
-}
-items.forEach(item=>{
-const div=document.createElement("div");div.className="history-item";
-const title=document.createElement("strong");title.textContent=item.total+" CANTOS";
-div.appendChild(title);
-const detail=document.createElement("div");
-const parts=item.date.split("-");
-detail.textContent=parts[2]+"/"+parts[1]+"/"+parts[0]+" às "+item.time+" • "+item.duration+" min • Tempo: "+formatTime(item.seconds);
-div.appendChild(detail);
-const remove=document.createElement("button");
-remove.className="red";remove.textContent="EXCLUIR";
-remove.onclick=()=>{
-if(!confirm("Excluir este resultado?"))return;
-writeHistory(readHistory().filter(x=>x.id!==item.id));drawHistory();
-};
-div.appendChild(remove);area.appendChild(div);
+el("testarLogin").addEventListener("click",()=>{
+ if(!exigirAdmin())return;
+
+ const link=window.location.href.split("#")[0];
+
+ if(navigator.clipboard&&window.isSecureContext){
+  navigator.clipboard.writeText(link).then(()=>{
+   mensagemAdmin("Link copiado! Abra em uma aba privada do Safari.");
+  }).catch(()=>{
+   window.prompt("Copie este link:",link);
+  });
+ }else{
+  window.prompt("Copie este link:",link);
+ }
 });
+
+async function carregarUsuarios(){
+ if(!exigirAdmin())return;
+
+ const lista=el("listaUsuarios");
+ lista.textContent="Carregando usuários...";
+
+ try{
+  const resultado=await getDocs(collection(db,"usuarios"));
+  if(!exigirAdmin())return;
+
+  lista.textContent="";
+
+  if(resultado.empty){
+   lista.textContent="Nenhum usuário cadastrado.";
+   return;
+  }
+
+  resultado.forEach(item=>{
+   const dados=item.data();
+   const div=document.createElement("div");
+   div.className="usuario-item";
+
+   const nome=document.createElement("strong");
+   nome.textContent=dados.nome||"Usuário";
+   div.appendChild(nome);
+
+   const uid=document.createElement("div");
+   uid.className="info";
+   uid.textContent="UID: "+item.id;
+   div.appendChild(uid);
+
+   const situacao=document.createElement("div");
+   situacao.className="info";
+   situacao.textContent="Situação: "+
+    (acessoValido(dados)?"ATIVO":"BLOQUEADO / VENCIDO");
+   div.appendChild(situacao);
+
+   const plano=document.createElement("div");
+   plano.className="info";
+   plano.textContent=
+    "Plano: "+(dados.planoDias||"Não definido")+" dias"+
+    " | Vencimento: "+vencimentoTexto(dados);
+   div.appendChild(plano);
+
+   if(item.id!==ADMIN_UID){
+    const ativar=document.createElement("button");
+    ativar.textContent=dados.ativo===true?
+     "BLOQUEAR":"ATIVAR";
+    ativar.className=dados.ativo===true?
+     "btn-bloquear":"btn-ativar";
+
+    ativar.addEventListener("click",async()=>{
+     if(!exigirAdmin())return;
+     ativar.disabled=true;
+     try{
+      await updateDoc(doc(db,"usuarios",item.id),{
+       ativo:dados.ativo!==true
+      });
+      mensagemAdmin("Acesso atualizado.");
+      await carregarUsuarios();
+     }catch(error){
+      mensagemAdmin(erroFirebase(error));
+      ativar.disabled=false;
+     }
+    });
+    div.appendChild(ativar);
+
+    const renovar=document.createElement("button");
+    renovar.textContent="RENOVAR PLANO";
+    renovar.className="btn-renovar";
+
+    renovar.addEventListener("click",async()=>{
+     if(!exigirAdmin())return;
+     const resposta=prompt(
+      "Renovar por quantos dias?\n30, 180 ou 365",
+      String(dados.planoDias||30)
+     );
+     if(resposta===null)return;
+     const dias=Number(resposta);
+     if(![30,180,365].includes(dias)){
+      alert("Escolha 30, 180 ou 365 dias.");
+      return;
+     }
+     renovar.disabled=true;
+     try{
+      await updateDoc(
+       doc(db,"usuarios",item.id),
+       {ativo:true,...criarPlano(dias)}
+      );
+      mensagemAdmin("Plano renovado com sucesso.");
+      await carregarUsuarios();
+     }catch(error){
+      mensagemAdmin(erroFirebase(error));
+      renovar.disabled=false;
+     }
+    });
+    div.appendChild(renovar);
+
+    const excluir=document.createElement("button");
+    excluir.textContent="🗑 EXCLUIR ACESSO";
+    excluir.className="btn-excluir";
+
+    excluir.addEventListener("click",async()=>{
+     if(!exigirAdmin())return;
+     const confirmar=confirm(
+      "Remover o acesso de "+
+      (dados.nome||item.id)+"?\n\n"+
+      "A conta no Authentication continuará existindo."
+     );
+     if(!confirmar)return;
+     excluir.disabled=true;
+     try{
+      await deleteDoc(doc(db,"usuarios",item.id));
+      mensagemAdmin("Acesso removido.");
+      await carregarUsuarios();
+     }catch(error){
+      mensagemAdmin(erroFirebase(error));
+      excluir.disabled=false;
+     }
+    });
+    div.appendChild(excluir);
+   }
+   lista.appendChild(div);
+  });
+ }catch(error){
+  lista.textContent="";
+  mensagemAdmin(erroFirebase(error));
+ }
 }
 
-el("share").onclick=()=>{
-const message="🐦 MARCADOR DE COLEIRO\n\nControle de cantos, cronômetro e histórico.\n\nPLANOS:\n30 dias: R$ 10,00\n180 dias: R$ 30,00\n365 dias: R$ 50,00\n\nSolicite seu acesso.\n\nhttps://vilela464-glitch.github.io/marcador-coleiro/";
-window.open("https://wa.me/"+CONTACT+"?text="+encodeURIComponent(message),"_blank");
-};
+el("adicionarUsuario").addEventListener("click",async()=>{
+ if(!exigirAdmin())return;
 
+ const uid=el("novoUid").value.trim();
+ const nome=el("novoNome").value.trim();
+ const dias=Number(el("novoPlano").value);
+
+ if(!uid||uid.includes("/")||uid===ADMIN_UID){
+  mensagemAdmin("Informe um UID válido de usuário.");
+  return;
+ }
+ if(!nome){
+  mensagemAdmin("Informe o nome do usuário.");
+  return;
+ }
+ if(![30,180,365].includes(dias)){
+  mensagemAdmin("Selecione um plano válido.");
+  return;
+ }
+
+ const botao=el("adicionarUsuario");
+ botao.disabled=true;
+ mensagemAdmin("Salvando usuário...");
+
+ try{
+  await setDoc(doc(db,"usuarios",uid),{
+   nome,
+   ativo:true,
+   admin:false,
+   ...criarPlano(dias)
+  },{merge:true});
+
+  mensagemAdmin("Usuário autorizado com sucesso.");
+  el("novoUid").value="";
+  el("novoNome").value="";
+  await carregarUsuarios();
+ }catch(error){
+  mensagemAdmin(erroFirebase(error));
+ }finally{
+  botao.disabled=false;
+ }
+});
+
+// CRONÔMETRO E CONTADOR ORIGINAL V3.1
+
+let duracao=10;
+let cantos=[];
+let inicio=null;
+let intervalo=null;
+let finalizado=false;
+let pausado=false;
+let tempoAcumulado=0;
+
+const totalEl=el("total");
+const mediaEl=el("media");
+const projecaoEl=el("projecao");
+const tempoEl=el("tempo");
+const statusEl=el("status");
+const progressoEl=el("progresso");
+const percentualEl=el("percentual");
+const porMinutoEl=el("porMinuto");
+const controleEl=el("iniciarPausar");
+
+function selecionarTempo(min){
+ if(!usuarioAtual)return;
+ if(inicio!==null||pausado||finalizado)return;
+ duracao=min;
+ el("b10").classList.toggle("ativo",min===10);
+ el("b15").classList.toggle("ativo",min===15);
+ atualizar();
+}
+
+function formatarTempo(seg){
+ seg=Math.max(0,Math.floor(seg));
+ const m=Math.floor(seg/60);
+ const s=seg%60;
+ return String(m).padStart(2,"0")+":"+
+ String(s).padStart(2,"0");
+}
+
+function tempoDecorrido(){
+ const atual=tempoAcumulado+
+  (inicio!==null?(Date.now()-inicio)/1000:0);
+ return Math.min(atual,duracao*60);
+}
+
+function controlarTempo(){
+ if(!usuarioAtual||finalizado)return;
+
+ if(inicio!==null){
+  tempoAcumulado=tempoDecorrido();
+  inicio=null;
+  pausado=true;
+  clearInterval(intervalo);
+  intervalo=null;
+  statusEl.textContent="MARCAÇÃO PAUSADA";
+ }else{
+  inicio=Date.now();
+  pausado=false;
+  statusEl.textContent="MARCAÇÃO EM ANDAMENTO";
+  clearInterval(intervalo);
+  intervalo=setInterval(atualizar,250);
+ }
+ atualizar();
+}
+
+function registrarCanto(){
+ if(!usuarioAtual||finalizado||inicio===null)return;
+ atualizar();
+ if(finalizado)return;
+ cantos.push(tempoDecorrido());
+ atualizar();
+}
+
+function zerar(){
+ clearInterval(intervalo);
+ intervalo=null;
+ cantos=[];
+ inicio=null;
+ pausado=false;
+ tempoAcumulado=0;
+ finalizado=false;
+ statusEl.textContent="PRONTO PARA INICIAR";
+ atualizar();
+}
+
+function atualizarMinutos(){
+ const decorrido=tempoDecorrido();
+ const minutoAtual=
+  inicio!==null||pausado?
+  Math.min(duracao,Math.floor(decorrido/60)+1):0;
+
+ if(porMinutoEl.children.length!==duracao){
+  porMinutoEl.replaceChildren();
+  for(let i=0;i<duracao;i++){
+   const div=document.createElement("div");
+   div.className="minuto";
+   const titulo=document.createElement("span");
+   titulo.textContent=(i+1)+" MIN";
+   const numero=document.createElement("strong");
+   numero.textContent="0";
+   div.append(titulo,numero);
+   porMinutoEl.appendChild(div);
+  }
+ }
+
+ for(let i=0;i<duracao;i++){
+  const quantidade=cantos.filter(
+   t=>t>=i*60&&t<(i+1)*60
+  ).length;
+  const div=porMinutoEl.children[i];
+  div.querySelector("strong").textContent=quantidade;
+  div.classList.toggle("atual",minutoAtual===i+1&&!finalizado);
+ }
+}
+
+function atualizar(){
+ const decorrido=tempoDecorrido();
+ const totalSegundos=duracao*60;
+
+ if(!finalizado&&inicio!==null&&decorrido>=totalSegundos){
+  finalizado=true;
+  tempoAcumulado=totalSegundos;
+  inicio=null;
+  pausado=false;
+  clearInterval(intervalo);
+  intervalo=null;
+  statusEl.textContent="TEMPO FINALIZADO";
+ }
+
+ totalEl.textContent=cantos.length;
+ tempoEl.textContent=formatarTempo(decorrido);
+
+ let media=0;
+ let projecao=0;
+
+ if(decorrido>0){
+  media=cantos.length/(decorrido/60);
+  projecao=Math.round(
+   cantos.length/decorrido*totalSegundos
+  );
+ }
+
+ mediaEl.textContent=media.toFixed(1);
+ projecaoEl.textContent=projecao;
+
+ const pct=Math.min(100,decorrido/totalSegundos*100);
+ progressoEl.style.width=pct+"%";
+
+ percentualEl.textContent=
+  Math.floor(pct)+"% • "+
+  formatarTempo(decorrido)+" / "+
+  formatarTempo(totalSegundos);
+
+ atualizarMinutos();
+
+ controleEl.disabled=finalizado;
+ controleEl.classList.toggle("pausar",inicio!==null);
+ controleEl.textContent=finalizado?
+  "✓ FINALIZADO":
+  inicio!==null?"⏸ PAUSAR":"▶ INICIAR";
+}
+
+el("b10").addEventListener("click",()=>selecionarTempo(10));
+el("b15").addEventListener("click",()=>selecionarTempo(15));
+el("canto").addEventListener("click",registrarCanto);
+controleEl.addEventListener("click",controlarTempo);
+el("zerar").addEventListener("click",zerar);
+
+el("indicarAmigo").addEventListener("click",()=>{
+ const mensagem=
+  "🐦 MARCADOR DE COLEIRO\n\n"+
+  "Conheça o aplicativo para marcar os cantos do seu coleiro!\n\n"+
+  "PLANOS DE ACESSO:\n"+
+  "30 dias - R$ 10,00\n"+
+  "180 dias - R$ 30,00\n"+
+  "365 dias - R$ 50,00\n\n"+
+  "Acesse:\n"+
+  "https://vilela464-glitch.github.io/marcador-coleiro/\n\n"+
+  "Para contratar:\n"+
+  "https://wa.me/5581988698384";
+
+ window.open(
+  "https://wa.me/?text="+encodeURIComponent(mensagem),
+  "_blank",
+  "noopener,noreferrer"
+ );
+});
+
+// Reavalia o vencimento durante o uso.
 setInterval(()=>{
-if(current&&!validExpiry(currentData))accessLost();
+ if(usuarioAtual&&dadosAtuais&&!acessoValido(dadosAtuais)){
+  bloquearAcesso("Seu plano venceu. Solicite renovação.");
+ }
 },30000);
 
-update();
+atualizar();
 </script>
 </body>
 </html>
