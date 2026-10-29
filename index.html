@@ -167,7 +167,8 @@ import {
 import {
  getFirestore,doc,getDoc,getDocs,
  collection,setDoc,updateDoc,deleteDoc,
- onSnapshot,Timestamp,serverTimestamp
+onSnapshot,Timestamp,serverTimestamp,
+runTransaction
 } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 
 const firebaseConfig={
@@ -183,6 +184,11 @@ const ADMIN_UID="P2xlWCfM8ESIkoyTfkVjprhjiLz1";
 const firebaseApp=initializeApp(firebaseConfig);
 const auth=getAuth(firebaseApp);
 const db=getFirestore(firebaseApp);
+const TOKEN_SESSAO = crypto.randomUUID().replaceAll("-","") + crypto.randomUUID().replaceAll("-","").slice(0,16);
+const TEMPO_SESSAO = 30 * 60 * 1000;
+let intervaloSessao = null;
+let observadorSessao = null;
+let sessaoIniciada = false;
 const el=id=>document.getElementById(id);
 
 let usuarioAtual=null;
@@ -210,6 +216,13 @@ function exigirAdmin(){
 }
 function limpar(){
  sessao++;
+sessaoIniciada = false;
+clearInterval(intervaloSessao);
+intervaloSessao = null;
+if(observadorSessao){
+ observadorSessao();
+ observadorSessao = null;
+}
  if(observador){observador();observador=null;}
  clearInterval(relogioAcesso);
  relogioAcesso=null;
@@ -217,6 +230,9 @@ function limpar(){
 }
 function bloquear(msg){
  limpar();
+if(auth.currentUser){
+ signOut(auth).catch(console.error);
+}
  usuarioAtual=null;
  administradorAtual=false;
  zerar();
@@ -230,6 +246,43 @@ function verificarVencimento(){
  if(!vencimentoAtual||Date.now()>=vencimentoAtual){
   bloquear("Seu plano venceu. Solicite a renovação ao administrador.");
  }
+}
+async function assumirSessao(user) {
+  
+ const ref = doc(db, "sessoes", user.uid);
+
+ await runTransaction(db, async (transaction) => {
+  await transaction.get(ref);
+
+  transaction.set(ref, {
+   token: TOKEN_SESSAO,
+   ultimoBatimento: serverTimestamp(),
+   expiraEm: Timestamp.fromMillis(
+    Date.now() + TEMPO_SESSAO
+   )
+  });
+ });
+}
+function vigiarSessao(user) {
+ if(observadorSessao) observadorSessao();
+
+ observadorSessao = onSnapshot(
+  doc(db, "sessoes", user.uid),
+  snap => {
+    if(snap.metadata.fromCache) return;
+   if(!snap.exists()){
+ bloquear("Sessão não encontrada. Entre novamente.");
+ return;
+}
+
+   if(snap.data().token !== TOKEN_SESSAO) {
+    bloquear("Sua conta foi acessada em outro aparelho.");
+   }else {
+ mostrar("app");
+}
+  },
+  error => bloquear(erroFirebase(error))
+ );
 }
 function dataValida(dados){
  return dados.venceEm &&
@@ -261,12 +314,30 @@ onAuthStateChanged(auth,user=>{
    return;
   }
   usuarioAtual=user;
+  if(!admin && !sessaoIniciada){
+ sessaoIniciada=true;
+    
+ assumirSessao(user)
+ .then(()=>{
+  if(atual===sessao){
+ vigiarSessao(user);
+}
+ })
+ .catch(error=>{
+  if(atual===sessao) bloquear(erroFirebase(error));
+ });
+}
+}
   administradorAtual=admin;
   vencimentoAtual=admin?null:dados.venceEm.toMillis();
   el("adminBtn").hidden=!admin;
   el("adminPainel").hidden=true;
   adminAberto=false;
-  mostrar("app");
+  if(admin || observadorSessao){
+ mostrar("app");
+}else{
+ mostrar("carregando");
+}
   clearInterval(relogioAcesso);
   relogioAcesso=setInterval(verificarVencimento,1000);
  },error=>{
@@ -296,6 +367,9 @@ el("loginForm").addEventListener("submit",async e=>{
 
 el("sairBtn").onclick=async()=>{
  limpar();
+if(auth.currentUser){
+ signOut(auth).catch(console.error);
+}
  usuarioAtual=null;
  administradorAtual=false;
  zerar();
