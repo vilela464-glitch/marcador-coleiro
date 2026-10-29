@@ -9,12 +9,11 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="apple-touch-icon" href="./icon-192.png">
-<title>Marcador de Coleiro V4.3</title>
+<title>Marcador de Coleiro V4.4</title>
 <style>
 :root{
  --bg:#05090d;
  --panel:#0c151d;
- --panel2:#101d27;
  --border:#344958;
  --gold:#ffc928;
  --muted:#98a8b6;
@@ -24,9 +23,9 @@
 body{
  margin:0;
  min-height:100vh;
- padding:16px 14px 35px;
+ padding:15px 14px 32px;
  background:#05090d;
- color:white;
+ color:#fff;
  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
  text-align:center;
 }
@@ -35,23 +34,23 @@ button{cursor:pointer}
 button:disabled{opacity:.45}
 .container{max-width:500px;margin:auto}
 h1{
- margin:10px 0 3px;
+ margin:9px 0 3px;
  font-size:26px;
  font-weight:900;
  letter-spacing:-.5px;
 }
 .gold{color:var(--gold)}
-.sub{color:var(--muted);font-size:13px;margin-bottom:16px}
+.sub{color:var(--muted);font-size:13px;margin-bottom:14px}
 .minutos-box{
  background:linear-gradient(155deg,#101d27,#09131a);
  border:1px solid #3b5262;
  border-radius:18px;
- padding:13px 11px;
- margin-bottom:15px;
+ padding:12px 11px;
+ margin-bottom:13px;
  box-shadow:0 5px 20px #0005,inset 0 1px #ffffff0b;
 }
 .minutos-box h2{
- margin:0 0 11px;
+ margin:0 0 10px;
  font-size:14px;
  color:#d1dbe3;
  font-weight:900;
@@ -61,7 +60,7 @@ h1{
  display:flex;
  gap:7px;
  overflow-x:auto;
- padding:2px 1px 7px;
+ padding:2px 1px 6px;
  scrollbar-width:thin;
  scrollbar-color:#526676 transparent;
 }
@@ -70,7 +69,7 @@ h1{
  background:#101d27;
  border:1px solid #344b5a;
  border-radius:12px;
- padding:9px 4px;
+ padding:8px 4px;
 }
 .minuto span{
  display:block;
@@ -94,7 +93,7 @@ h1{
  justify-content:space-between;
  align-items:center;
  gap:8px;
- margin-bottom:14px;
+ margin-bottom:13px;
 }
 .topo-acesso button{
  background:#162632;
@@ -105,14 +104,10 @@ h1{
  font-size:12px;
  font-weight:900;
 }
-.tempos{
- display:flex;
- gap:10px;
- margin:16px 0 14px;
-}
+.tempos{display:flex;gap:10px;margin:14px 0 13px}
 .tempos button{
  flex:1;
- padding:15px;
+ padding:14px;
  border:1px solid #3b5262;
  border-radius:14px;
  background:#101820;
@@ -133,15 +128,14 @@ h1{
  letter-spacing:.7px;
 }
 #tempo{
- font-size:48px;
+ font-size:46px;
  font-weight:900;
- margin:7px 0 17px;
+ margin:6px 0 14px;
  font-variant-numeric:tabular-nums;
 }
 .painel{
  display:grid;
  grid-template-columns:1fr 1fr;
- grid-template-areas:"total projecao" "media media";
  gap:10px;
  margin-bottom:15px;
 }
@@ -150,6 +144,11 @@ h1{
  border:1px solid #3b5262;
  border-radius:19px;
  box-shadow:0 5px 17px #0004,inset 0 1px #ffffff0a;
+ min-height:130px;
+ padding:15px 5px;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
 }
 .card small{
  display:block;
@@ -158,62 +157,17 @@ h1{
  font-weight:900;
  letter-spacing:.4px;
 }
-.card-total{
- grid-area:total;
- min-height:135px;
- padding:15px 5px;
- display:flex;
- flex-direction:column;
- justify-content:center;
-}
-.card-projecao{
- grid-area:projecao;
- min-height:135px;
- padding:15px 5px;
- display:flex;
- flex-direction:column;
- justify-content:center;
- border-color:#6e633e;
-}
-.card-total .numero,
-.card-projecao .numero{
+.card .numero{
  font-size:64px;
  line-height:1;
  font-weight:900;
  margin-top:11px;
  font-variant-numeric:tabular-nums;
 }
+.card-projecao{
+ border-color:#6e633e;
+}
 .card-projecao .numero{color:var(--gold)}
-.card-media{
- grid-area:media;
- min-height:67px;
- padding:10px;
- display:flex;
- align-items:center;
- justify-content:center;
- gap:18px;
-}
-.card-media .numero{
- font-size:31px;
- font-weight:900;
-}
-.barra{
- height:10px;
- background:#1b2933;
- border-radius:20px;
- overflow:hidden;
-}
-#progresso{
- width:0%;
- height:100%;
- background:linear-gradient(90deg,#d99c16,#ffc928);
- transition:width .25s;
-}
-#percentual{
- color:#98a8b6;
- font-size:12px;
- margin:8px 0 17px;
-}
 #canto{
  width:100%;
  height:150px;
@@ -257,8 +211,8 @@ h1{
 }
 .indicar{
  width:100%;
- margin-top:18px;
- padding:16px 8px;
+ margin-top:17px;
+ padding:15px 8px;
  border-radius:14px;
  background:#168757;
  border:1px solid #37b17b;
@@ -267,7 +221,7 @@ h1{
  font-weight:900;
 }
 .rodape{
- margin-top:17px;
+ margin-top:16px;
  color:#8d9ca9;
  font-size:11px;
  line-height:1.7;
@@ -302,7 +256,11 @@ h1{
  font-weight:900;
 }
 #loginBtn{width:100%;margin-top:12px}
-.erro{color:#ff8585;font-size:13px;overflow-wrap:anywhere}
+.erro{
+ color:#ff8585;
+ font-size:13px;
+ overflow-wrap:anywhere;
+}
 .info{
  font-size:12px;
  color:#afbdc8;
@@ -350,7 +308,7 @@ h1{
 }
 @media(max-width:370px){
  h1{font-size:23px}
- .card-total .numero,.card-projecao .numero{font-size:54px}
+ .card .numero{font-size:54px}
  #canto{font-size:30px}
 }
 </style>
@@ -364,7 +322,7 @@ h1{
 
 <div id="loginTela" class="auth-box" hidden>
 <h1>🐦 MARCADOR DE <span class="gold">COLEIRO</span></h1>
-<p class="sub">ACESSO AUTORIZADO • V4.3</p>
+<p class="sub">ACESSO AUTORIZADO • V4.4</p>
 <form id="loginForm">
 <input id="email" type="email" placeholder="Seu e-mail" autocomplete="username" required>
 <input id="senha" type="password" placeholder="Sua senha" autocomplete="current-password" required>
@@ -378,7 +336,6 @@ h1{
 
 <div id="app" class="container" hidden>
 
-<!-- CONTADOR NA PARTE SUPERIOR -->
 <div class="minutos-box">
 <h2>CANTOS POR MINUTO</h2>
 <div id="porMinuto"></div>
@@ -409,7 +366,7 @@ Depois informe o UID para liberar o acesso.
 </div>
 
 <h1>🐦 MARCADOR DE <span class="gold">COLEIRO</span></h1>
-<div class="sub">V4.3 • PROJEÇÃO EM TEMPO REAL</div>
+<div class="sub">V4.4 • PROJEÇÃO EM TEMPO REAL</div>
 
 <div class="tempos">
 <button id="b10" class="ativo">10 MIN</button>
@@ -420,7 +377,7 @@ Depois informe o UID para liberar o acesso.
 <div id="tempo">00:00</div>
 
 <div class="painel">
-<div class="card card-total">
+<div class="card">
 <small>TOTAL DE CANTOS</small>
 <div class="numero" id="total">0</div>
 </div>
@@ -429,9 +386,6 @@ Depois informe o UID para liberar o acesso.
 <div class="numero" id="projecao">0</div>
 </div>
 </div>
-
-<div class="barra"><div id="progresso"></div></div>
-<div id="percentual">0% • 00:00 / 10:00</div>
 
 <button id="canto">🐦 + CANTO</button>
 
@@ -803,8 +757,6 @@ const totalEl=el("total");
 const projecaoEl=el("projecao");
 const tempoEl=el("tempo");
 const statusEl=el("status");
-const progressoEl=el("progresso");
-const percentualEl=el("percentual");
 const porMinutoEl=el("porMinuto");
 const controleEl=el("iniciarPausar");
 
@@ -909,16 +861,9 @@ function atualizar(){
  totalEl.textContent=cantos.length;
  tempoEl.textContent=formatarTempo(decorrido);
 
- const media=decorrido>0?cantos.length/(decorrido/60):0;
  const projecao=decorrido>0?
- Math.round(cantos.length/decorrido*
+ Math.round(cantos.length/decorrido*limite):0;
  projecaoEl.textContent=projecao;
-
- const pct=Math.min(100,decorrido/limite*100);
- progressoEl.style.width=pct+"%";
- percentualEl.textContent=
- Math.floor(pct)+"% • "+
- formatarTempo(decorrido)+" / "+formatarTempo(limite);
 
  atualizarMinutos();
 
