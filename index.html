@@ -327,7 +327,6 @@ onAuthStateChanged(auth,user=>{
   if(atual===sessao) bloquear(erroFirebase(error));
  });
 }
-}
   administradorAtual=admin;
   vencimentoAtual=admin?null:dados.venceEm.toMillis();
   el("adminBtn").hidden=!admin;
