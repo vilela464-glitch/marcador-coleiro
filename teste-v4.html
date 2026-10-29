@@ -4,71 +4,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#05090d">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#05090d">
-<meta name="apple-mobile-web-app-title" content="Marcador de Coleiro">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="apple-touch-icon" href="./icon-192.png">
-<title>Marcador de Coleiro V4.2</title>
-
+<title>Marcador de Coleiro V4.3</title>
 <style>
 :root{
- --fundo:#05090d;
- --painel:#0b151d;
- --painel2:#101e28;
- --borda:#304553;
- --ouro:#ffc928;
- --ouroclaro:#ffe18a;
- --texto:#ffffff;
- --cinza:#9eafbc;
- --verde:#168757;
- --vermelho:#cf353a;
+ --bg:#05090d;
+ --panel:#0c151d;
+ --panel2:#101d27;
+ --border:#344958;
+ --gold:#ffc928;
+ --muted:#98a8b6;
 }
-*{
- box-sizing:border-box;
- -webkit-tap-highlight-color:transparent;
-}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
 body{
  margin:0;
  min-height:100vh;
- padding:20px 14px 35px;
- background:radial-gradient(ellipse at top,#101b23 0%,#05090d 42%);
- color:var(--texto);
+ padding:16px 14px 35px;
+ background:#05090d;
+ color:white;
  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
  text-align:center;
 }
 button,input,select{font-family:inherit}
 button{cursor:pointer}
-button:disabled{opacity:.48;cursor:default}
+button:disabled{opacity:.45}
 .container{max-width:500px;margin:auto}
 h1{
- margin:7px 0 3px;
- font-size:27px;
+ margin:10px 0 3px;
+ font-size:26px;
  font-weight:900;
  letter-spacing:-.5px;
 }
-.dourado{color:var(--ouro)}
-.sub{
- color:var(--cinza);
- font-size:13px;
- margin-bottom:18px;
- letter-spacing:.5px;
-}
+.gold{color:var(--gold)}
+.sub{color:var(--muted);font-size:13px;margin-bottom:16px}
 .minutos-box{
- background:linear-gradient(145deg,#101e28,#09131a);
- border:1px solid #3b505d;
+ background:linear-gradient(155deg,#101d27,#09131a);
+ border:1px solid #3b5262;
  border-radius:18px;
- padding:14px 12px;
- margin-bottom:14px;
- box-shadow:0 5px 20px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.04);
+ padding:13px 11px;
+ margin-bottom:15px;
+ box-shadow:0 5px 20px #0005,inset 0 1px #ffffff0b;
 }
 .minutos-box h2{
+ margin:0 0 11px;
  font-size:14px;
- letter-spacing:1.1px;
- margin:0 0 12px;
- color:var(--ouro);
+ color:#d1dbe3;
+ font-weight:900;
+ letter-spacing:.8px;
 }
 #porMinuto{
  display:flex;
@@ -76,69 +63,80 @@ h1{
  overflow-x:auto;
  padding:2px 1px 7px;
  scrollbar-width:thin;
- scrollbar-color:#5a6570 transparent;
+ scrollbar-color:#526676 transparent;
 }
 .minuto{
- min-width:62px;
- background:#0a141c;
- border:1px solid #344957;
+ flex:0 0 62px;
+ background:#101d27;
+ border:1px solid #344b5a;
  border-radius:12px;
  padding:9px 4px;
- box-shadow:inset 0 1px rgba(255,255,255,.04);
 }
 .minuto span{
  display:block;
- font-size:10px;
- font-weight:700;
- color:#a0b0bc;
+ font-size:11px;
+ color:#98a8b6;
 }
 .minuto strong{
  display:block;
  font-size:24px;
  margin-top:4px;
- color:var(--ouro);
+ color:var(--gold);
  font-variant-numeric:tabular-nums;
 }
 .minuto.atual{
- border-color:var(--ouro);
- background:#202015;
- box-shadow:0 0 0 1px rgba(255,201,40,.18);
+ border-color:var(--gold);
+ background:#242315;
+ box-shadow:0 0 0 1px #ffc92830;
+}
+.topo-acesso{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:8px;
+ margin-bottom:14px;
+}
+.topo-acesso button{
+ background:#162632;
+ color:white;
+ border:1px solid #3b5262;
+ border-radius:11px;
+ padding:10px 12px;
+ font-size:12px;
+ font-weight:900;
 }
 .tempos{
  display:flex;
  gap:10px;
- margin-bottom:13px;
+ margin:16px 0 14px;
 }
 .tempos button{
  flex:1;
- padding:14px;
- border-radius:13px;
- border:1px solid #3a5261;
- background:linear-gradient(180deg,#15242f,#0e1922);
- color:#fff;
- font-size:16px;
+ padding:15px;
+ border:1px solid #3b5262;
+ border-radius:14px;
+ background:#101820;
+ color:white;
+ font-size:17px;
  font-weight:900;
 }
 .tempos button.ativo{
- background:linear-gradient(180deg,#ffe17b,#ffc928);
+ background:var(--gold);
  color:#080b0e;
- border-color:#ffe17b;
- box-shadow:0 4px 14px rgba(255,201,40,.16);
+ border-color:#ffe18a;
+ box-shadow:0 4px 15px #ffc92822;
 }
 #status{
- color:#aebcc8;
+ color:#9aaab7;
  font-size:12px;
  font-weight:800;
- letter-spacing:1px;
- margin-top:7px;
+ letter-spacing:.7px;
 }
 #tempo{
- font-size:46px;
+ font-size:48px;
  font-weight:900;
- margin:5px 0 15px;
- letter-spacing:1px;
+ margin:7px 0 17px;
  font-variant-numeric:tabular-nums;
- text-shadow:0 2px 14px rgba(255,255,255,.08);
 }
 .painel{
  display:grid;
@@ -148,54 +146,48 @@ h1{
  margin-bottom:15px;
 }
 .card{
- background:linear-gradient(150deg,#111f29,#09121a);
- border:1px solid #344957;
+ background:linear-gradient(155deg,#101c25,#0b131a);
+ border:1px solid #3b5262;
  border-radius:19px;
- box-shadow:0 6px 18px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.04);
+ box-shadow:0 5px 17px #0004,inset 0 1px #ffffff0a;
 }
 .card small{
  display:block;
- color:#aab9c5;
- font-weight:900;
+ color:#a7b4bf;
  font-size:11px;
- letter-spacing:.5px;
+ font-weight:900;
+ letter-spacing:.4px;
 }
 .card-total{
  grid-area:total;
- min-height:138px;
- padding:16px 5px 12px;
+ min-height:135px;
+ padding:15px 5px;
  display:flex;
  flex-direction:column;
  justify-content:center;
-}
-.card-total .numero{
- font-size:64px;
- line-height:1;
- font-weight:900;
- margin-top:11px;
- font-variant-numeric:tabular-nums;
 }
 .card-projecao{
  grid-area:projecao;
- min-height:138px;
- padding:16px 5px 12px;
+ min-height:135px;
+ padding:15px 5px;
  display:flex;
  flex-direction:column;
  justify-content:center;
- border-color:#78632c;
+ border-color:#6e633e;
 }
+.card-total .numero,
 .card-projecao .numero{
  font-size:64px;
  line-height:1;
  font-weight:900;
  margin-top:11px;
- color:var(--ouro);
  font-variant-numeric:tabular-nums;
 }
+.card-projecao .numero{color:var(--gold)}
 .card-media{
  grid-area:media;
- min-height:69px;
- padding:10px 14px;
+ min-height:67px;
+ padding:10px;
  display:flex;
  align-items:center;
  justify-content:center;
@@ -203,46 +195,40 @@ h1{
 }
 .card-media .numero{
  font-size:31px;
- line-height:1;
  font-weight:900;
 }
 .barra{
  height:10px;
- background:#192731;
- border-radius:12px;
+ background:#1b2933;
+ border-radius:20px;
  overflow:hidden;
- border:1px solid #2a3d49;
 }
 #progresso{
- height:100%;
  width:0%;
- background:linear-gradient(90deg,#c78d13,#ffc928,#ffe28b);
+ height:100%;
+ background:linear-gradient(90deg,#d99c16,#ffc928);
  transition:width .25s;
 }
 #percentual{
- color:#a2b1be;
+ color:#98a8b6;
  font-size:12px;
- margin:9px 0 17px;
+ margin:8px 0 17px;
 }
 #canto{
  width:100%;
  height:150px;
- border:1px solid #ffe58c;
+ border:1px solid #ffe68b;
  border-radius:25px;
- background:linear-gradient(165deg,#ffe68b 0%,#ffc928 50%,#e7a918 100%);
- color:#090b0e;
- font-size:36px;
+ background:linear-gradient(160deg,#ffe17b,#ffc928 55%,#e9af20);
+ color:#080b0e;
+ font-size:35px;
  font-weight:900;
- letter-spacing:.5px;
- box-shadow:0 9px 25px rgba(255,201,40,.22),inset 0 2px rgba(255,255,255,.55);
+ box-shadow:0 9px 27px #ffc92830,inset 0 2px #ffffff70;
  touch-action:manipulation;
  user-select:none;
  -webkit-user-select:none;
 }
-#canto:active{
- transform:scale(.985);
- filter:brightness(.94);
-}
+#canto:active{transform:scale(.98)}
 .acoes{
  display:flex;
  gap:10px;
@@ -250,52 +236,49 @@ h1{
 }
 .acoes button{
  flex:1;
- padding:15px 10px;
- min-height:58px;
+ min-height:59px;
+ padding:13px 8px;
  border-radius:14px;
- font-weight:900;
+ color:white;
  font-size:15px;
- box-shadow:0 4px 13px rgba(0,0,0,.2);
+ font-weight:900;
 }
 #iniciarPausar{
- background:linear-gradient(180deg,#20a66d,#14774d);
- border:1px solid #37b27e;
- color:#fff;
+ background:linear-gradient(#209c68,#14774d);
+ border:1px solid #3ab47d;
 }
 #iniciarPausar.pausar{
- background:linear-gradient(180deg,#d69b35,#a76c16);
- border-color:#dba54b;
+ background:linear-gradient(#d79b35,#aa7119);
+ border-color:#e1ac51;
 }
 #zerar{
- background:linear-gradient(180deg,#e84a4a,#b82732);
- border:1px solid #ed6767;
- color:#fff;
+ background:linear-gradient(#ed4b4b,#bd2932);
+ border:1px solid #ee6969;
 }
 .indicar{
  width:100%;
- background:linear-gradient(180deg,#1a9b62,#126c45);
- color:white;
- border:1px solid #34ac78;
+ margin-top:18px;
+ padding:16px 8px;
  border-radius:14px;
- padding:16px;
+ background:#168757;
+ border:1px solid #37b17b;
+ color:white;
  font-size:14px;
  font-weight:900;
- margin-top:18px;
 }
 .rodape{
  margin-top:17px;
- color:#8c9dab;
+ color:#8d9ca9;
  font-size:11px;
  line-height:1.7;
 }
 .auth-box{
  max-width:420px;
  margin:60px auto 0;
- background:linear-gradient(145deg,#111e28,#09131a);
- border:1px solid #344957;
- border-radius:22px;
- padding:25px 18px;
- box-shadow:0 10px 35px rgba(0,0,0,.3);
+ padding:24px 18px;
+ background:#0d1821;
+ border:1px solid #3b5262;
+ border-radius:20px;
 }
 .auth-box input,
 .admin-box input,
@@ -303,99 +286,75 @@ h1{
  width:100%;
  padding:14px;
  margin:7px 0;
- border:1px solid #3b5261;
- border-radius:12px;
- background:#0a151e;
- color:#fff;
+ background:#101d27;
+ color:white;
+ border:1px solid #3b5262;
+ border-radius:11px;
  font-size:16px;
 }
 .btn{
  padding:13px;
- border:1px solid #ffe08a;
- border-radius:12px;
- background:linear-gradient(180deg,#ffe17b,#ffc928);
+ background:var(--gold);
  color:#080b0e;
+ border:1px solid #ffe18a;
+ border-radius:11px;
+ font-size:14px;
  font-weight:900;
- font-size:15px;
 }
 #loginBtn{width:100%;margin-top:12px}
-.erro{
- color:#ff8c8c;
- font-size:13px;
- margin-top:12px;
- overflow-wrap:anywhere;
-}
-.topo-acesso{
- display:flex;
- justify-content:space-between;
- gap:8px;
- align-items:center;
- margin-bottom:15px;
-}
-.topo-acesso button{
- background:#152530;
- color:#dbe4eb;
- border:1px solid #3b5261;
- border-radius:11px;
- padding:10px;
+.erro{color:#ff8585;font-size:13px;overflow-wrap:anywhere}
+.info{
  font-size:12px;
- font-weight:800;
+ color:#afbdc8;
+ line-height:1.6;
+ overflow-wrap:anywhere;
 }
 .admin-box{
- background:linear-gradient(145deg,#111f29,#09131a);
- border:1px solid #ac8b36;
- border-radius:19px;
- padding:16px;
- margin-bottom:18px;
  text-align:left;
- box-shadow:0 5px 20px rgba(0,0,0,.2);
+ background:#0d1821;
+ border:1px solid #a58a41;
+ border-radius:18px;
+ padding:15px;
+ margin-bottom:17px;
 }
 .admin-box h2{
- font-size:17px;
- color:var(--ouro);
  margin:0 0 10px;
+ color:var(--gold);
+ font-size:17px;
 }
 .usuario-item{
- border-top:1px solid #304553;
- padding:13px 0;
+ border-top:1px solid #344958;
+ padding:12px 0;
  font-size:13px;
  overflow-wrap:anywhere;
 }
-.usuario-item strong{color:var(--ouro)}
+.usuario-item strong{color:var(--gold)}
 .usuario-item button{
- padding:10px 12px;
+ padding:9px 11px;
  border:0;
- border-radius:10px;
- color:#fff;
+ border-radius:9px;
+ color:white;
  font-weight:800;
  margin:8px 5px 0 0;
 }
-.info{
- font-size:12px;
- color:#aebbc7;
- overflow-wrap:anywhere;
- line-height:1.6;
-}
-.btn-bloquear{background:#a66a17}
-.btn-ativar{background:#178a57}
-.btn-excluir{background:#d5353b}
-.btn-renovar{background:#b38b17}
+.btn-bloquear{background:#aa7119}
+.btn-ativar{background:#168757}
+.btn-renovar{background:#a4841a}
+.btn-excluir{background:#cc3339}
 #testarLogin{
  width:100%;
  margin:12px 0;
  background:#2464bd;
- color:#fff;
- border-color:#3b7bd6;
+ color:white;
+ border-color:#3d7dd0;
 }
 @media(max-width:370px){
- .card-total .numero,
- .card-projecao .numero{font-size:55px}
- h1{font-size:24px}
- #canto{font-size:32px}
+ h1{font-size:23px}
+ .card-total .numero,.card-projecao .numero{font-size:54px}
+ #canto{font-size:30px}
 }
 </style>
 </head>
-
 <body>
 
 <div id="carregando" class="auth-box">
@@ -404,21 +363,26 @@ h1{
 </div>
 
 <div id="loginTela" class="auth-box" hidden>
-<h1>🐦 MARCADOR DE <span class="dourado">COLEIRO</span></h1>
-<p class="sub">ACESSO AUTORIZADO • V4.2</p>
+<h1>🐦 MARCADOR DE <span class="gold">COLEIRO</span></h1>
+<p class="sub">ACESSO AUTORIZADO • V4.3</p>
 <form id="loginForm">
 <input id="email" type="email" placeholder="Seu e-mail" autocomplete="username" required>
 <input id="senha" type="password" placeholder="Sua senha" autocomplete="current-password" required>
 <button id="loginBtn" class="btn" type="submit">ENTRAR</button>
 </form>
 <p id="loginErro" class="erro" role="alert"></p>
-<p class="info">
-Para solicitar acesso:
-<a href="https://wa.me/5581988698384" style="color:#ffc928">WhatsApp do administrador</a>
+<p class="info">Solicite acesso pelo
+<a href="https://wa.me/5581988698384" style="color:#ffc928">WhatsApp</a>.
 </p>
 </div>
 
 <div id="app" class="container" hidden>
+
+<!-- CONTADOR NA PARTE SUPERIOR -->
+<div class="minutos-box">
+<h2>CANTOS POR MINUTO</h2>
+<div id="porMinuto"></div>
+</div>
 
 <div class="topo-acesso">
 <button id="adminBtn" hidden>⚙ ADMINISTRAR</button>
@@ -428,42 +392,24 @@ Para solicitar acesso:
 <div id="adminPainel" class="admin-box" hidden>
 <h2>⚙ CONTROLE DE USUÁRIOS</h2>
 <p class="info">
-Cadastre primeiro o usuário no Firebase Authentication.
-Depois informe o UID para autorizar o acesso.
+Crie primeiro a conta no Firebase Authentication.
+Depois informe o UID para liberar o acesso.
 </p>
-
 <input id="novoUid" placeholder="UID do usuário">
 <input id="novoNome" placeholder="Nome do usuário">
-
 <select id="novoPlano">
 <option value="30">30 DIAS — R$ 10,00</option>
 <option value="180">180 DIAS — R$ 30,00</option>
 <option value="365">365 DIAS — R$ 50,00</option>
 </select>
-
-<button id="adicionarUsuario" class="btn">
-CADASTRAR / RENOVAR
-</button>
-
-<button id="testarLogin" class="btn">
-🧪 TESTAR LOGIN DE USUÁRIO
-</button>
-
-<p class="info">
-Para testar um usuário, abra o marcador em uma aba privada do Safari.
-</p>
-
+<button id="adicionarUsuario" class="btn">CADASTRAR / RENOVAR</button>
+<button id="testarLogin" class="btn">🧪 TESTAR LOGIN DE USUÁRIO</button>
 <p id="adminMensagem" class="info" role="status"></p>
 <div id="listaUsuarios"></div>
 </div>
 
-<h1>🐦 MARCADOR DE <span class="dourado">COLEIRO</span></h1>
-<div class="sub">V4.2 • PROJEÇÃO EM TEMPO REAL</div>
-
-<div class="minutos-box">
-<h2>CANTOS POR MINUTO</h2>
-<div id="porMinuto"></div>
-</div>
+<h1>🐦 MARCADOR DE <span class="gold">COLEIRO</span></h1>
+<div class="sub">V4.3 • PROJEÇÃO EM TEMPO REAL</div>
 
 <div class="tempos">
 <button id="b10" class="ativo">10 MIN</button>
@@ -478,12 +424,10 @@ Para testar um usuário, abra o marcador em uma aba privada do Safari.
 <small>TOTAL DE CANTOS</small>
 <div class="numero" id="total">0</div>
 </div>
-
 <div class="card card-projecao">
 <small>PROJEÇÃO FINAL</small>
 <div class="numero" id="projecao">0</div>
 </div>
-
 <div class="card card-media">
 <small>MÉDIA / MIN</small>
 <div class="numero" id="media">0.0</div>
@@ -505,33 +449,21 @@ Para testar um usuário, abra o marcador em uma aba privada do Safari.
 </button>
 
 <div class="rodape">
-Toque em INICIAR para começar.<br>
-PAUSAR congela o tempo.<br>
+INICIAR começa a marcação.<br>
+PAUSAR congela o cronômetro.<br>
 INICIAR continua de onde parou.
 </div>
-
 </div>
 
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
-
 import {
- getAuth,
- signInWithEmailAndPassword,
- signOut,
- onAuthStateChanged
+ getAuth,signInWithEmailAndPassword,
+ signOut,onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
-
 import {
- getFirestore,
- doc,
- getDoc,
- getDocs,
- collection,
- setDoc,
- updateDoc,
- deleteDoc,
- onSnapshot
+ getFirestore,doc,getDocs,collection,
+ setDoc,updateDoc,deleteDoc,onSnapshot
 } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 
 const firebaseConfig={
@@ -544,82 +476,66 @@ const firebaseConfig={
 };
 
 const ADMIN_UID="P2xlWCfM8ESIkoyTfkVjprhjiLz1";
-
-const firebaseApp=initializeApp(firebaseConfig);
-const auth=getAuth(firebaseApp);
-const db=getFirestore(firebaseApp);
+const appFirebase=initializeApp(firebaseConfig);
+const auth=getAuth(appFirebase);
+const db=getFirestore(appFirebase);
 const el=id=>document.getElementById(id);
 
 let usuarioAtual=null;
-let observador=null;
-let observadorSessao=0;
-let adminAberto=false;
-let administradorAtual=false;
 let dadosAtuais=null;
+let administradorAtual=false;
+let observador=null;
+let sessao=0;
+let adminAberto=false;
 
 function mostrar(tela){
  el("carregando").hidden=tela!=="carregando";
  el("loginTela").hidden=tela!=="login";
  el("app").hidden=tela!=="app";
 }
-
 function mensagemLogin(msg){
  el("loginErro").textContent=msg;
 }
-
 function mensagemAdmin(msg){
  el("adminMensagem").textContent=msg;
 }
-
 function erroFirebase(error){
  const codigo=error?.code||"";
- if(["auth/invalid-credential","auth/wrong-password","auth/user-not-found"].includes(codigo)){
+ if(["auth/invalid-credential","auth/wrong-password","auth/user-not-found"].includes(codigo))
   return "E-mail ou senha incorretos.";
- }
- if(codigo==="auth/too-many-requests"){
+ if(codigo==="auth/too-many-requests")
   return "Muitas tentativas. Aguarde.";
- }
- if(codigo==="auth/unauthorized-domain"){
-  return "Domínio não autorizado no Firebase.";
- }
- if(codigo==="permission-denied"){
+ if(codigo==="permission-denied")
   return "Acesso negado pelas regras do Firestore.";
- }
  return "Erro: "+(error?.message||"desconhecido");
 }
-
 function acessoValido(dados){
  if(!dados||dados.ativo!==true)return false;
  if(!dados.vencimento)return true;
- const data=new Date(dados.vencimento).getTime();
- return Number.isFinite(data)&&data>Date.now();
+ const fim=new Date(dados.vencimento).getTime();
+ return Number.isFinite(fim)&&fim>Date.now();
 }
-
 function vencimentoTexto(dados){
- if(!dados.vencimento)return "Sem vencimento cadastrado";
+ if(!dados.vencimento)return "Não cadastrado";
  const data=new Date(dados.vencimento);
  return Number.isNaN(data.getTime())?
-  "Data inválida":data.toLocaleDateString("pt-BR");
+ "Data inválida":data.toLocaleDateString("pt-BR");
 }
-
 function criarPlano(dias){
  const agora=new Date();
- const fim=new Date(agora.getTime()+dias*86400000);
  return {
   planoDias:dias,
   ativadoEm:agora.toISOString(),
-  vencimento:fim.toISOString()
+  vencimento:new Date(agora.getTime()+dias*86400000).toISOString()
  };
 }
-
 function limparObservador(){
- observadorSessao++;
+ sessao++;
  if(observador){
   observador();
   observador=null;
  }
 }
-
 function bloquearAcesso(msg){
  limparObservador();
  usuarioAtual=null;
@@ -645,34 +561,29 @@ onAuthStateChanged(auth,user=>{
   mostrar("login");
   return;
  }
-
  mostrar("carregando");
- const sessao=observadorSessao;
-
+ const atual=sessao;
  observador=onSnapshot(
   doc(db,"usuarios",user.uid),
   snapshot=>{
-   if(sessao!==observadorSessao)return;
-
+   if(atual!==sessao)return;
    if(!snapshot.exists()||!acessoValido(snapshot.data())){
-    bloquearAcesso("Seu acesso não está autorizado, foi bloqueado ou venceu.");
+    bloquearAcesso("Acesso bloqueado, não autorizado ou vencido.");
     return;
    }
-
    usuarioAtual=user;
    dadosAtuais=snapshot.data();
-
    administradorAtual=
-    user.uid===ADMIN_UID &&
-    dadosAtuais.admin===true;
-
+    user.uid===ADMIN_UID&&dadosAtuais.admin===true;
    el("adminBtn").hidden=!administradorAtual;
-   el("adminPainel").hidden=true;
-   adminAberto=false;
+   if(!administradorAtual){
+    adminAberto=false;
+    el("adminPainel").hidden=true;
+   }
    mostrar("app");
   },
   error=>{
-   if(sessao!==observadorSessao)return;
+   if(atual!==sessao)return;
    bloquearAcesso(erroFirebase(error));
   }
  );
@@ -681,24 +592,21 @@ onAuthStateChanged(auth,user=>{
  mensagemLogin(erroFirebase(error));
 });
 
-el("loginForm").addEventListener("submit",async event=>{
- event.preventDefault();
+el("loginForm").addEventListener("submit",async e=>{
+ e.preventDefault();
  mensagemLogin("");
- const botao=el("loginBtn");
- botao.disabled=true;
- botao.textContent="ENTRANDO...";
-
+ const btn=el("loginBtn");
+ btn.disabled=true;
+ btn.textContent="ENTRANDO...";
  try{
   await signInWithEmailAndPassword(
-   auth,
-   el("email").value.trim(),
-   el("senha").value
+   auth,el("email").value.trim(),el("senha").value
   );
  }catch(error){
   mensagemLogin(erroFirebase(error));
  }finally{
-  botao.disabled=false;
-  botao.textContent="ENTRAR";
+  btn.disabled=false;
+  btn.textContent="ENTRAR";
  }
 });
 
@@ -718,9 +626,8 @@ el("sairBtn").addEventListener("click",async()=>{
 });
 
 function exigirAdmin(){
- return usuarioAtual &&
-  usuarioAtual.uid===ADMIN_UID &&
-  administradorAtual===true;
+ return !!usuarioAtual&&
+ usuarioAtual.uid===ADMIN_UID&&administradorAtual;
 }
 
 el("adminBtn").addEventListener("click",async()=>{
@@ -732,37 +639,28 @@ el("adminBtn").addEventListener("click",async()=>{
 
 el("testarLogin").addEventListener("click",()=>{
  if(!exigirAdmin())return;
-
- const link=window.location.href.split("#")[0];
-
+ const link=location.href.split("#")[0];
  if(navigator.clipboard&&window.isSecureContext){
   navigator.clipboard.writeText(link).then(()=>{
-   mensagemAdmin("Link copiado! Abra em uma aba privada do Safari.");
-  }).catch(()=>{
-   window.prompt("Copie este link:",link);
-  });
+   mensagemAdmin("Link copiado. Abra em uma aba privada do Safari.");
+  }).catch(()=>prompt("Copie o link:",link));
  }else{
-  window.prompt("Copie este link:",link);
+  prompt("Copie o link:",link);
  }
 });
 
 async function carregarUsuarios(){
  if(!exigirAdmin())return;
-
  const lista=el("listaUsuarios");
  lista.textContent="Carregando usuários...";
-
  try{
   const resultado=await getDocs(collection(db,"usuarios"));
   if(!exigirAdmin())return;
-
-  lista.textContent="";
-
+  lista.replaceChildren();
   if(resultado.empty){
    lista.textContent="Nenhum usuário cadastrado.";
    return;
   }
-
   resultado.forEach(item=>{
    const dados=item.data();
    const div=document.createElement("div");
@@ -785,24 +683,21 @@ async function carregarUsuarios(){
 
    const plano=document.createElement("div");
    plano.className="info";
-   plano.textContent=
-    "Plano: "+(dados.planoDias||"Não definido")+" dias"+
-    " | Vencimento: "+vencimentoTexto(dados);
+   plano.textContent="Plano: "+
+    (dados.planoDias||"Não definido")+
+    " dias | Vencimento: "+vencimentoTexto(dados);
    div.appendChild(plano);
 
    if(item.id!==ADMIN_UID){
     const ativar=document.createElement("button");
-    ativar.textContent=dados.ativo===true?
-     "BLOQUEAR":"ATIVAR";
-    ativar.className=dados.ativo===true?
-     "btn-bloquear":"btn-ativar";
-
+    ativar.textContent=dados.ativo?"BLOQUEAR":"ATIVAR";
+    ativar.className=dados.ativo?"btn-bloquear":"btn-ativar";
     ativar.addEventListener("click",async()=>{
      if(!exigirAdmin())return;
      ativar.disabled=true;
      try{
       await updateDoc(doc(db,"usuarios",item.id),{
-       ativo:dados.ativo!==true
+       ativo:!dados.ativo
       });
       mensagemAdmin("Acesso atualizado.");
       await carregarUsuarios();
@@ -816,11 +711,10 @@ async function carregarUsuarios(){
     const renovar=document.createElement("button");
     renovar.textContent="RENOVAR PLANO";
     renovar.className="btn-renovar";
-
     renovar.addEventListener("click",async()=>{
      if(!exigirAdmin())return;
      const resposta=prompt(
-      "Renovar por quantos dias?\n30, 180 ou 365",
+      "Renovar por quantos dias? 30, 180 ou 365",
       String(dados.planoDias||30)
      );
      if(resposta===null)return;
@@ -831,11 +725,10 @@ async function carregarUsuarios(){
      }
      renovar.disabled=true;
      try{
-      await updateDoc(
-       doc(db,"usuarios",item.id),
-       {ativo:true,...criarPlano(dias)}
-      );
-      mensagemAdmin("Plano renovado com sucesso.");
+      await updateDoc(doc(db,"usuarios",item.id),{
+       ativo:true,...criarPlano(dias)
+      });
+      mensagemAdmin("Plano renovado.");
       await carregarUsuarios();
      }catch(error){
       mensagemAdmin(erroFirebase(error));
@@ -847,19 +740,13 @@ async function carregarUsuarios(){
     const excluir=document.createElement("button");
     excluir.textContent="🗑 EXCLUIR ACESSO";
     excluir.className="btn-excluir";
-
     excluir.addEventListener("click",async()=>{
      if(!exigirAdmin())return;
-     const confirmar=confirm(
-      "Remover o acesso de "+
-      (dados.nome||item.id)+"?\n\n"+
-      "A conta no Authentication continuará existindo."
-     );
-     if(!confirmar)return;
+     if(!confirm("Remover acesso de "+(dados.nome||item.id)+"?"))return;
      excluir.disabled=true;
      try{
       await deleteDoc(doc(db,"usuarios",item.id));
-      mensagemAdmin("Acesso removido.");
+      mensagemAdmin("Acesso removido. A conta Authentication permanece.");
       await carregarUsuarios();
      }catch(error){
       mensagemAdmin(erroFirebase(error));
@@ -878,49 +765,36 @@ async function carregarUsuarios(){
 
 el("adicionarUsuario").addEventListener("click",async()=>{
  if(!exigirAdmin())return;
-
  const uid=el("novoUid").value.trim();
  const nome=el("novoNome").value.trim();
  const dias=Number(el("novoPlano").value);
-
  if(!uid||uid.includes("/")||uid===ADMIN_UID){
-  mensagemAdmin("Informe um UID válido de usuário.");
+  mensagemAdmin("Informe um UID válido.");
   return;
  }
  if(!nome){
   mensagemAdmin("Informe o nome do usuário.");
   return;
  }
- if(![30,180,365].includes(dias)){
-  mensagemAdmin("Selecione um plano válido.");
-  return;
- }
-
- const botao=el("adicionarUsuario");
- botao.disabled=true;
- mensagemAdmin("Salvando usuário...");
-
+ if(![30,180,365].includes(dias))return;
+ const btn=el("adicionarUsuario");
+ btn.disabled=true;
  try{
   await setDoc(doc(db,"usuarios",uid),{
-   nome,
-   ativo:true,
-   admin:false,
-   ...criarPlano(dias)
+   nome,ativo:true,admin:false,...criarPlano(dias)
   },{merge:true});
-
-  mensagemAdmin("Usuário autorizado com sucesso.");
+  mensagemAdmin("Usuário autorizado.");
   el("novoUid").value="";
   el("novoNome").value="";
   await carregarUsuarios();
  }catch(error){
   mensagemAdmin(erroFirebase(error));
  }finally{
-  botao.disabled=false;
+  btn.disabled=false;
  }
 });
 
-// CRONÔMETRO E CONTADOR ORIGINAL V3.1
-
+// MARCADOR DE CANTOS
 let duracao=10;
 let cantos=[];
 let inicio=null;
@@ -939,32 +813,27 @@ const percentualEl=el("percentual");
 const porMinutoEl=el("porMinuto");
 const controleEl=el("iniciarPausar");
 
+function formatarTempo(seg){
+ seg=Math.max(0,Math.floor(seg));
+ return String(Math.floor(seg/60)).padStart(2,"0")+
+ ":"+String(seg%60).padStart(2,"0");
+}
+function tempoDecorrido(){
+ return Math.min(
+  tempoAcumulado+
+  (inicio!==null?(Date.now()-inicio)/1000:0),
+  duracao*60
+ );
+}
 function selecionarTempo(min){
- if(!usuarioAtual)return;
- if(inicio!==null||pausado||finalizado)return;
+ if(!usuarioAtual||inicio!==null||pausado||finalizado)return;
  duracao=min;
  el("b10").classList.toggle("ativo",min===10);
  el("b15").classList.toggle("ativo",min===15);
  atualizar();
 }
-
-function formatarTempo(seg){
- seg=Math.max(0,Math.floor(seg));
- const m=Math.floor(seg/60);
- const s=seg%60;
- return String(m).padStart(2,"0")+":"+
- String(s).padStart(2,"0");
-}
-
-function tempoDecorrido(){
- const atual=tempoAcumulado+
-  (inicio!==null?(Date.now()-inicio)/1000:0);
- return Math.min(atual,duracao*60);
-}
-
 function controlarTempo(){
  if(!usuarioAtual||finalizado)return;
-
  if(inicio!==null){
   tempoAcumulado=tempoDecorrido();
   inicio=null;
@@ -981,7 +850,6 @@ function controlarTempo(){
  }
  atualizar();
 }
-
 function registrarCanto(){
  if(!usuarioAtual||finalizado||inicio===null)return;
  atualizar();
@@ -989,7 +857,6 @@ function registrarCanto(){
  cantos.push(tempoDecorrido());
  atualizar();
 }
-
 function zerar(){
  clearInterval(intervalo);
  intervalo=null;
@@ -1001,12 +868,10 @@ function zerar(){
  statusEl.textContent="PRONTO PARA INICIAR";
  atualizar();
 }
-
 function atualizarMinutos(){
  const decorrido=tempoDecorrido();
- const minutoAtual=
-  inicio!==null||pausado?
-  Math.min(duracao,Math.floor(decorrido/60)+1):0;
+ const minutoAtual=(inicio!==null||pausado)&&!finalizado?
+ Math.min(duracao,Math.floor(decorrido/60)+1):0;
 
  if(porMinutoEl.children.length!==duracao){
   porMinutoEl.replaceChildren();
@@ -1015,30 +880,30 @@ function atualizarMinutos(){
    div.className="minuto";
    const titulo=document.createElement("span");
    titulo.textContent=(i+1)+" MIN";
-   const numero=document.createElement("strong");
-   numero.textContent="0";
-   div.append(titulo,numero);
+   const valor=document.createElement("strong");
+   valor.textContent="0";
+   div.append(titulo,valor);
    porMinutoEl.appendChild(div);
   }
  }
-
+ const contagens=Array(duracao).fill(0);
+ cantos.forEach(t=>{
+  const indice=Math.floor(t/60);
+  if(indice>=0&&indice<duracao)contagens[indice]++;
+ });
  for(let i=0;i<duracao;i++){
-  const quantidade=cantos.filter(
-   t=>t>=i*60&&t<(i+1)*60
-  ).length;
   const div=porMinutoEl.children[i];
-  div.querySelector("strong").textContent=quantidade;
-  div.classList.toggle("atual",minutoAtual===i+1&&!finalizado);
+  div.querySelector("strong").textContent=contagens[i];
+  div.classList.toggle("atual",minutoAtual===i+1);
  }
 }
-
 function atualizar(){
  const decorrido=tempoDecorrido();
- const totalSegundos=duracao*60;
+ const limite=duracao*60;
 
- if(!finalizado&&inicio!==null&&decorrido>=totalSegundos){
+ if(!finalizado&&inicio!==null&&decorrido>=limite){
   finalizado=true;
-  tempoAcumulado=totalSegundos;
+  tempoAcumulado=limite;
   inicio=null;
   pausado=false;
   clearInterval(intervalo);
@@ -1049,34 +914,25 @@ function atualizar(){
  totalEl.textContent=cantos.length;
  tempoEl.textContent=formatarTempo(decorrido);
 
- let media=0;
- let projecao=0;
-
- if(decorrido>0){
-  media=cantos.length/(decorrido/60);
-  projecao=Math.round(
-   cantos.length/decorrido*totalSegundos
-  );
- }
+ const media=decorrido>0?cantos.length/(decorrido/60):0;
+ const projecao=decorrido>0?
+ Math.round(cantos.length/decorrido*limite):0;
 
  mediaEl.textContent=media.toFixed(1);
  projecaoEl.textContent=projecao;
 
- const pct=Math.min(100,decorrido/totalSegundos*100);
+ const pct=Math.min(100,decorrido/limite*100);
  progressoEl.style.width=pct+"%";
-
  percentualEl.textContent=
-  Math.floor(pct)+"% • "+
-  formatarTempo(decorrido)+" / "+
-  formatarTempo(totalSegundos);
+ Math.floor(pct)+"% • "+
+ formatarTempo(decorrido)+" / "+formatarTempo(limite);
 
  atualizarMinutos();
 
  controleEl.disabled=finalizado;
  controleEl.classList.toggle("pausar",inicio!==null);
  controleEl.textContent=finalizado?
-  "✓ FINALIZADO":
-  inicio!==null?"⏸ PAUSAR":"▶ INICIAR";
+ "✓ FINALIZADO":inicio!==null?"⏸ PAUSAR":"▶ INICIAR";
 }
 
 el("b10").addEventListener("click",()=>selecionarTempo(10));
@@ -1087,25 +943,23 @@ el("zerar").addEventListener("click",zerar);
 
 el("indicarAmigo").addEventListener("click",()=>{
  const mensagem=
-  "🐦 MARCADOR DE COLEIRO\n\n"+
-  "Conheça o aplicativo para marcar os cantos do seu coleiro!\n\n"+
-  "PLANOS DE ACESSO:\n"+
-  "30 dias - R$ 10,00\n"+
-  "180 dias - R$ 30,00\n"+
-  "365 dias - R$ 50,00\n\n"+
-  "Acesse:\n"+
-  "https://vilela464-glitch.github.io/marcador-coleiro/\n\n"+
-  "Para contratar:\n"+
-  "https://wa.me/5581988698384";
+ "🐦 MARCADOR DE COLEIRO\n\n"+
+ "Conheça o aplicativo para marcar os cantos do seu coleiro!\n\n"+
+ "PLANOS DE ACESSO:\n"+
+ "30 dias - R$ 10,00\n"+
+ "180 dias - R$ 30,00\n"+
+ "365 dias - R$ 50,00\n\n"+
+ "Acesse:\n"+
+ "https://vilela464-glitch.github.io/marcador-coleiro/\n\n"+
+ "Para contratar:\n"+
+ "https://wa.me/5581988698384";
 
  window.open(
   "https://wa.me/?text="+encodeURIComponent(mensagem),
-  "_blank",
-  "noopener,noreferrer"
+  "_blank","noopener,noreferrer"
  );
 });
 
-// Reavalia o vencimento durante o uso.
 setInterval(()=>{
  if(usuarioAtual&&dadosAtuais&&!acessoValido(dadosAtuais)){
   bloquearAcesso("Seu plano venceu. Solicite renovação.");
