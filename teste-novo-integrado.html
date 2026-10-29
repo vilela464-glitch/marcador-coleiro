@@ -1,0 +1,815 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#05090d">
+<title>Marcador de Coleiro — Teste Integrado</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+body{margin:0;min-height:100vh;padding:20px 14px 30px;background:#05090d;color:white;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-align:center}
+.container{max-width:500px;margin:auto}
+h1{font-size:27px;margin:5px 0}
+.dourado{color:#ffc928}
+.sub,.info{color:#9aa8b6;font-size:13px}
+.minutos-box,.card,.admin-box,.auth-box{background:#0c141b;border:1px solid #293e4c;border-radius:15px;padding:13px}
+.minutos-box{margin:15px 0}
+.minutos-box h2{font-size:15px;margin:0 0 10px}
+#porMinuto{display:flex;gap:7px;overflow-x:auto}
+.minuto{min-width:62px;background:#101d26;border:1px solid #263846;border-radius:10px;padding:7px}
+.minuto span{display:block;font-size:11px;color:#9aa8b6}
+.minuto strong{display:block;font-size:23px;color:#ffc928}
+.tempos,.acoes,.topo-acesso{display:flex;gap:10px;margin:12px 0}
+.tempos button,.acoes button,.topo-acesso button{flex:1;padding:13px;border-radius:11px;border:1px solid #314557;background:#101820;color:white;font-weight:800}
+.tempos button.ativo{background:#ffc928;color:#080b0e}
+#status{color:#9aa8b6;font-size:13px}
+#tempo{font-size:45px;font-weight:900;margin:5px 0 13px}
+.painel{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px}
+.card{min-height:125px;display:flex;flex-direction:column;justify-content:center}
+.card small{color:#9ba7b4;font-size:12px;font-weight:900}
+.numero{font-size:60px;font-weight:900}
+#projecao{color:#ffc928}
+.card-media{grid-column:span 2;min-height:65px}
+.card-media .numero{font-size:30px}
+.barra{height:9px;background:#19232b;border-radius:10px;overflow:hidden}
+#progresso{height:100%;width:0;background:#ffc928}
+#percentual{font-size:12px;color:#9aa8b6;margin:8px 0 16px}
+#canto{width:100%;height:145px;border:0;border-radius:25px;background:#ffc928;color:#080b0e;font-size:31px;font-weight:900;touch-action:manipulation}
+#iniciarPausar{background:#178a57}
+#iniciarPausar.pausar{background:#b87517}
+#zerar{background:#e73535}
+button{cursor:pointer}
+button:disabled{opacity:.5}
+.auth-box{max-width:420px;margin:60px auto}
+input,select{width:100%;padding:14px;margin:7px 0;border:1px solid #314557;border-radius:10px;background:#101d26;color:white;font-size:16px}
+.btn{background:#ffc928;color:#080b0e;border:0;border-radius:10px;padding:13px;font-weight:900}
+#loginBtn{width:100%}
+.erro{color:#ff8585;font-size:13px}
+.admin-box{text-align:left;border-color:#ffc928;margin-bottom:15px}
+.admin-box h2{color:#ffc928;font-size:18px}
+.usuario-item{border-top:1px solid #263846;padding:12px 0;font-size:13px;overflow-wrap:anywhere}
+.usuario-item button{border:0;border-radius:8px;padding:10px;margin:5px 5px 0 0;color:white;font-weight:800}
+.verde{background:#178a57}
+.vermelho{background:#d73535}
+.azul{background:#2464bd}
+.amarelo{background:#b87517}
+.rodape{font-size:12px;color:#9aa8b6;margin-top:16px}
+
+/* Visual aprovado do novo marcador */
+
+:root{--teal:#00888A;--gold:#FFE12F;--olive:#D9CA65;--dark:#303030;--peach:#E4AC93;--purple:#7772AF;--coral:#CE7668;--green:#008771;--blue:#205799}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:#101112;color:#FFFFFF;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}
+.app{max-width:710px;margin:0 auto;background:linear-gradient(115deg,#383838 0%,#2E2E2E 65%,#292929 100%);min-height:100dvh;box-shadow:0 0 35px #000}
+header{height:clamp(64px,12vw,92px);background:linear-gradient(115deg,#00777D 0%,var(--teal) 60%,#009A98 100%);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(14px,4vw,30px);color:var(--gold)}
+header h1{font-size:clamp(26px,5vw,45px);margin:0;line-height:1.1;font-weight:750}
+.headbtn{border:0;background:transparent;color:var(--gold);font-size:clamp(28px,6vw,42px);width:42px;height:44px;display:grid;place-items:center}
+.counter-layout{display:grid;grid-template-columns:25% 75%;padding:0 8px;gap:0;align-items:stretch}
+.minutes{border:1px solid #c6c6c6;background:#fff;color:#080808;display:flex;flex-direction:column;min-width:0}
+.m-header,.min-row{display:grid;grid-template-columns:43% 57%;align-items:center;text-align:center}
+.m-header{background:#f0f0f0;font-size:clamp(12px,2.5vw,23px);font-weight:650;height:clamp(35px,6.8vw,51px)}
+.m-header>span:first-child,.min-row>span:first-child{border-right:1px solid #d1d1d1}
+.min-row{flex:1;min-height:clamp(33px,5.95vw,45px);font-size:clamp(15px,3.35vw,28px);font-weight:620}
+.min-row:nth-child(even){background:#f1f1f1}.min-row:nth-child(odd){background:#fff}
+.min-row.active{background:#bcefe6;box-shadow:inset 5px 0 #00888A}
+.min-row>span{display:grid;place-items:center;height:100%}
+.right-panel{display:flex;flex-direction:column;padding:0 4px 0 11px;min-width:0}
+.timer-row{display:flex;align-items:stretch;gap:4px;min-width:0}
+.timer{background:#000;border:2px solid #fff;border-radius:2px;flex:1;display:grid;place-items:center;min-width:0;height:clamp(114px,29vw,245px);color:white;font-weight:760;font-variant-numeric:tabular-nums;font-size:clamp(46px,12.5vw,118px);letter-spacing:-.05em}
+.timer-arrows{width:clamp(23px,6vw,46px);display:flex;flex-direction:column;justify-content:space-around}
+.timer-arrows button{font-size:clamp(27px,7vw,58px);font-weight:900;line-height:1;color:#1BC6B6;background:none;border:0;padding:0}
+.timer-arrows button:disabled{opacity:.18}
+.metrics{display:flex;flex-direction:column;gap:clamp(12px,2.4vw,23px);padding-top:clamp(12px,3vw,23px)}
+.metric{display:flex;flex-direction:column;align-items:center;gap:clamp(7px,1.3vw,15px)}
+.pill{background:linear-gradient(175deg,#E8DC80 0%,var(--olive) 80%);border:1px solid #f0e68b;border-radius:100px;box-shadow:0 2px 0 #A49440;width:100%;text-align:center;color:#080909;padding:clamp(5px,1vw,9px) 3px;font-weight:780;font-size:clamp(12px,3.0vw,26px);line-height:1.14}
+.name{width:100%;border-radius:7px;border:2px solid #CBCFD2;color:#fff;background:#181818;padding:clamp(9px,2.1vw,16px);font-size:clamp(14px,3.1vw,25px);outline-offset:3px}
+.name:focus{outline:3px solid #FFE12F}.name::placeholder{color:#E2E5E7}
+.stat{color:#FFFDEB;text-shadow:0 2px 3px #0009;font-weight:800;font-size:clamp(46px,9.6vw,83px);line-height:1.12;font-variant-numeric:tabular-nums;text-align:center}
+.grow{flex:1;min-height:clamp(28px,12vw,115px)}
+.controls{height:clamp(173px,41vw,355px);display:grid;grid-template-columns:28% 72%;gap:6px;margin-bottom:9px}
+.controls-left{display:grid;grid-template-rows:1fr 1fr;gap:6px;min-width:0}
+.control{border-radius:6px;border:2.5px solid #fff;color:white;box-shadow:inset 0 1px 1px #ffffff66,0 2px 6px #0006;font-size:clamp(11px,2.25vw,22px);font-weight:800;line-height:1.22;padding:5px;word-wrap:break-word}
+.play{background:linear-gradient(155deg,#908AC5 0%,var(--purple) 85%)}.reset{background:linear-gradient(155deg,#E78D7B 0%,var(--coral) 90%)}
+.tap{border:3px solid #fff;border-radius:6px;background:linear-gradient(137deg,#F0B79D 0%,var(--peach) 52%,#D99577 100%);box-shadow:inset 0 2px 4px #fff6,0 3px 6px #0009;color:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:0;min-width:0;touch-action:manipulation;user-select:none}
+.tap:active{filter:brightness(1.12);transform:scale(.988)}
+.big-number{text-shadow:0 2px 3px #92563D;font-size:clamp(77px,22vw,205px);font-weight:750;line-height:.99;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.tap small{font-size:clamp(14px,3.2vw,30px);font-weight:780;margin-top:5px}
+.actions{display:grid;grid-template-columns:1.3fr 1fr;gap:7px;padding:8px}
+.action{border:2.5px solid #fff;border-radius:5px;color:#fff;font-size:clamp(12px,3vw,25px);font-weight:760;padding:clamp(12px,3vw,20px) 4px;display:flex;align-items:center;justify-content:center;gap:7px}
+.action:active,.control:active{filter:brightness(1.18)}.action svg{width:clamp(20px,4.3vw,40px);height:clamp(20px,4.3vw,40px);flex-shrink:0}.save{background:linear-gradient(150deg,#099D87,var(--green))}.history{background:linear-gradient(150deg,#2B6EB7,var(--blue))}
+.prototipo{color:#f2f2f2;text-align:center;font-size:12px;padding:6px 12px 22px;margin:0}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;padding:16px;z-index:5}
+.overlay.show{display:flex}
+.dialog{width:min(100%,520px);max-height:90dvh;overflow-y:auto;border:1px solid #a7a7a7;border-radius:12px;background:#292929;color:white;padding:18px;box-shadow:0 18px 50px #000b}
+.dialog h2{margin:4px 0 14px;color:#f7e14d;font-size:24px}.dialog p{color:#e1e1e1}
+.dialog .close{float:right;background:none;color:white;border:0;font-size:26px}.dialog .row-btns{display:flex;gap:8px;margin-top:15px;flex-wrap:wrap}
+.dialog .modalbtn{background:#087e67;border:1px solid white;border-radius:6px;padding:11px 13px;color:white;font-weight:700;flex:1}.dialog .modalbtn.secondary{background:#555}
+.record{background:#373737;border:1px solid #626262;border-radius:8px;padding:12px;margin:9px 0}
+.record strong{color:#e8e09d;font-size:18px}.record .meta{color:#e5e5e5;line-height:1.5;font-size:14px;margin-top:4px}
+.record details{margin-top:9px}.record summary{cursor:pointer}.record table{border-collapse:collapse;width:100%;margin-top:7px}.record td{border-bottom:1px solid #555;padding:5px}
+.record .delete{margin-top:9px;background:#994c43;color:#fff;border:1px solid #e4c6bf;padding:6px 9px;border-radius:4px}
+.search{width:100%;background:#1a1a1a;border:1px solid #888;color:white;border-radius:6px;padding:10px}
+.toast{position:fixed;z-index:10;left:50%;transform:translateX(-50%);bottom:22px;background:#121212;color:white;border:1px solid #f9e241;padding:10px 15px;border-radius:7px;box-shadow:0 3px 15px #0008;display:none;max-width:min(92vw,480px);text-align:center}.toast.show{display:block}
+@media (max-width:400px){.right-panel{padding-left:5px}.counter-layout{padding:0 4px}.controls{gap:4px}.controls-left{gap:4px}.tap small{font-size:11px}.timer{letter-spacing:-.065em}}
+
+/* ===== EDIÇÃO AMARELO & PRETO — PALETA DO MARCADOR V3.2 ===== */
+:root{
+ --teal:#101820;--gold:#ffca28;--olive:#ffca28;--dark:#05090d;
+ --peach:#ffca28;--purple:#158c60;--coral:#ed3237;
+ --green:#118b5d;--blue:#142331;
+ --bg:#05090d;--panel:#0d171f;--panel2:#12212b;--line:#2a4252;
+ --muted:#9caab7;--white:#fff;
+}
+html{background:var(--bg);color-scheme:dark}
+body{background:var(--bg);color:#fff}
+.app{background:var(--bg);box-shadow:none}
+header{
+ background:#0d171f;border-bottom:2px solid #233847;
+ color:var(--gold);height:clamp(66px,12vw,92px);
+}
+header h1{color:var(--gold);font-weight:850;letter-spacing:.012em;text-shadow:none}
+.headbtn{color:var(--gold)}
+.counter-layout{gap:0;padding:10px 7px 0}
+.minutes{background:#0d171f;border:2px solid #2a4252;border-radius:10px 0 0 10px;overflow:hidden;color:#fff}
+#minuteRows{display:flex;flex-direction:column;flex:1;min-height:0}
+.m-header{background:#162632;color:#fff;border-bottom:2px solid #2a4252;font-size:clamp(11px,2.6vw,21px);font-weight:850}
+.m-header>span:first-child,.min-row>span:first-child{border-right:1px solid #2a4252}
+.min-row{background:#0d171f;color:#fff;min-height:clamp(33px,5.95vw,45px);font-weight:750}
+.min-row:nth-child(even){background:#14222c}
+.min-row:nth-child(odd){background:#0d171f}
+.min-row>span:last-child{color:#ffca28;font-weight:850}
+.min-row.active{background:#31502c;box-shadow:inset 4px 0 #ffca28}
+.right-panel{padding-left:8px;padding-right:0}
+.timer{border:2px solid #2a4252;border-radius:12px;background:#0c151d;color:#fff;box-shadow:none;font-weight:900}
+.timer-arrows button{color:#ffca28;text-shadow:none}
+.metrics{gap:clamp(12px,2.8vw,25px);padding-top:clamp(12px,3vw,25px)}
+.metric{gap:clamp(7px,1.5vw,15px)}
+.pill{background:#13222b;border:2px solid #2a4252;border-radius:12px;box-shadow:none;color:#ffca28;font-weight:850;padding:clamp(8px,1.4vw,12px) 3px;font-size:clamp(12px,2.8vw,24px)}
+.name{border:2px solid #2a4252;background:#0d171f;color:#fff;border-radius:11px;font-weight:700;box-shadow:none}
+.name::placeholder{color:#889aa7;font-weight:550}
+.name:focus{border-color:#ffca28;outline:2px solid #ffca2870;outline-offset:1px}
+.stat{color:#ffca28;text-shadow:none;font-weight:900;letter-spacing:-.018em}
+.grow{min-height:clamp(18px,7vw,85px)}
+.controls{gap:7px;margin-bottom:9px;height:clamp(180px,43vw,360px)}
+.controls-left{gap:7px}
+.control{border:2px solid #2a4252;border-radius:12px;box-shadow:none;color:#fff;font-size:clamp(11px,2.6vw,24px);font-weight:850}
+.play{background:#118b5d}
+.reset{background:#ec3339}
+.tap{border:2px solid #ffca28;border-radius:14px;background:#ffca28;box-shadow:none;color:#070b0e}
+.tap:active{background:#ffd954;transform:scale(.99)}
+.big-number{color:#080c10;text-shadow:none;font-weight:900;line-height:.98}
+.tap small{color:#090b0c;font-weight:850;letter-spacing:.01em}
+.actions{padding:7px;gap:8px}
+.action{border:2px solid #294253;border-radius:12px;box-shadow:none;font-weight:850;padding:clamp(12px,3vw,20px) 3px}
+.save{background:#128b60;color:white}
+.history{background:#102131;color:#ffca28;border-color:#294253}
+.prototipo{color:#8e9daa;font-size:11px;padding:9px 7px 18px}
+.overlay{background:#000d}
+.dialog{background:#0d171f;border:2px solid #294253}
+.dialog h2{color:#ffca28}
+.dialog p{color:#d5dee4}
+.dialog .modalbtn{background:#118b5d;border-color:#2a4252}
+.dialog .modalbtn.secondary{background:#1a2b38}
+.record{background:#13232e;border-color:#2a4252}
+.record strong{color:#ffca28}
+.record .meta{color:#e4eaed}
+.record .delete{background:#e4333b;border-color:#e4333b}
+.search{background:#091219;border-color:#2a4252}
+.toast{background:#0e1c25;border-color:#ffca28}
+@media(max-width:400px){.right-panel{padding-left:5px}.counter-layout{padding:8px 4px 0}.controls,.controls-left{gap:4px}.tap small{font-size:clamp(11px,3.3vw,15px)}.control{font-size:clamp(11px,2.7vw,18px)}}
+
+
+/* Em celulares, mantenha o botão de cantos visível enquanto a tabela de minutos rola. */
+@media (min-height:720px) and (max-width:710px){
+ .counter-layout{height:calc(100dvh - clamp(66px,12vw,92px) - 116px);min-height:615px}
+ .minutes{overflow:hidden;min-height:0}
+ #minuteRows{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+ .min-row{flex:0 0 clamp(33px,5.95vw,45px)}
+ .right-panel{min-height:0}
+ .grow{min-height:5px}
+ .controls{flex:0 0 clamp(173px,41vw,355px)}
+}
+
+
+/* ESTILOS EXCLUSIVOS: MODELO NOVO + LOGIN/ADMIN DO ORIGINAL */
+body{padding:0!important;background:#05090d}
+#carregando,#loginTela{padding:18px;max-width:420px;margin:60px auto}
+#app{width:100%;max-width:720px;margin:0 auto;padding:0 0 12px}
+#app .topo-acesso{padding:9px 8px 0;position:relative;z-index:1}
+#app .topo-acesso button{min-width:0;overflow-wrap:anywhere}
+#app #adminPainel{margin:10px 8px 14px}
+#app .app{width:100%}
+#app .name{margin:0;min-height:45px}
+#app header h1{font-size:clamp(26px,5vw,45px);margin:0;line-height:1.1}
+#app #minuteRows{min-height:0}
+#app .controls-left .control{color:#fff}
+#app .tap:disabled{opacity:.7}
+#app .toast{font-size:14px}
+#app .prototipo{font-weight:550}
+#app #indicarAmigo{width:calc(100% - 14px);margin:8px 7px 0;background:#118b5d;color:#fff}
+#app .overlay .dialog input{margin:7px 0}
+#app .dialog .record .delete{font-size:14px}
+#app .info{overflow-wrap:anywhere}
+
+</style>
+</head>
+<body>
+
+<div id="carregando" class="auth-box">
+<h2>Verificando acesso...</h2>
+<p class="info">Conectando ao Firebase.</p>
+</div>
+
+<div id="loginTela" class="auth-box" hidden>
+<h1>🐦 MARCADOR DE <span class="dourado">COLEIRO</span></h1>
+<p class="sub">ACESSO AUTORIZADO</p>
+<form id="loginForm">
+<input id="email" type="email" placeholder="Seu e-mail" required>
+<input id="senha" type="password" placeholder="Sua senha" required>
+<button id="loginBtn" class="btn">ENTRAR</button>
+</form>
+<p id="loginErro" class="erro"></p>
+</div>
+
+<div id="app" class="container" hidden>
+
+<div class="topo-acesso">
+<button id="adminBtn" hidden>⚙ ADMINISTRAR</button>
+<button id="sairBtn">SAIR DA CONTA</button>
+</div>
+
+<div id="adminPainel" class="admin-box" hidden>
+<h2>⚙ CONTROLE DE USUÁRIOS</h2>
+<p class="info">Cadastre primeiro a conta no Firebase Authentication e informe o UID abaixo.</p>
+
+<input id="novoUid" placeholder="UID do usuário">
+<input id="novoNome" placeholder="Nome do usuário">
+
+<select id="novoPlano">
+<option value="30">30 DIAS — R$ 10,00</option>
+<option value="180">180 DIAS — R$ 30,00</option>
+<option value="365">365 DIAS — R$ 50,00</option>
+</select>
+
+<button id="adicionarUsuario" class="btn">
+CADASTRAR / LIBERAR
+</button>
+
+<p id="adminMensagem" class="info" role="status"></p>
+<div id="listaUsuarios"></div>
+</div>
+
+<div class="app">
+  <header>
+    <button class="headbtn" id="back" aria-label="Voltar">←</button>
+    <h1>Contagem</h1>
+    <button class="headbtn" id="settings" aria-label="Configurações">⚙</button>
+  </header>
+  <main>
+    <div class="counter-layout">
+      <div class="minutes" aria-label="Contagem por minuto">
+        <div class="m-header"><span>Min</span><span>Cantos</span></div>
+        <div id="minuteRows"></div>
+      </div>
+      <section class="right-panel">
+        <div class="timer-row">
+          <div class="timer" id="time" aria-live="off">15:00</div>
+          <div class="timer-arrows"><button id="more" aria-label="Aumentar tempo">⬆</button><button id="less" aria-label="Diminuir tempo">⬇</button></div>
+        </div>
+        <div class="metrics">
+          <div class="metric"><label class="pill" for="birdName">NOME DO COLEIRO</label><input class="name" id="birdName" maxlength="80" autocomplete="off" placeholder="Digite o nome da ave..."></div>
+          <div class="metric"><div class="pill">MÉDIA POR MINUTO</div><div class="stat" id="avg">0,0</div></div>
+          <div class="metric"><div class="pill">PREVISÃO DE CANTOS</div><div class="stat" id="projection">0</div></div>
+        </div>
+        <div class="grow"></div>
+        <div class="controls">
+          <div class="controls-left">
+            <button class="control play" id="startPause">INICIAR</button>
+            <button class="control reset" id="reset">ZERAR</button>
+          </div>
+          <button class="tap" id="add" aria-label="Marcar mais um canto"><span class="big-number" id="total">0</span><small>+ 1 CANTO</small></button>
+        </div>
+      </section>
+    </div>
+    <div class="actions">
+      <button class="action save" id="save"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M4 2h14l4 4v16H2V2h2zm2 2v6h11V4h-2v4H8V4H6zm6 9a4 4 0 100 8 4 4 0 000-8z"/></svg>SALVAR CONTAGEM</button>
+      <button class="action history" id="history"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="1"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>HISTÓRICO</button>
+    </div>
+  </main>
+  <p class="prototipo">TESTE INTEGRADO · LOGIN E CLIENTES PRESERVADOS · HISTÓRICO NESTE APARELHO · OFICIAL INTACTO</p>
+</div>
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
+ <div class="dialog"><button class="close" id="close" aria-label="Fechar">×</button><div id="dialogContent"></div></div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<button id="indicarAmigo" class="btn verde">💬 INDICAR MARCADOR PARA UM AMIGO</button>
+</div>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+import {
+ getAuth,signInWithEmailAndPassword,
+ signOut,onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+import {
+ getFirestore,doc,getDoc,getDocs,
+ collection,setDoc,updateDoc,deleteDoc,
+onSnapshot,Timestamp,serverTimestamp,
+runTransaction
+} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+
+const firebaseConfig={
+ apiKey:"AIzaSyDovY5VLOO3-OnQ1xjiQqNwlgrv_lMMCNY",
+ authDomain:"marcador-de-coleiro.firebaseapp.com",
+ projectId:"marcador-de-coleiro",
+ storageBucket:"marcador-de-coleiro.firebasestorage.app",
+ messagingSenderId:"455735913686",
+ appId:"1:455735913686:web:dfde603142e471b9adad77"
+};
+
+const ADMIN_UID="P2xlWCfM8ESIkoyTfkVjprhjiLz1";
+const firebaseApp=initializeApp(firebaseConfig);
+const auth=getAuth(firebaseApp);
+const db=getFirestore(firebaseApp);
+const TOKEN_SESSAO = crypto.randomUUID().replaceAll("-","") + crypto.randomUUID().replaceAll("-","").slice(0,16);
+const TEMPO_SESSAO = 30 * 60 * 1000;
+let intervaloSessao = null;
+let observadorSessao = null;
+let sessaoIniciada = false;
+const el=id=>document.getElementById(id);
+
+let usuarioAtual=null;
+let administradorAtual=false;
+let observador=null;
+let sessao=0;
+let adminAberto=false;
+let vencimentoAtual=null;
+let relogioAcesso=null;
+
+function mostrar(tela){
+ el("carregando").hidden=tela!=="carregando";
+ el("loginTela").hidden=tela!=="login";
+ el("app").hidden=tela!=="app";
+}
+function erroFirebase(e){
+ if(["auth/invalid-credential","auth/wrong-password","auth/user-not-found"].includes(e?.code))
+ return "E-mail ou senha incorretos.";
+ if(e?.code==="permission-denied")
+ return "Acesso negado pelas regras do Firebase.";
+ return "Erro: "+(e?.message||"desconhecido");
+}
+function exigirAdmin(){
+ return usuarioAtual?.uid===ADMIN_UID&&administradorAtual;
+}
+function limpar(){
+ sessao++;
+sessaoIniciada = false;
+clearInterval(intervaloSessao);
+intervaloSessao = null;
+if(observadorSessao){
+ observadorSessao();
+ observadorSessao = null;
+}
+ if(observador){observador();observador=null;}
+ clearInterval(relogioAcesso);
+ relogioAcesso=null;
+ vencimentoAtual=null;
+}
+function bloquear(msg){
+ limpar();
+if(auth.currentUser){
+ signOut(auth).catch(console.error);
+}
+ usuarioAtual=null;
+ administradorAtual=false;
+ zerar();
+ el("adminBtn").hidden=true;
+ el("adminPainel").hidden=true;
+ mostrar("login");
+ el("loginErro").textContent=msg;
+}
+function verificarVencimento(){
+ if(!usuarioAtual||administradorAtual)return;
+ if(!vencimentoAtual||Date.now()>=vencimentoAtual){
+  bloquear("Seu plano venceu. Solicite a renovação ao administrador.");
+ }
+}
+async function assumirSessao(user) {
+  
+ const ref = doc(db, "sessoes", user.uid);
+
+ await runTransaction(db, async (transaction) => {
+  await transaction.get(ref);
+
+  transaction.set(ref, {
+   token: TOKEN_SESSAO,
+   ultimoBatimento: serverTimestamp(),
+   expiraEm: Timestamp.fromMillis(
+    Date.now() + TEMPO_SESSAO
+   )
+  });
+ });
+}
+function vigiarSessao(user) {
+ if(observadorSessao) observadorSessao();
+
+ observadorSessao = onSnapshot(
+  doc(db, "sessoes", user.uid),
+  snap => {
+    if(snap.metadata.fromCache) return;
+   if(!snap.exists()){
+ bloquear("Sessão não encontrada. Entre novamente.");
+ return;
+}
+
+   if(snap.data().token !== TOKEN_SESSAO) {
+    bloquear("Sua conta foi acessada em outro aparelho.");
+   }else {
+ mostrar("app");
+}
+  },
+  error => bloquear(erroFirebase(error))
+ );
+}
+function dataValida(dados){
+ return dados.venceEm &&
+ typeof dados.venceEm.toMillis==="function" &&
+ dados.venceEm.toMillis()>Date.now();
+}
+onAuthStateChanged(auth,user=>{
+ limpar();
+ usuarioAtual=null;
+ administradorAtual=false;
+ zerar();
+
+ if(!user){
+  mostrar("login");
+  return;
+ }
+ mostrar("carregando");
+ const atual=sessao;
+ observador=onSnapshot(doc(db,"usuarios",user.uid),snap=>{
+  if(atual!==sessao)return;
+  const dados=snap.data();
+  if(!snap.exists()||dados.ativo!==true){
+   bloquear("Acesso não autorizado ou bloqueado.");
+   return;
+  }
+  const admin=user.uid===ADMIN_UID&&dados.admin===true;
+  if(!admin&&!dataValida(dados)){
+   bloquear("Plano vencido ou sem validade. Contate o administrador.");
+   return;
+  }
+  usuarioAtual=user;
+  if(!admin && !sessaoIniciada){
+ sessaoIniciada=true;
+    
+ assumirSessao(user)
+ .then(()=>{
+  if(atual===sessao){
+ vigiarSessao(user);
+}
+ })
+ .catch(error=>{
+  if(atual===sessao) bloquear(erroFirebase(error));
+ });
+}
+  administradorAtual=admin;
+  vencimentoAtual=admin?null:dados.venceEm.toMillis();
+  el("adminBtn").hidden=!admin;
+  el("adminPainel").hidden=true;
+  adminAberto=false;
+  if(admin || observadorSessao){
+ mostrar("app");
+}else{
+ mostrar("carregando");
+}
+  clearInterval(relogioAcesso);
+  relogioAcesso=setInterval(verificarVencimento,1000);
+ },error=>{
+  if(atual!==sessao)return;
+  bloquear(erroFirebase(error));
+ });
+},error=>{
+ mostrar("login");
+ el("loginErro").textContent=erroFirebase(error);
+});
+
+el("loginForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const btn=el("loginBtn");
+ btn.disabled=true;
+ btn.textContent="ENTRANDO...";
+ el("loginErro").textContent="";
+ try{
+  await signInWithEmailAndPassword(auth,el("email").value.trim(),el("senha").value);
+ }catch(error){
+  el("loginErro").textContent=erroFirebase(error);
+ }finally{
+  btn.disabled=false;
+  btn.textContent="ENTRAR";
+ }
+});
+
+el("sairBtn").onclick=async()=>{
+ limpar();
+if(auth.currentUser){
+ signOut(auth).catch(console.error);
+}
+ usuarioAtual=null;
+ administradorAtual=false;
+ zerar();
+ mostrar("carregando");
+ try{await signOut(auth);}
+ catch(e){
+  mostrar("login");
+  el("loginErro").textContent=erroFirebase(e);
+ }
+};
+
+el("adminBtn").onclick=async()=>{
+ if(!exigirAdmin())return;
+ adminAberto=!adminAberto;
+ el("adminPainel").hidden=!adminAberto;
+ if(adminAberto)await carregarUsuarios();
+};
+
+function mensagem(msg){
+ el("adminMensagem").textContent=msg;
+}
+function calcularVencimento(dias,base){
+ const inicio=base instanceof Date&&base>Date.now()?base:new Date();
+ return Timestamp.fromMillis(inicio.getTime()+dias*86400000);
+}
+function formatarData(ts){
+ if(!ts||typeof ts.toDate!=="function")return "Não definida";
+ return ts.toDate().toLocaleString("pt-BR");
+}
+async function carregarUsuarios(){
+ if(!exigirAdmin())return;
+ const lista=el("listaUsuarios");
+ lista.textContent="Carregando...";
+ try{
+  const resultado=await getDocs(collection(db,"usuarios"));
+  if(!exigirAdmin())return;
+  lista.textContent="";
+  if(resultado.empty){
+   lista.textContent="Nenhum usuário.";
+   return;
+  }
+  [...resultado.docs].sort((a,b)=>{
+ if(a.id===ADMIN_UID)return 1;
+ if(b.id===ADMIN_UID)return -1;
+
+ const dataA=a.data().venceEm?.toMillis?.()??Infinity;
+ const dataB=b.data().venceEm?.toMillis?.()??Infinity;
+
+ if(dataA===dataB)return 0;
+ return dataA<dataB?-1:1;
+}).forEach(item=>{
+   const dados=item.data();
+   const div=document.createElement("div");
+   div.className="usuario-item";
+   const admin=item.id===ADMIN_UID;
+   const vigente=dataValida(dados);
+   const nome=document.createElement("strong");
+   nome.textContent=dados.nome||"Usuário";
+   div.appendChild(nome);
+   const info=document.createElement("p");
+   info.className="info";
+   info.textContent=
+    "UID: "+item.id+
+    "\nPlano: "+(dados.planoDias||"Não definido")+" dias"+
+    "\nVencimento: "+formatarData(dados.venceEm)+
+    "\nSituação: "+(
+     admin?"ADMINISTRADOR":
+     dados.ativo!==true?"BLOQUEADO":
+     vigente?"ATIVO":"VENCIDO"
+    );
+   info.style.whiteSpace="pre-line";
+   div.appendChild(info);
+
+   function botao(titulo,classe,acao){
+    const b=document.createElement("button");
+    b.textContent=titulo;
+    b.className=classe;
+    b.onclick=async()=>{
+     if(!exigirAdmin())return;
+     b.disabled=true;
+     try{await acao();await carregarUsuarios();}
+     catch(e){mensagem(erroFirebase(e));b.disabled=false;}
+    };
+    div.appendChild(b);
+   }
+   if(!admin){
+    const plano=document.createElement("select");
+    [30,180,365].forEach(d=>{
+     const op=document.createElement("option");
+     op.value=d;
+     op.textContent=d+" DIAS";
+     op.selected=d===dados.planoDias;
+     plano.appendChild(op);
+    });
+    div.appendChild(plano);
+
+    botao("RENOVAR PLANO","azul",async()=>{
+     if(!confirm("Confirmar renovação?"))return;
+     const dias=Number(plano.value);
+     const base=dados.venceEm?.toDate?.();
+     await updateDoc(doc(db,"usuarios",item.id),{
+      ativo:true,
+      planoDias:dias,
+      venceEm:calcularVencimento(dias,base),
+      atualizadoEm:serverTimestamp()
+     });
+     mensagem("Plano renovado.");
+    });
+
+    botao(dados.ativo?"BLOQUEAR":"ATIVAR","amarelo",async()=>{
+     if(!dados.ativo&&!vigente){
+      mensagem("Renove o plano antes de ativar.");
+      return;
+     }
+     await updateDoc(doc(db,"usuarios",item.id),{
+      ativo:!dados.ativo
+     });
+     mensagem("Situação atualizada.");
+    });
+
+    botao("EXCLUIR ACESSO","vermelho",async()=>{
+     if(!confirm("Remover acesso deste usuário?"))return;
+     await deleteDoc(doc(db,"usuarios",item.id));
+     mensagem("Acesso removido. A conta Authentication permanece.");
+    });
+   }
+   lista.appendChild(div);
+  });
+ }catch(e){
+  lista.textContent="";
+  mensagem(erroFirebase(e));
+ }
+}
+
+el("adicionarUsuario").onclick=async()=>{
+ if(!exigirAdmin())return;
+ const uid=el("novoUid").value.trim();
+ const nome=el("novoNome").value.trim();
+ const dias=Number(el("novoPlano").value);
+ if(!uid||uid.includes("/")||uid===ADMIN_UID){
+  mensagem("Informe um UID válido de usuário.");
+  return;
+ }
+ if(!nome){
+  mensagem("Informe o nome.");
+  return;
+ }
+ const btn=el("adicionarUsuario");
+ btn.disabled=true;
+ try{
+  const ref=doc(db,"usuarios",uid);
+  const anterior=await getDoc(ref);
+  if(anterior.exists()){
+   mensagem("Usuário existente. Use RENOVAR PLANO na lista.");
+   return;
+  }
+  await setDoc(ref,{
+   nome,ativo:true,admin:false,
+   planoDias:dias,
+   venceEm:calcularVencimento(dias),
+   criadoEm:serverTimestamp()
+  });
+  el("novoUid").value="";
+  el("novoNome").value="";
+  mensagem("Usuário liberado por "+dias+" dias.");
+  await carregarUsuarios();
+ }catch(e){
+  mensagem(erroFirebase(e));
+ }finally{
+  btn.disabled=false;
+ }
+};
+
+// NOVO MARCADOR: visual aprovado, controle original de usuários preservado
+function criarMarcadorNovo() {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  // Histórico isolado por UID: sem misturar registros de clientes no mesmo aparelho.
+  const storageKey = () => usuarioAtual ? 'marcador_coleiro_historico_uid_'+usuarioAtual.uid+'_v1' : null;
+  const s={target:15,elapsed:0,count:0,byMinute:Array(24).fill(0),started:false,running:false,finished:false,saved:false,lastTick:0,interval:null};
+  const esc = txt => String(txt).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.remove('show'),3000)}
+  function rows(){
+   const el=$('minuteRows');el.textContent='';
+   for(let i=0;i<24;i++){const row=document.createElement('div');row.className='min-row';row.dataset.index=i;
+    const a=document.createElement('span');a.textContent=i+1;
+    const b=document.createElement('span');b.className='value';row.append(a,b);el.appendChild(row);
+   }
+  }
+  function show(){
+    const remain=Math.max(0,Math.ceil(s.target*60-s.elapsed));
+    $('time').textContent=`${Math.floor(remain/60).toString().padStart(2,'0')}:${(remain%60).toString().padStart(2,'0')}`;
+    $('total').textContent=s.count;
+    const minutes=s.elapsed/60;
+    const average=minutes>0?s.count/Math.max(1,minutes):0;
+    $('avg').textContent=average.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1});
+    $('projection').textContent=minutes>0?Math.round(average*s.target).toLocaleString('pt-BR'):'0';
+    $('startPause').textContent=s.finished?'FINALIZADO':s.running?'PAUSAR':s.started?'RETOMAR':'INICIAR';
+    $('startPause').disabled=s.finished;
+    $('more').disabled=$('less').disabled=s.started;
+    for (let i=0;i<24;i++) {const r=$('minuteRows').children[i];r.querySelector('.value').textContent=s.byMinute[i]||'';r.classList.toggle('active',s.running&&i===Math.min(23,Math.floor(s.elapsed/60)));}
+  }
+  function clock(){if(!s.running)return;const now=Date.now();s.elapsed+=Math.max(0,(now-s.lastTick)/1000);s.lastTick=now;
+    if(s.elapsed>=s.target*60){s.elapsed=s.target*60;s.running=false;s.finished=true;clearInterval(s.interval);s.interval=null;show();finishDialog();return;}
+    show();
+  }
+  function startPause(){
+    if(!usuarioAtual||s.finished)return;
+    if(s.running){clock();s.running=false;clearInterval(s.interval);s.interval=null;show();return;}
+    if(!s.started){s.started=true;s.saved=false;}
+    s.running=true;s.lastTick=Date.now();s.interval=setInterval(clock,150);show();
+  }
+  function add(){if(!usuarioAtual)return;if(!s.running){toast('Toque em INICIAR ou RETOMAR antes de marcar.');return;}
+    clock();if(!s.running)return;const minute=Math.min(23,Math.floor(s.elapsed/60));s.byMinute[minute]++;s.count++;show();
+  }
+  function reset(force=false){
+    if(!force&&s.count>0&&!s.saved&&!confirm('Zerar esta contagem sem salvar? Os cantos atuais serão perdidos.'))return;
+    clearInterval(s.interval);Object.assign(s,{elapsed:0,count:0,byMinute:Array(24).fill(0),started:false,running:false,finished:false,saved:false,lastTick:0,interval:null});
+    $('birdName').value='';closeDialog();show();if(!force)toast('Marcador zerado. Nome da ave apagado.');
+  }
+  function changeMinutes(delta){if(s.started)return;s.target=Math.max(1,Math.min(24,s.target+delta));show();}
+  function getHistory(){const key=storageKey();if(!key)return [];
+    try{const p=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(p)?p:[]}catch{return []}}
+  function setHistory(list){const key=storageKey();if(!key)return false;
+    try{localStorage.setItem(key,JSON.stringify(list));return true}catch{toast('Não foi possível salvar neste navegador.');return false}}
+  function save(){
+    if(!usuarioAtual){toast('Faça login antes de salvar.');return;}
+    const name=$('birdName').value.trim();
+    if(!name){$('birdName').focus();toast('Digite o nome da ave para salvar.');return;}
+    if(!s.started||!s.count){toast('Ainda não há cantos para salvar.');return;}
+    if(s.saved){toast('Esta contagem já foi salva no histórico.');return;}
+    if(s.running){clock();s.running=false;clearInterval(s.interval);s.interval=null;}
+    if(s.saved)return;
+    const record={id:Date.now()+'-'+Math.random().toString(36).slice(2,7),name,date:new Date().toISOString(),target:s.target,elapsed:Math.round(s.elapsed),count:s.count,avg:s.elapsed>0?s.count/(s.elapsed/60):0,byMinute:[...s.byMinute]};
+    const list=getHistory();list.unshift(record);if(list.length>500)list.length=500;
+    if(setHistory(list)){s.saved=true;s.finished=true;toast(`Contagem de ${name} salva!`);closeDialog();show();}
+  }
+  function dialog(html){$('dialogContent').innerHTML=html;$('overlay').classList.add('show');}
+  function closeDialog(){$('overlay').classList.remove('show')}
+  function finishDialog(){
+    const currentName=$('birdName').value.trim();
+    dialog('<h2 id="dialogTitle">Contagem concluída!</h2><p>O tempo terminou. Confira o nome da ave e salve os cantos antes de zerar.</p><label for="finishName">Nome do coleiro</label><input id="finishName" class="name" maxlength="80" autocomplete="off" placeholder="Digite o nome da ave..."><div class="row-btns"><button class="modalbtn" id="modalSave">SALVAR CONTAGEM</button><button class="modalbtn secondary" id="modalLater">AGORA NÃO</button></div>');
+    $('finishName').value=currentName;
+    $('modalSave').onclick=()=>{const name=$('finishName').value.trim();if(!name){$('finishName').focus();toast('Digite o nome da ave para salvar.');return;}$('birdName').value=name;save()};
+    $('modalLater').onclick=closeDialog;
+    if(!currentName)$('finishName').focus();
+  }
+  function formatSeconds(sec){const min=Math.floor(sec/60),secs=Math.round(sec%60);return `${min}min ${secs}s`}
+  function showHistory(filter=''){
+    if(!usuarioAtual)return;
+    const list=getHistory();
+    const filtered=list.filter(r=>r.name.toLocaleLowerCase('pt-BR').includes(filter.toLocaleLowerCase('pt-BR')));
+    let html='<h2 id="dialogTitle">Histórico de cantadas</h2><input id="searchHistory" class="search" placeholder="Buscar nome da ave..." value="'+esc(filter)+'">';
+    if(!filtered.length)html+='<p>Nenhuma contagem encontrada.</p>';
+    for(const r of filtered){
+      const time=new Date(r.date).toLocaleString('pt-BR');
+      html+=`<article class="record"><strong>${esc(r.name)}</strong><div class="meta">${esc(time)}<br>Total: <b>${r.count} cantos</b> · Média: ${Number(r.avg).toFixed(1).replace('.',',')}/min<br>Tempo: ${formatSeconds(r.elapsed)} · Programado: ${r.target}min</div><details><summary>Ver cantos por minuto</summary><table><tbody>${r.byMinute.map((v,i)=>v?`<tr><td>Minuto ${i+1}</td><td>${v} cantos</td></tr>`:'').join('')}</tbody></table></details><button class="delete" data-delete="${esc(r.id)}">Excluir registro</button></article>`;
+    }
+    dialog(html);
+    $('searchHistory').addEventListener('input',e=>{const start=e.target.selectionStart;showHistory(e.target.value);$('searchHistory').focus();$('searchHistory').setSelectionRange(start,start)});
+    document.querySelectorAll('[data-delete]').forEach(b=>b.addEventListener('click',()=>{if(confirm('Excluir este registro do histórico?')){const after=getHistory().filter(r=>r.id!==b.dataset.delete);if(setHistory(after))showHistory($('searchHistory').value)}}));
+  }
+  function settings(){dialog('<h2 id="dialogTitle">Configurações</h2><p><b>Duração:</b> escolha de 1 a 24 minutos com as setas ao lado do cronômetro, antes de iniciar.</p><p><b>Marcador:</b> o número grande é o botão de +1 canto. Ele só marca enquanto o tempo estiver rodando.</p><p><b>Nome:</b> ao zerar, o campo fica vazio. O histórico mantém o nome e os cantos de cada ave.</p><p><b>Versão de teste:</b> os registros ficam apenas neste navegador; salve os dados importantes em outro lugar. Login e controle de clientes continuam pelo Firebase. O histórico fica neste navegador, separado por usuário, e não sincroniza com outros aparelhos.</p>')}
+  $('startPause').addEventListener('click',startPause);$('add').addEventListener('click',add);$('reset').addEventListener('click',()=>reset(false));
+  $('more').addEventListener('click',()=>changeMinutes(1));$('less').addEventListener('click',()=>changeMinutes(-1));
+  $('save').addEventListener('click',save);$('history').addEventListener('click',()=>showHistory());$('settings').addEventListener('click',settings);
+  $('back').addEventListener('click',()=>{$('overlay').classList.contains('show')?closeDialog():toast('Você está na tela do marcador.')});
+  $('close').addEventListener('click',closeDialog);$('overlay').addEventListener('click',e=>{if(e.target===$('overlay'))closeDialog()});
+  rows();show();
+  // Reset obrigatório ao sair / perder permissão; não pede confirmação.
+  return {resetarSessao:()=>reset(true)};
+}
+const marcadorNovo=criarMarcadorNovo();
+function zerar(){marcadorNovo.resetarSessao()}
+
+el("indicarAmigo").onclick=()=>{
+ const mensagem=
+ "🐦 MARCADOR DE COLEIRO\n\n"+
+ "Conheça nosso marcador de cantos!\n\n"+
+ "30 dias — R$ 10,00\n"+
+ "180 dias — R$ 30,00\n"+
+ "365 dias — R$ 50,00\n\n"+
+ "https://vilela464-glitch.github.io/marcador-coleiro/\n\n"+
+ "Solicite acesso:\nhttps://wa.me/5581988698384";
+ window.open("https://wa.me/?text="+encodeURIComponent(mensagem),
+ "_blank","noopener,noreferrer");
+};
+
+</script>
+</body>
+</html>
