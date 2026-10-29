@@ -411,8 +411,8 @@ import {
  signOut,onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
 import {
- getFirestore,doc,getDocs,collection,
- setDoc,updateDoc,deleteDoc,onSnapshot
+ getFirestore,doc,getDdoc,collection,
+ setDoc,updateDoc,delegetDoc,onSnapshot,Timestamp
 } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 
 const firebaseConfig={
@@ -472,11 +472,14 @@ function vencimentoTexto(dados){
  "Data inválida":data.toLocaleDateString("pt-BR");
 }
 function criarPlano(dias){
- const agora=new Date();
+ const agora = new Date();
+ const fim = new Date(agora.getTime() + dias * 86400000);
+
  return {
-  planoDias:dias,
-  ativadoEm:agora.toISOString(),
-  vencimento:new Date(agora.getTime()+dias*86400000).toISOString()
+  planoDias: dias,
+  ativadoEm: agora.toISOString(),
+  vencimento: fim.toISOString(),
+  vencimentoTimestamp: Timestamp.fromDate(fim)
  };
 }
 function limparObservador(){
