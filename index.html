@@ -44,7 +44,7 @@ input,select{width:100%;padding:13px;margin:7px 0;background:#0c171f;border:2px 
 .minute-header,.minute-row{display:grid;grid-template-columns:43% 57%;text-align:center;align-items:center}
 .minute-header{height:44px;background:#162632;font-size:clamp(11px,2.8vw,17px);font-weight:850}
 .minute-header span:first-child,.minute-row span:first-child{border-right:1px solid #294253}
-.minute-row{height:32px;min-height:32px;font-weight:850;font-size:clamp(14px,3.7vw,23px)}
+.minute-row{height:42px;min-height:42px;font-weight:850;font-size:clamp(14px,3.7vw,23px)}
 .minute-row:nth-child(even){background:#14222c}
 .minute-row span{height:100%;display:grid;place-items:center}
 .minute-row span:last-child{color:#ffca28}
@@ -946,7 +946,7 @@ function criarMarcadorNovo() {
     const lista = $("minuteRows");
     lista.textContent = "";
 
-    for (let i = 0; i < s.target; i++) {
+    for (let i = 0; i < 15; i++) {
       const row = document.createElement("div");
       row.className = "minute-row";
       row.dataset.index = i;
@@ -1020,7 +1020,7 @@ const projection = s.elapsed > 0
       s.target === 15
     );
 
-    for (let i = 0; i < s.target; i++) {
+    for (let i = 0; i < 15; i++) {
       const r = $("minuteRows").children[i];
 
       if (!r) continue;
