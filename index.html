@@ -44,12 +44,16 @@ input,select{width:100%;padding:13px;margin:7px 0;background:#0c171f;border:2px 
 .minute-header,.minute-row{display:grid;grid-template-columns:43% 57%;text-align:center;align-items:center}
 .minute-header{height:44px;background:#162632;font-size:clamp(11px,2.8vw,17px);font-weight:850}
 .minute-header span:first-child,.minute-row span:first-child{border-right:1px solid #294253}
-.minute-row{height:42px;min-height:42px;font-weight:850;font-size:clamp(14px,3.7vw,23px)}
+.minute-row{height:32px;min-height:32px;font-weight:850;font-size:clamp(14px,3.7vw,23px)}
 .minute-row:nth-child(even){background:#14222c}
 .minute-row span{height:100%;display:grid;place-items:center}
 .minute-row span:last-child{color:#ffca28}
 .minute-row.active{background:#34512d;box-shadow:inset 4px 0 #ffca28}
-#minuteRows{overflow-y:auto;max-height:620px;scrollbar-width:thin}
+#minuteRows{
+  overflow-y:hidden;
+  max-height:none;
+  scrollbar-width:none;
+}
 .right-panel{min-width:0;display:flex;flex-direction:column;gap:10px}
 .timer{height:clamp(100px,25vw,165px);border:2px solid #294253;border-radius:13px;background:#0c151d;display:grid;place-items:center;font-size:clamp(45px,11.8vw,90px);font-weight:900;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
 .metric{display:flex;flex-direction:column;align-items:center;gap:7px}
