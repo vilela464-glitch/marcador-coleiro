@@ -48,7 +48,10 @@ input,select{width:100%;padding:13px;margin:7px 0;background:#0c171f;border:2px 
 .minute-row:nth-child(even){background:#14222c}
 .minute-row span{height:100%;display:grid;place-items:center}
 .minute-row span:last-child{color:#ffca28}
-.minute-row.active{background:#34512d;box-shadow:inset 4px 0 #ffca28}
+.minute-row.active{
+  background:#176b45;
+  box-shadow:inset 4px 0 #ffca28;
+}
 #minuteRows{
   overflow-y:hidden;
   max-height:none;
@@ -68,6 +71,13 @@ input,select{width:100%;padding:13px;margin:7px 0;background:#0c171f;border:2px 
 .reset{background:#ec3339}
 .tap{background:#ffca28;border:2px solid #ffca28;border-radius:13px;color:#071016;min-width:0;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;touch-action:manipulation;padding:6px;overflow:hidden}
 .tap:active{background:#ffdb55}
+.tap:disabled{
+  background:#66551e;
+  border-color:#66551e;
+  color:#ffffff;
+  opacity:1;
+  cursor:default;
+}
 .big-number{font-weight:900;font-size:clamp(63px,17vw,150px);line-height:1;max-width:100%;overflow-wrap:anywhere}
 .tap small{font-size:clamp(12px,3vw,22px);font-weight:900;margin-top:6px}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:9px 7px 4px}
@@ -1006,7 +1016,10 @@ const projection = s.elapsed > 0
       s.started ? "RETOMAR" : "INICIAR";
 
     $("startPause").disabled = s.finished;
+$("add").disabled = s.finished;
 
+$("add").querySelector("small").textContent =
+  s.finished ? "FINALIZADO" : "+ 1 CANTO";
     $("tempo10").disabled = s.started;
     $("tempo15").disabled = s.started;
 
