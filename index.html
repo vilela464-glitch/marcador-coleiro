@@ -909,7 +909,7 @@ function criarMarcadorNovo() {
     target: 15,
     elapsed: 0,
     count: 0,
-    byMinute: Array(24).fill(0),
+    byMinute: Array(15).fill(0),
     started: false,
     running: false,
     finished: false,
@@ -942,7 +942,7 @@ function criarMarcadorNovo() {
     const lista = $("minuteRows");
     lista.textContent = "";
 
-    for (let i = 0; i < 24; i++) {
+    for (let i = 0; i < s.target; i++) {
       const row = document.createElement("div");
       row.className = "minute-row";
       row.dataset.index = i;
@@ -1016,7 +1016,7 @@ const projection = s.elapsed > 0
       s.target === 15
     );
 
-    for (let i = 0; i < 24; i++) {
+    for (let i = 0; i < s.target; i++) {
       const r = $("minuteRows").children[i];
 
       if (!r) continue;
@@ -1099,9 +1099,9 @@ const projection = s.elapsed > 0
     if (!s.running) return;
 
     const minute = Math.min(
-      23,
-      Math.floor(s.elapsed / 60)
-    );
+  s.target - 1,
+  Math.floor(s.elapsed / 60)
+);
 
     s.byMinute[minute]++;
     s.count++;
@@ -1126,7 +1126,7 @@ const projection = s.elapsed > 0
     Object.assign(s, {
       elapsed: 0,
       count: 0,
-      byMinute: Array(24).fill(0),
+      byMinute: Array(15).fill(0),
       started: false,
       running: false,
       finished: false,
@@ -1151,7 +1151,8 @@ const projection = s.elapsed > 0
     if (value !== 10 && value !== 15) return;
 
     s.target = value;
-    show();
+rows();
+show();
   }
 
   function getHistory() {
