@@ -162,7 +162,9 @@ input,select{width:100%;padding:13px;margin:7px 0;background:#0c171f;border:2px 
     <button id="adicionarUsuario" class="btn">
       CADASTRAR / LIBERAR
     </button>
-
+<button id="testarVencimentoBtn" class="btn" type="button">
+  🧪 TESTAR VENCIMENTO (KENINHO)
+</button>
     <p id="adminMensagem" class="muted" role="status"></p>
     <div id="listaUsuarios"></div>
   </section>
@@ -640,7 +642,44 @@ el("adminBtn").onclick = async () => {
 function mensagem(msg) {
   el("adminMensagem").textContent = msg;
 }
+async function testarVencimentoKeninho() {
+  if (!exigirAdmin()) return;
 
+  try {
+    const resultado = await getDocs(
+      collection(db, "usuarios")
+    );
+
+    const candidatos = resultado.docs.filter(item =>
+      (item.data().nome || "").trim().toLowerCase() === "keninho"
+    );
+
+    if (candidatos.length !== 1) {
+      mensagem(
+        candidatos.length === 0
+          ? "Não encontrei o usuário Keninho."
+          : "Há mais de um Keninho. Teste cancelado."
+      );
+      return;
+    }
+
+    const item = candidatos[0];
+
+    if (!confirm(
+      "Definir o vencimento de Keninho para daqui a 20 segundos?"
+    )) return;
+
+    await updateDoc(doc(db, "usuarios", item.id), {
+      venceEm: Timestamp.fromMillis(Date.now() + 20000),
+      atualizadoEm: serverTimestamp()
+    });
+
+    mensagem("Teste iniciado para Keninho. Aguarde o vencimento.");
+    await carregarUsuarios();
+  } catch (e) {
+    mensagem(erroFirebase(e));
+  }
+}el("testarVencimentoBtn").onclick = testarVencimentoKeninho;
 function calcularVencimento(dias, base) {
   const inicio =
     base instanceof Date && base.getTime() > Date.now()
