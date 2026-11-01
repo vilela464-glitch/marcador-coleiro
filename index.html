@@ -1497,13 +1497,12 @@ show();
             r => r.id !== b.dataset.delete
           );
 
-          if (setHistory(after)) {
-            showHistory($("searchHistory").
-              
-              
-              
-              
-              
+            if (setHistory(after)) {
+            showHistory($("searchHistory").value);
+          }
+        });
+      });
+  }
               function settings() {
   const validade = administradorAtual
     ? "Acesso de administrador"
